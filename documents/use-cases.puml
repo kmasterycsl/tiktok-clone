@@ -1,0 +1,79 @@
+@startuml
+left to right direction
+actor "End user" as eu
+actor "Admin user" as au
+package MobileApp/WebApp {
+  usecase "I want to view newest tweets" as UC1
+  usecase "I want to view newest FOLLOWING tweets" as UC1.1
+  usecase "I want to view newest RECOMMENDED tweets" as UC1.2
+  usecase "I want to view single tweet information: video, song, description,..." as UC1.3
+
+  usecase "I want to react to a tweet" as UC2
+
+  usecase "I want to use comments of a tweet" as UC3
+  usecase "I want to view comments include sub-comments of a tweet" as UC3.1
+  usecase "I want to react to a comment" as UC3.2
+  usecase "I want to post my own comment" as UC3.3
+
+  usecase "I want to use sharing feature" as UC4
+  usecase "I want to share a tweet to internal friends" as UC4.1
+  usecase "I want to share a tweet to external apps" as UC4.2
+  usecase "I want to download a tweet" as UC4.3
+
+  usecase "I want to use profile feature" as UC5
+  usecase "I want to see someone's profile" as UC5.1
+  usecase "I want to see someone's profile general information" as  UC5.1.1
+  usecase "I want to see someone's tweets" as  UC5.1.2
+  usecase "I want to see someone's liked` tweets" as  UC5.1.3
+  usecase "I want to see my own profile" as UC5.2
+
+  usecase "I want to use search feature" as UC6
+  usecase "I want to search tweets" as UC6.1
+  usecase "I want to search users" as UC6.2
+  usecase "I want to search sounds" as UC6.3
+  usecase "I want to search hashtags" as UC6.4
+
+  usecase "I want to use hashtags feature" as UC7
+  usecase "I want to see all hashtags" as UC7.1
+  usecase "I want to see tweets with hashtags" as UC7.1
+
+  usecase "I want to use publish feature" as UC8
+  usecase "I want to publish my video with basic information" as UC8.1
+}
+
+UC1<--UC1.1
+UC1<--UC1.2
+UC1<--UC1.3
+
+UC3<--UC3.1
+UC3<--UC3.2
+UC3<--UC3.3
+
+UC4<--UC4.1
+UC4<--UC4.2
+UC4<--UC4.3
+
+UC5<--UC5.1
+UC5<--UC5.1.1
+UC5<--UC5.1.2
+UC5<--UC5.1.3
+UC5<--UC5.2
+
+UC6<--UC6.1
+UC6<--UC6.2
+UC6<--UC6.3
+UC6<--UC6.4
+
+UC7<--UC7.1
+
+UC8<--UC8.1
+
+eu-->UC1
+eu-->UC2
+eu-->UC3
+eu-->UC4
+eu-->UC5
+eu-->UC6
+eu-->UC7
+eu-->UC8
+@enduml
