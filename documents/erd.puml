@@ -1,0 +1,66 @@
+@startuml
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity "users" as users {
+  *id : number <<generated>>
+  --
+  avatar : string
+  name : string
+  password : string
+  phone_number : string
+}
+
+entity "social_providers" as social_providers {
+  *id : number <<generated>>
+  --
+  name : string
+}
+
+entity "user_socials" as user_socials {
+  *social_provider_id : number
+  *user_id : number
+  *social_id: string
+  --
+}
+
+entity "tweets" as tweets {
+  *id : number <<generated>>
+  --
+  *user_id : number <<FK>>
+  *song_id : number <<FK>>
+  *video_url : string
+  description : string
+}
+
+entity "likes" as likes {
+  *likeable_name : number <<generated>> 'user/tweet/comment'
+  *likeable_id : number <<generated>>
+  *user_id : number <<FK>>
+  --
+}
+
+entity "songs" as songs {
+  *id : number <<generated>>
+  --
+  *song_url : number <<FK>>
+  *user_id : number <<FK>>
+  *title: string
+}
+
+entity "tags" as tags {
+  *slug : string
+  --
+  description : string
+}
+
+entity "tags_tweets" as tags_tweets {
+  *tweet_id : number
+  *tag_slug : string
+}
+
+
+
+@enduml
