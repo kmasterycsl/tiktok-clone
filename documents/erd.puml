@@ -20,8 +20,8 @@ entity "social_providers" as social_providers {
 }
 
 entity "user_socials" as user_socials {
-  *social_provider_id : number
-  *user_id : number
+  *social_provider_id : number <<FK>>
+  *user_id : number <<FK>>
   *social_id: string
   --
 }
@@ -35,9 +35,18 @@ entity "tweets" as tweets {
   description : string
 }
 
+entity "comments" as comments {
+  *id : number <<generated>>
+  --
+  *tweet_id : number <<FK>>
+  *user_id : number <<FK>>
+  parent_id : string
+  *content : string
+}
+
 entity "likes" as likes {
-  *likeable_name : number <<generated>> 'user/tweet/comment'
-  *likeable_id : number <<generated>>
+  *likeable_name : number 'user/tweet/comment'
+  *likeable_id : number
   *user_id : number <<FK>>
   --
 }
@@ -45,7 +54,7 @@ entity "likes" as likes {
 entity "songs" as songs {
   *id : number <<generated>>
   --
-  *song_url : number <<FK>>
+  *song_url : string
   *user_id : number <<FK>>
   *title: string
 }
@@ -53,12 +62,13 @@ entity "songs" as songs {
 entity "tags" as tags {
   *slug : string
   --
+  _tweets_count : number
   description : string
 }
 
 entity "tags_tweets" as tags_tweets {
-  *tweet_id : number
-  *tag_slug : string
+  *tweet_id : number <<FK>>
+  *tag_slug : string <<FK>>
 }
 
 
