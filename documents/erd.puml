@@ -31,8 +31,18 @@ entity "tweets" as tweets {
   --
   *user_id : number <<FK>>
   *song_id : number <<FK>>
-  *video_url : string
+  *video_id : number <<FK>>
   description : string
+}
+
+entity "assets" as assets {
+  *id : number <<generated>>
+  --
+  *user_id : number <<FK>>
+  *mime : string
+  *name : string
+  *extension : string
+  *relative_path : string
 }
 
 entity "comments" as comments {
@@ -49,14 +59,6 @@ entity "likes" as likes {
   *likeable_id : number
   *user_id : number <<FK>>
   --
-}
-
-entity "songs" as songs {
-  *id : number <<generated>>
-  --
-  *song_url : string
-  *user_id : number <<FK>>
-  *title: string
 }
 
 entity "tags" as tags {
