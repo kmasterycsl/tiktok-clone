@@ -7,7 +7,7 @@ import { TweetService } from '../services/tweet-service.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-  tweets: any[];
+  tweets: any;
   constructor(
     private tweetService: TweetService
   ) {

@@ -1,12 +1,16 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { CommonEntity } from './common.entity';
 import { User } from './user.entity';
-import { Tweet } from './tweet.entity';
+import { join } from 'path';
 
 @Entity({
     name: 'assets'
 })
 export class Asset extends CommonEntity {
+    constructor(
+    ) {
+        super();
+    }
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -33,4 +37,10 @@ export class Asset extends CommonEntity {
     user: User;
 
     associated_objects: any[];
+
+    file_url: string;
+
+    setExtraInfo(): void {
+        this.file_url = `${process.env.API_URL}:${process.env.API_PORT}/${this.file_relative_path}/${this.file_name}`;
+    }
 }
