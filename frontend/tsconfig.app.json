@@ -14,5 +14,5 @@
   ],
   "exclude": [
     "src/**/*.spec.ts"
-  ]
+  ],
 }

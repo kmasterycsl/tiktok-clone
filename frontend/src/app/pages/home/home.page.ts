@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TweetService } from '../services/tweet-service.service';
+import { TweetService } from '@services/tweet.service';
 
 @Component({
   selector: 'app-home',

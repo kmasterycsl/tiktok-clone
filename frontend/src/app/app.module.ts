@@ -8,8 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { InjectBaseURLInterceptor } from './interceptors/InjectBaseURL.interceptor';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,13 +17,12 @@ import { InjectBaseURLInterceptor } from './interceptors/InjectBaseURL.intercept
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule,
+    SharedModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: InjectBaseURLInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
