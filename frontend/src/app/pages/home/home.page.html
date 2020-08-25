@@ -1,7 +1,7 @@
 <ion-content [fullscreen]="true">
-  <ion-slides [options]="slideOpts">
-    <ion-slide *ngFor="let tweet of tweets">
-      <video [src]="tweet.video.file_url" autoplay loop></video>
+  <ion-slides (ionSlideWillChange)="ionSlideWillChange($event)" [options]="slideOpts">
+    <ion-slide *ngFor="let tweet of tweets; let i = index">
+      <tiktok-home-tweet [tweet]="tweet" [autoPlay]="i === 0"></tiktok-home-tweet>
     </ion-slide>
   </ion-slides>
 </ion-content>

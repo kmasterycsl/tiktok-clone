@@ -15,6 +15,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InjectBaseURLInterceptor, multi: true}
+  ],
+  exports: [
+    HomeTweetComponent,
   ]
 })
 export class SharedModule { }
