@@ -6,7 +6,7 @@
     "password": "root",
     "database": "tiktok",
     "synchronize": true,
-    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "entities": ["../share/dist/**/*.entity{.ts,.js}"],
     "migrationsTableName": "migrations",
     "migrations": ["dist/seeds/*.js"],
     "cli": {

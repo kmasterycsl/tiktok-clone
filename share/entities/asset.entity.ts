@@ -1,7 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { CommonEntity } from './common.entity';
 import { User } from './user.entity';
-import { join } from 'path';
 
 @Entity({
     name: 'assets'

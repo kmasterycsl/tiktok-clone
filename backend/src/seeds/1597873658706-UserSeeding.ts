@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
-import { User } from "src/entities/user.entity";
+import { User } from "@tiktok-clone/share/entities";
 
 const users: Partial<User>[] = [
     {

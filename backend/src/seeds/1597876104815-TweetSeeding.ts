@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
-import { Tweet } from "src/entities/tweet.entity";
+import { Tweet } from "@tiktok-clone/share/entities";
 
 const tweets: Partial<Tweet>[] = [
     {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tweet } from 'src/entities/tweet.entity';
+import { Tweet } from '@tiktok-clone/share/entities';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@tiktok-clone/backend",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/serve-static": "^2.1.3",
     "@nestjs/typeorm": "^7.1.0",
+    "@tiktok-clone/share": "file:../share/dist",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

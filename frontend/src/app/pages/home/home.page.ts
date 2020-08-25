@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TweetService } from '@services/tweet.service';
+import { Tweet } from '@tiktok-clone/share/entities';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +8,7 @@ import { TweetService } from '@services/tweet.service';
   styleUrls: ['home.page.scss']
 })
 export class HomePage implements OnInit {
-  tweets: any;
+  tweets: Tweet[];
   slideOpts = {
     direction: 'vertical',
   }
