@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { TweetService } from '../services/tweet-service.service';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss']
 })
-export class Tab1Page implements OnInit {
+export class HomePage implements OnInit {
   tweets: any;
+  slideOpts = {
+    direction: 'vertical',
+  }
   constructor(
     private tweetService: TweetService
   ) {
