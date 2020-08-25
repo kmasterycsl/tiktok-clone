@@ -1,0 +1,3 @@
+<ion-content [fullscreen]="true">
+  <video *ngFor="let tweet of tweets" [src]="'http://localhost:3000/' + tweet.video.file_relative_path + '/' + tweet.video.file_name" autoplay loop></video>
+</ion-content>
