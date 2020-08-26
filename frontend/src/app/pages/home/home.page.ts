@@ -21,8 +21,8 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.tweetService.getTweets().subscribe(tweets => {
-      this.tweets = tweets;
+    this.tweetService.getTweets().subscribe(paginatedTweets => {
+      this.tweets = paginatedTweets.items;
     })
   }
 

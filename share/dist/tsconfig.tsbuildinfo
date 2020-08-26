@@ -1451,9 +1451,19 @@
         "signature": "2864458885d39d951059eeeecda5ea709473e4e5367b9419bce583d1d0c9b074",
         "affectsGlobalScope": false
       },
+      "../interfaces/IPaginations.ts": {
+        "version": "bdd86335d2661387c8c0c6f6fae6a50e8435ebd112663909e7c5d99dec951d0a",
+        "signature": "8f8a81b6bef9ddad9a133d1691e96b1aa40776a54a2536daa3efbe117e845528",
+        "affectsGlobalScope": false
+      },
+      "../interfaces/index.ts": {
+        "version": "8a90b4d1c9acdcf49e11f455842c8b8d7b885b20f0437788c00973ddab280372",
+        "signature": "8a90b4d1c9acdcf49e11f455842c8b8d7b885b20f0437788c00973ddab280372",
+        "affectsGlobalScope": false
+      },
       "../index.ts": {
-        "version": "505655f1ae34d79ff950f53d5e240f69d4df3fd0a20fea9886c4d647bc1d6e8b",
-        "signature": "cf2a7c661fa8cafd61b4ae334fb2a4a29643fd5f12a3a5eb635f17adf4eb6ea5",
+        "version": "bf1211509611c5afd5d71e578dbe3e00fe69b7adbf3d79b85f5be893f93f0a00",
+        "signature": "171b69f949abc99ebbb39c2c5a8282d148f4036ffd45f1caa919df3a98ba41c8",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/color-name/index.d.ts": {
@@ -1739,6 +1749,7 @@
           "../backend/node_modules/typeorm/*"
         ]
       },
+      "watch": true,
       "configFilePath": "../tsconfig.json"
     },
     "referencedMap": {
@@ -1799,6 +1810,24 @@
       ],
       "../index.ts": [
         "../entities/index.ts",
+        "../interfaces/index.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/process.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../interfaces/IPaginations.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/process.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/process.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../interfaces/index.ts": [
+        "../interfaces/IPaginations.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/process.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -5355,6 +5384,9 @@
       "../index.ts": [
         "../entities/index.ts"
       ],
+      "../interfaces/index.ts": [
+        "../interfaces/IPaginations.ts"
+      ],
       "../node_modules/@types/color-name/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/process.d.ts",
@@ -8889,6 +8921,8 @@
       "../entities/tweet.entity.ts",
       "../entities/user.entity.ts",
       "../index.ts",
+      "../interfaces/IPaginations.ts",
+      "../interfaces/index.ts",
       "../node_modules/@types/color-name/index.d.ts",
       "../node_modules/@types/node/async_hooks.d.ts",
       "../node_modules/@types/node/base.d.ts",

@@ -21,6 +21,12 @@ export class TweetService {
           created_at: 'DESC'
         }
       }
-    );
+    ).then(result => {
+      result.items.map(tweet => {
+        tweet.video.setExtraInfo();
+        tweet.song.setExtraInfo();
+      });
+      return result;
+    });
   }
 }
