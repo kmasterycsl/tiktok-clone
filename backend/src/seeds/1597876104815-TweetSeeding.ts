@@ -1,29 +1,17 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
 import { Tweet } from "@tiktok-clone/share/entities";
+import * as _ from "lodash";
 
-const tweets: Partial<Tweet>[] = [
-    {
-        id: 1,
+const tweets: Partial<Tweet>[] = [];
+
+for (let i = 1; i <= 100; i++) {
+    tweets.push({
         user_id: 1,
-        song_id: 1,
-        video_id: 101,
-        description: 'Something just like this',
-    },
-    {
-        id: 2,
-        user_id: 1,
-        song_id: 2,
-        video_id: 102,
-        description: 'Why you look at me',
-    },
-    {
-        id: 3,
-        user_id: 1,
-        song_id: 3,
-        video_id: 103,
-        description: 'Shadow night',
-    }
-]
+        song_id: _.random(1, 3),
+        video_id: _.random(101, 103),
+        description: `Some title just like this ${_.random(0, 1000000)} <3`
+    });
+}
 
 export class TweetSeeding1597876104815 implements MigrationInterface {
 
