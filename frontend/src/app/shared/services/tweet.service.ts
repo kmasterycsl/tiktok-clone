@@ -10,7 +10,7 @@ export class TweetService {
 
   constructor(private http: HttpClient) { }
 
-  getTweets(): Observable<Pagination<Tweet>> {
-    return this.http.get<Pagination<Tweet>>('tweets');
+  getTweets(page: number = 1): Observable<Pagination<Tweet>> {
+    return this.http.get<Pagination<Tweet>>('tweets', { params: { page: page.toString() } });
   }
 }
