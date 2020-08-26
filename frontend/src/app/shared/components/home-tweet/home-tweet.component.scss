@@ -1,5 +1,36 @@
-video {
+:host {
+  position: relative;
+  height: 100%;
+}
+
+.tweet {
+  height: 100%;
+  video {
     height: 100%;
     width: 100%;
     // object-fit: cover;
+  }
+  &__info {
+    padding: var(--ion-padding);
+    bottom: 0;
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+  }
+  &__left {
+    text-align: left;
+  }
+  &__owner {
+  }
+  &__title {
+    margin-top: var(--ion-padding);
+  }
+  &__song {
+    margin-top: var(--ion-padding);
+    display: flex;
+    align-items: center;
+    span {
+    //   margin-left: calc(var(--ion-padding)/2);
+    }
+  }
 }

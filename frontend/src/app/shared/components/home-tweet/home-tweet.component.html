@@ -1,1 +1,22 @@
-<video [src]="tweet.video.file_url" loop [autoplay]="autoPlay" #video></video>
+<div class="tweet">
+    <video [src]="tweet.video.file_url" loop [autoplay]="autoPlay" #video></video>
+    <div class="tweet__info">
+        <div class="tweet__left">
+            <div class="tweet__owner font-large font-500">
+                @{{ tweet.user.name }}
+            </div>
+            <div class="tweet__title">
+                {{ tweet.description }}
+            </div>
+            <div class="tweet__song">
+                <ion-icon name="musical-notes-outline"></ion-icon>
+                <span>
+                    {{ tweet.song.title }}
+                </span>
+            </div>
+        </div>
+        <div class="tweet__right">
+            right go here
+        </div>
+    </div>
+</div>
