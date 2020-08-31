@@ -6,14 +6,14 @@ const users: Partial<User>[] = [
         id: 1,
         name: 'Mr A',
         phone_number: '+84811111111',
-        password: 'dummy',
+        password: '$2b$04$k3PucSCz1Ij2NWLIzxQGF.HjDeZG6FyRhUAara2zjuPkU8FQ0vWnu', // 123456
         tweets: []
     },
     {
         id: 2,
         name: 'Ms B',
         phone_number: '+84822222222',
-        password: 'dummy',
+        password: '$2b$04$k3PucSCz1Ij2NWLIzxQGF.HjDeZG6FyRhUAara2zjuPkU8FQ0vWnu', // 123456
         tweets: []
     }
 ];
