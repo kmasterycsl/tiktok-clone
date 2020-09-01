@@ -13,7 +13,9 @@ export class HomeTweetComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.tweet);
+  }
 
   play() {
     this.videoElement.nativeElement.play();
