@@ -4,11 +4,15 @@ import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { NoticeService } from '@services/notice.service';
 import { map, catchError } from 'rxjs/operators';
+import { NavController } from '@ionic/angular';
+import { Route, ActivatedRoute, Router } from '@angular/router';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
     constructor(
-        private noticeService: NoticeService
+        private noticeService: NoticeService,
+        private navController: NavController,
+        private router: Router,
     ) { }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
@@ -19,11 +23,22 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
                 return event;
             }),
             catchError((error: HttpErrorResponse) => {
-                console.error(error);
+                if (error.status === 401 && this.router.url !== '/tabs/auth/login') {
+                    this.navController.navigateRoot(['/tabs/auth/login'], {
+                        queryParams: {
+                            back: this.router.url
+                        }
+                    });
+                    this.noticeService.showToast({
+                        message: 'Please login again',
+                        color: 'danger'
+                    });
+                    return throwError(error);
+                }
                 this.noticeService.showToast({
                     message: error?.error?.message || error.message || 'Unexpected error',
                     color: 'danger'
-                })
+                });
                 return throwError(error);
             }));
     }

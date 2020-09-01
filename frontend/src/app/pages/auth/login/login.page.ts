@@ -3,6 +3,7 @@ import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { NoticeService } from '@services/notice.service';
 import { NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tiktok-auth',
@@ -14,14 +15,17 @@ export class LoginPage implements OnInit {
     phoneNumber: this.fb.control('+84', [Validators.required]),
     password: ['', [Validators.required]],
   })
+  backUrl: string;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private noticeService: NoticeService,
     private navController: NavController,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
+    this.backUrl = this.activatedRoute.snapshot.paramMap.get('back') || '/tabs/auth/profile';
   }
 
   login() {
@@ -30,7 +34,7 @@ export class LoginPage implements OnInit {
         message: 'Login success',
         color: 'success'
       });
-      this.navController.navigateForward('/tabs/auth/profile')
+      this.navController.navigateForward(this.backUrl)
     });
   }
 }
