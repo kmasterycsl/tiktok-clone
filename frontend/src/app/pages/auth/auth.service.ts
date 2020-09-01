@@ -35,4 +35,8 @@ export class AuthService {
   profile() {
     return this.httpClient.get<IProfileResponse>('auth/profile');
   }
+
+  isLogined() {
+    return !!this.storageService.get(STORAGE_KEYS.TOKEN);
+  }
 }

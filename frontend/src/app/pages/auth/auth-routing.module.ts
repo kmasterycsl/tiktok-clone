@@ -3,19 +3,25 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginPage } from './login/login.page';
 import { ProfilePage } from './profile/profile.page';
+import { GuestGuard } from 'src/app/shared/guards/guest.guard';
+import { UserGuard } from 'src/app/shared/guards/user.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginPage
+    component: LoginPage,
+    canActivate: [GuestGuard],
+    canActivateChild: [GuestGuard]
   },
   {
     path: 'profile',
-    component: ProfilePage
+    component: ProfilePage,
+    canActivate: [UserGuard],
+    canActivateChild: [UserGuard]
   },
   {
     path: '',
-    redirectTo: 'login'
+    redirectTo: 'profile'
   },
 ];
 
@@ -23,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AuthPageRoutingModule {}
+export class AuthPageRoutingModule { }
