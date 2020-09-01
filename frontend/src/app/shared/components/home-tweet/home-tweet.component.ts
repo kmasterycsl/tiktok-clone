@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { Tweet } from '@tiktok-clone/share/entities';
 
 @Component({
@@ -12,6 +12,13 @@ export class HomeTweetComponent implements OnInit {
   @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
 
   constructor() { }
+
+  @HostListener('click')
+  onClick() {
+    this.videoElement.nativeElement.paused ?
+      this.videoElement.nativeElement.play() :
+      this.videoElement.nativeElement.pause();
+  }
 
   ngOnInit() {
     console.log(this.tweet);
