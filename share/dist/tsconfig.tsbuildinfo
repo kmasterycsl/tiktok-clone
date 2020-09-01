@@ -1437,7 +1437,7 @@
         "affectsGlobalScope": false
       },
       "../entities/user.entity.ts": {
-        "version": "de87692f8b90d73cb17e1ae01e3107d10b55c5b432b0847ef08ac871fdfc1ea9",
+        "version": "ca4514932769182d69cbc779aec772dbe52a984d7b609d5b0ed077003558d3cb",
         "signature": "dd4b0ad5d8f26db43dc2badd222f054fb9377ec392d93f710f9c3b8697b39544",
         "affectsGlobalScope": false
       },
@@ -1749,7 +1749,6 @@
           "../backend/node_modules/typeorm/*"
         ]
       },
-      "watch": true,
       "configFilePath": "../tsconfig.json"
     },
     "referencedMap": {

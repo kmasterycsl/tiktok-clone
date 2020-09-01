@@ -13,7 +13,7 @@ export class User extends CommonEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column()

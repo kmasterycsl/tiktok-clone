@@ -15,7 +15,6 @@ export class NoticeService {
       return this.toastController.create({
           ...{
               duration: 2000,
-              translucent: true,
           },
           ...opts
       }).then(t => t.present())

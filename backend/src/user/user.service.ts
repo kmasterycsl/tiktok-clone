@@ -12,7 +12,7 @@ export class UserService {
   ) {
   }
 
-  async findOne(phoneNumber: string): Promise<User | undefined> {
-    return this.userRepository.findOne({where: { phone_number: phoneNumber }});
+  async findOne(phoneNumber: string, selectFields?): Promise<User | undefined> {
+    return this.userRepository.findOne({where: { phone_number: phoneNumber }, select: selectFields});
   }
 }
