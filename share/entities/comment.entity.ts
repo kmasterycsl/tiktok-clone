@@ -5,7 +5,7 @@ import { Asset } from './asset.entity';
 import { Tweet } from './tweet.entity';
 
 @Entity({
-  name: 'tweets'
+  name: 'comments'
 })
 export class Comment extends CommonEntity {
   @PrimaryGeneratedColumn()
@@ -17,7 +17,9 @@ export class Comment extends CommonEntity {
   @Column()
   tweet_id: number;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   parent_id?: number;
 
   @Column()
@@ -32,6 +34,6 @@ export class Comment extends CommonEntity {
   tweet: Tweet;
 
   @ManyToOne(type => Comment, asset => asset.parent)
-  @JoinColumn({ name: "comment_id" })
+  @JoinColumn({ name: "parent_id" })
   parent: Comment;
 }
