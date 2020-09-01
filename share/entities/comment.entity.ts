@@ -2,12 +2,12 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColum
 import { CommonEntity } from './common.entity';
 import { User } from './user.entity';
 import { Asset } from './asset.entity';
-import { Comment } from './comment.entity';
+import { Tweet } from './tweet.entity';
 
 @Entity({
   name: 'tweets'
 })
-export class Tweet extends CommonEntity {
+export class Comment extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,26 +15,23 @@ export class Tweet extends CommonEntity {
   user_id: number;
 
   @Column()
-  song_id: number;
+  tweet_id: number;
 
   @Column()
-  video_id: number;
+  parent_id?: number;
 
   @Column()
-  description: string;
+  content: string;
 
   @ManyToOne(type => User, user => user.tweets)
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @ManyToOne(type => Asset, asset => asset.associated_objects)
-  @JoinColumn({ name: "song_id" })
-  song: Asset;
+  @ManyToOne(type => Tweet, asset => asset.comments)
+  @JoinColumn({ name: "tweet_id" })
+  tweet: Tweet;
 
-  @ManyToOne(type => Asset, user => user.associated_objects)
-  @JoinColumn({ name: "video_id" })
-  video: Asset;
-
-  @OneToMany(type => Comment, comment => comment.tweet)
-  comments: Comment[];
+  @ManyToOne(type => Comment, asset => asset.parent)
+  @JoinColumn({ name: "comment_id" })
+  parent: Comment;
 }
