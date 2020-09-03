@@ -5,6 +5,7 @@ import { InjectBaseURLInterceptor } from './interceptors/InjectBaseURL.intercept
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlerInterceptor } from './interceptors/ErrorHandler.intercepter';
 import { InjectTokenInterceptor } from './interceptors/InjectToken.intercepter';
+import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { InjectTokenInterceptor } from './interceptors/InjectToken.intercepter';
   ],
   imports: [
     CommonModule,
+    IonicModule,
     HttpClientModule,
   ],
   providers: [
