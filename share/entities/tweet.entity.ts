@@ -37,4 +37,13 @@ export class Tweet extends CommonEntity {
 
   @OneToMany(type => Comment, comment => comment.tweet)
   comments: Comment[];
+
+  @Column('int', {
+    select: false, 
+    transformer: {
+      from: x => parseInt(x),
+      to: x => parseInt(x),
+    }
+  })
+  comments_count?: number;
 }

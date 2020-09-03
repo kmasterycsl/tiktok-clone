@@ -12,21 +12,39 @@ export class TweetService {
   ) { }
 
   getTweets(options: IPaginationOptions): any {
-    return paginate<Tweet>(
-      this.tweetRepository,
-      options,
-      {
-        relations: ['user', 'song', 'video'],
-        order: {
-          created_at: 'DESC'
-        }
-      }
-    ).then(result => {
+    const queryBuilder = this.tweetRepository
+      .createQueryBuilder('tweets')
+      .leftJoinAndSelect('tweets.user', 'user')
+      .leftJoinAndSelect('tweets.song', 'song')
+      .leftJoinAndSelect('tweets.video', 'video')
+      .leftJoin('comments', 'comments', 'comments.tweet_id = tweets.id')
+      .addSelect('COUNT(comments.id)', 'tweets_comments_count')
+      .orderBy('tweets.created_at', 'DESC')
+      .groupBy('tweets.id');
+
+    return paginate<Tweet>(queryBuilder, options).then(result => {
       result.items.map(tweet => {
         tweet.video.setExtraInfo();
         tweet.song.setExtraInfo();
       });
       return result;
     });
+
+    // return paginate<Tweet>(
+    //   this.tweetRepository,
+    //   options,
+    //   {
+    //     relations: ['user', 'song', 'video'],
+    //     order: {
+    //       created_at: 'DESC'
+    //     }
+    //   }
+    // ).then(result => {
+    //   result.items.map(tweet => {
+    //     tweet.video.setExtraInfo();
+    //     tweet.song.setExtraInfo();
+    //   });
+    //   return result;
+    // });
   }
 }
