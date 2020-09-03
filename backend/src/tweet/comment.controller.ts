@@ -3,31 +3,20 @@ import { AppService } from '../app.service';
 import { TweetService } from './tweet.service';
 import { CommentService } from './comment.service';
 
-@Controller('tweets')
-export class TweetController {
+@Controller('comments')
+export class CommentController {
   constructor(
     private readonly tweetService: TweetService,
     private readonly commentService: CommentService,
   ) { }
 
-  @Get('')
-  getTweets(
+  @Get(':parentId/children')
+  getChildComments(
+    @Param('parentId') parentId: string,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
   ) {
-    return this.tweetService.getTweets({
-      page,
-      limit,
-    });
-  }
-
-  @Get(':tweetId/comments')
-  getTweetRootComments(
-    @Param('tweetId') tweetId: string,
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-  ) {
-    return this.commentService.getRootCommentForTweets(tweetId, {
+    return this.commentService.getChildComment(parentId, {
       page,
       limit,
     });

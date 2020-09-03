@@ -36,4 +36,16 @@ export class Comment extends CommonEntity {
   @ManyToOne(type => Comment, asset => asset.parent)
   @JoinColumn({ name: "parent_id" })
   parent: Comment;
+
+  @OneToMany(type => Comment, comment => comment.parent)
+  children: Comment[];
+
+  @Column('int', {
+    select: false, 
+    transformer: {
+      from: x => parseInt(x),
+      to: x => parseInt(x),
+    }
+  })
+  children_count?: number;
 }

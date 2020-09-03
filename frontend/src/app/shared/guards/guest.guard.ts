@@ -3,7 +3,6 @@ import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnaps
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/pages/auth/auth.service';
 import { NavController } from '@ionic/angular';
-import { stat } from 'fs';
 
 @Injectable({
   providedIn: 'root'
