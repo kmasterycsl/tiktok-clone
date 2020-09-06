@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../../shared/services/auth.service';
 import { NoticeService } from '@services/notice.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';

@@ -15,6 +15,7 @@ export interface IProfileResponse extends User {
   providedIn: 'root'
 })
 export class AuthService {
+  currentUser: User;
 
   constructor(
     private httpClient: HttpClient,
@@ -28,8 +29,15 @@ export class AuthService {
     }).pipe(
       tap(response => {
         this.storageService.put(STORAGE_KEYS.TOKEN, response.access_token);
+        this.fetchUser();
       })
     );
+  }
+
+  private fetchUser() {
+    this.profile().toPromise().then(user => {
+      this.currentUser = user;
+    })
   }
 
   profile() {

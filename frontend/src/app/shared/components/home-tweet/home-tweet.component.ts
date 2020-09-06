@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Tweet } from '@tiktok-clone/share/entities';
+import { LikeService } from '@services/like.service';
 
 @Component({
   selector: 'tiktok-home-tweet',
@@ -12,7 +13,9 @@ export class HomeTweetComponent implements OnInit {
   @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
   @Output() onComment = new EventEmitter();
 
-  constructor() { }
+  constructor(
+    private likeService: LikeService,
+  ) { }
 
   @HostListener('click')
   onClick() {
@@ -35,6 +38,11 @@ export class HomeTweetComponent implements OnInit {
   onClickComment(event: MouseEvent) {
     event.stopPropagation();
     this.onComment.next(true);
+  }
+
+  like(event: MouseEvent) {
+    event.stopPropagation();
+    this.likeService.likeTweet(this.tweet.id).subscribe();
   }
 
 }

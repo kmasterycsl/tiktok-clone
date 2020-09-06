@@ -11,6 +11,10 @@ export class TweetService {
     private tweetRepository: Repository<Tweet>,
   ) { }
 
+  getTweet(tweetId: number) {
+    return this.tweetRepository.findOne(tweetId);
+  }
+
   getTweets(options: IPaginationOptions): any {
     const queryBuilder = this.tweetRepository
       .createQueryBuilder('tweets')

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from 'src/app/pages/auth/auth.service';
+import { AuthService } from '@services/auth.service';
 import { NavController } from '@ionic/angular';
 
 @Injectable({
