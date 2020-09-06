@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import { TOTAL_USERS } from "./1597873658706-UserSeeding";
 import * as faker from "faker";
 
-const TOTAL_TWEETS = 500;
+const TOTAL_TWEETS = 30;
 const tweets: Partial<Tweet>[] = [];
 
 for (let i = 1; i <= TOTAL_TWEETS; i++) {

@@ -7,7 +7,8 @@
   display: flex;
   margin-bottom: var(--ion-padding);
   &__avatar {
-    width: 30px;
+    flex-shrink: 0;
+    flex-basis: 30px;
     img {
       width: 100%;
       border-radius: 50%;
@@ -20,6 +21,9 @@
     margin-right: var(--ion-padding);
   }
   &__reaction {
+    ion-icon {
+      font-size: 1.2rem;
+    }
   }
   &__username {
     font-weight: 600;
