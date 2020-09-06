@@ -1,10 +1,18 @@
 :host {
   display: block;
+  margin-bottom: var(--ion-padding);
 }
 
 .comment {
   display: flex;
+  margin-bottom: var(--ion-padding);
   &__avatar {
+    width: 30px;
+    img {
+      width: 100%;
+      border-radius: 50%;
+      height: auto;
+    }
   }
   &__body {
     flex-grow: 1;
@@ -24,5 +32,15 @@
   &__view-more {
     font-weight: 600;
     color: silver;
+    display: flex;
+    align-items: center;
   }
+}
+
+.children-comments {
+  &__view-more {
+    display: flex;
+    align-items: center;
+  }
+  margin-bottom: var(--ion-padding);
 }

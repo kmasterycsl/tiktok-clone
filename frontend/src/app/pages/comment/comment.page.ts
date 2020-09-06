@@ -32,7 +32,7 @@ export class CommentPage implements OnInit {
     })
   }
 
-  loadData(event) {
+  loadMore(event) {
     return this.loadComments(+this.currentResponse.meta.currentPage + 1).then(response => {
       event.target.complete();
       if (+response.meta.currentPage === +response.meta.totalPages) {

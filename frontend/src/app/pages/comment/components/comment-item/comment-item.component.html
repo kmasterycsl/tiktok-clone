@@ -1,8 +1,6 @@
 <div class="comment">
   <div class="comment__avatar">
-    <ion-avatar>
-      <img [src]="'https://picsum.photos/seed/picsum/40/40?random=' + comment.id" />
-    </ion-avatar>
+    <img [src]="'https://picsum.photos/seed/picsum/40/40?random=' + comment.id" />
   </div>
   <div class="comment__body">
     <div class="comment__username">
@@ -12,7 +10,7 @@
       {{ comment.content }}
     </div>
     <div *ngIf="comment.children_count > 0" class="comment__view-more" (click)="toggleShowChildren()">
-      View replies ({{ comment.children_count }})
+      View replies ({{ comment.children_count }}) <ion-icon name="chevron-down-outline"></ion-icon>
     </div>
   </div>
   <div class="comment__reaction">
@@ -23,5 +21,7 @@
 <div *ngIf="showChildren" class="children-comments" [ngStyle]="{marginLeft: nestedLevel * 10 + 'px'}">
   <tiktok-comment-item *ngFor="let childComment of childrenComments" [comment]="childComment"
     [nestedLevel]="nestedLevel+1"></tiktok-comment-item>
-  <div *ngIf="hasMoreChildrenComments" (click)="viewMoreChilren()">View more</div>
+  <div class="children-comments__view-more" *ngIf="hasMoreChildrenComments" (click)="viewMoreChilren()">
+    View more <ion-icon name="chevron-down-outline"></ion-icon>
+  </div>
 </div>
