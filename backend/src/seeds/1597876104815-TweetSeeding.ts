@@ -1,16 +1,19 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
 import { Tweet, Comment } from "@tiktok-clone/share/entities";
 import * as _ from "lodash";
-import { random } from "lodash";
+import { TOTAL_USERS } from "./1597873658706-UserSeeding";
+import * as faker from "faker";
 
+const TOTAL_TWEETS = 500;
 const tweets: Partial<Tweet>[] = [];
 
-for (let i = 1; i <= 30; i++) {
+for (let i = 1; i <= TOTAL_TWEETS; i++) {
     tweets.push({
-        user_id: 1,
+        user_id: _.random(1, TOTAL_USERS),
         song_id: _.random(1, 3),
+        comments_count: 0,
         video_id: _.random(101, 103),
-        description: `Some title just like this ${_.random(0, 1000000)} <3`
+        description: faker.lorem.sentence(),
     });
 }
 
@@ -27,10 +30,11 @@ export class TweetSeeding1597876104815 implements MigrationInterface {
             const totalComments = _.random(1, 30);
             for (let j = 1; j <= totalComments; j++) {
                 comments.push({
-                    user_id: 1,
+                    user_id: _.random(1, TOTAL_USERS),
                     tweet_id: t.id,
                     parent_id: null,
-                    content: `Some awesome comment ${_.random(0, 1000000)} <3 <3`,
+                    children_count: 0,
+                    content: faker.lorem.sentence(),
                 });
             }
             comments = await getRepository(Comment).save(
@@ -43,10 +47,11 @@ export class TweetSeeding1597876104815 implements MigrationInterface {
             const totalComments = _.random(1, 30);
             for (let j = 1; j <= totalComments; j++) {
                 subComments.push({
-                    user_id: 1,
+                    user_id: _.random(1, TOTAL_USERS),
                     tweet_id: parentComment.tweet_id,
                     parent_id: parentComment.id,
-                    content: `<3 Sub comment ${_.random(0, 1000000)} <3 <3`,
+                    children_count: 0,
+                    content: faker.lorem.sentence(),
                 });
             }
         }
