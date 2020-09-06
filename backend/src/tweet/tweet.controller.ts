@@ -3,6 +3,7 @@ import { AppService } from '../app.service';
 import { TweetService } from './tweet.service';
 import { CommentService } from './comment.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { NoStrictlyJwtAuthGuard } from 'src/auth/guards/no-strictly-jwt-auth.guard';
 
 @Controller('tweets')
 export class TweetController {
@@ -12,7 +13,7 @@ export class TweetController {
   ) { }
 
   @Get('')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(NoStrictlyJwtAuthGuard)
   getTweets(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
