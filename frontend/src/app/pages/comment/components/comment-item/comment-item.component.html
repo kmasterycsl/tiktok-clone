@@ -11,11 +11,17 @@
     <div class="comment__content">
       {{ comment.content }}
     </div>
-    <div class="comment__view-more">
+    <div *ngIf="comment.children_count > 0" class="comment__view-more" (click)="toggleShowChildren()">
       View replies ({{ comment.children_count }})
     </div>
   </div>
   <div class="comment__reaction">
     Reaction
   </div>
+</div>
+
+<div *ngIf="showChildren" class="children-comments" [ngStyle]="{marginLeft: nestedLevel * 10 + 'px'}">
+  <tiktok-comment-item *ngFor="let childComment of childrenComments" [comment]="childComment"
+    [nestedLevel]="nestedLevel+1"></tiktok-comment-item>
+  <div *ngIf="hasMoreChildrenComments" (click)="viewMoreChilren()">View more</div>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Tweet, Pagination } from '@tiktok-clone/share';
+import { Tweet, Pagination, Comment } from '@tiktok-clone/share';
 import { CommentService } from '@services/comment.service';
 
 @Component({
