@@ -5,6 +5,8 @@ import { HomeTweetComponent } from 'src/app/shared/components/home-tweet/home-tw
 import { Pagination } from '@tiktok-clone/share';
 import { SwiperOptions } from 'swiper';
 import { NoticeService } from '@services/notice.service';
+import { ModalController } from '@ionic/angular';
+import { CommentPage } from '../comment/comment.page';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +25,7 @@ export class HomePage implements OnInit {
   constructor(
     private tweetService: TweetService,
     private noticeService: NoticeService,
+    private modalController: ModalController,
   ) {
   }
 
@@ -64,6 +67,19 @@ export class HomePage implements OnInit {
 
   trackByFn(index, item) {
     return item.id;
+  }
+
+  async showCommentPage(tweet: Tweet) {
+    const modal = await this.modalController.create({
+      component: CommentPage,
+      cssClass: 'chat-box',
+      showBackdrop: false,
+      componentProps: {
+        tweet,
+      }
+    });
+
+    modal.present();
   }
 
 }

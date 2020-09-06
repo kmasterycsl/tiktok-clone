@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Tweet } from '@tiktok-clone/share/entities';
 
 @Component({
@@ -10,6 +10,7 @@ export class HomeTweetComponent implements OnInit {
   @Input() tweet: Tweet;
   @Input() autoPlay: boolean = false;
   @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
+  @Output() onComment = new EventEmitter();
 
   constructor() { }
 
@@ -21,7 +22,6 @@ export class HomeTweetComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.tweet);
   }
 
   play() {
@@ -30,6 +30,11 @@ export class HomeTweetComponent implements OnInit {
 
   pause() {
     this.videoElement.nativeElement.pause();
+  }
+
+  onClickComment(event: MouseEvent) {
+    event.stopPropagation();
+    this.onComment.next(true);
   }
 
 }

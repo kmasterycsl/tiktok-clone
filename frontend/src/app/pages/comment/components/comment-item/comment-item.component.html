@@ -1,0 +1,21 @@
+<div class="comment">
+  <div class="comment__avatar">
+    <ion-avatar>
+      <img [src]="'https://picsum.photos/seed/picsum/40/40?random=' + comment.id" />
+    </ion-avatar>
+  </div>
+  <div class="comment__body">
+    <div class="comment__username">
+      {{ comment.user.name }}
+    </div>
+    <div class="comment__content">
+      {{ comment.content }}
+    </div>
+    <div class="comment__view-more">
+      View replies ({{ comment.children_count }})
+    </div>
+  </div>
+  <div class="comment__reaction">
+    Reaction
+  </div>
+</div>

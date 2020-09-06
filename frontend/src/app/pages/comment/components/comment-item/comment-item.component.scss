@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.comment {
+  display: flex;
+  &__avatar {
+  }
+  &__body {
+    flex-grow: 1;
+    margin-left: var(--ion-padding);
+    margin-right: var(--ion-padding);
+  }
+  &__reaction {
+  }
+  &__username {
+    font-weight: 600;
+    color: silver;
+    margin-bottom: 5px;
+  }
+  &__content {
+    margin-bottom: 5px;
+  }
+  &__view-more {
+    font-weight: 600;
+    color: silver;
+  }
+}

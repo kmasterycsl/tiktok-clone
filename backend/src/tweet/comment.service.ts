@@ -39,6 +39,7 @@ export class CommentService {
         parent_id: null
       })
       .leftJoin('comments', 'c2', 'c1.id = c2.parent_id')
+      .leftJoinAndSelect('c1.user', 'c1.user')
       .addSelect('COUNT(c2.id)', 'c1_children_count')
       .orderBy('c1_children_count', 'DESC')
       .groupBy('c1.id');
