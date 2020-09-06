@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CommentPage } from './comment.page';
 import { CommentItemComponent } from './components/comment-item/comment-item.component';
+import { CommentInputComponent } from './components/comment-input/comment-input.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { CommentItemComponent } from './components/comment-item/comment-item.com
   declarations: [
     CommentPage,
     CommentItemComponent,
+    CommentInputComponent,
   ]
 })
 export class CommentPageModule {}
