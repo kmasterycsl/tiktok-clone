@@ -46,4 +46,15 @@ export class Tweet extends CommonEntity {
     }
   })
   comments_count?: number;
+
+  @Column('int', {
+    select: false,
+    transformer: {
+      from: x => {
+        return parseInt(x) > 0;
+      },
+      to: x => x,
+    }
+  })
+  is_liked?: boolean;
 }

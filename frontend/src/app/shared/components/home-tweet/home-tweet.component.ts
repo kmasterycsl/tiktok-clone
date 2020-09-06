@@ -42,7 +42,9 @@ export class HomeTweetComponent implements OnInit {
 
   like(event: MouseEvent) {
     event.stopPropagation();
-    this.likeService.likeTweet(this.tweet.id).subscribe();
+    this.likeService.likeTweet(this.tweet.id).subscribe(response => {
+      this.tweet.is_liked = !this.tweet.is_liked;
+    });
   }
 
 }
