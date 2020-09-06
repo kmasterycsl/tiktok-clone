@@ -19,7 +19,7 @@
             <div (click)="like($event)">
                 <ion-icon *ngIf="tweet.is_liked" name="heart"></ion-icon>
                 <ion-icon *ngIf="!tweet.is_liked" name="heart-outline"></ion-icon>
-                <span>4.6M</span>
+                <span>{{ tweet.total_likes }}</span>
             </div>
             <div (click)="onClickComment($event)">
                 <ion-icon name="chatbubble-ellipses"></ion-icon>

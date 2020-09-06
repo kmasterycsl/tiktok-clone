@@ -43,6 +43,7 @@ export class HomeTweetComponent implements OnInit {
   like(event: MouseEvent) {
     event.stopPropagation();
     this.likeService.likeTweet(this.tweet.id).subscribe(response => {
+      this.tweet.total_likes = !this.tweet.is_liked ? this.tweet.total_likes + 1 : this.tweet.total_likes - 1;
       this.tweet.is_liked = !this.tweet.is_liked;
     });
   }
