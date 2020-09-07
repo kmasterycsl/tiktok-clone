@@ -1,1 +1,4 @@
-<ion-input [placeholder]="'Add comment...'" [(ngModel)]="commentContent" (keyup.enter)="onSubmit()"></ion-input>
+<ion-input 
+[(ngModel)]="commentContent" 
+(keyup.enter)="onSubmit()"
+    [placeholder]="placeholder"></ion-input>

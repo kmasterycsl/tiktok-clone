@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Comment, Pagination } from '@tiktok-clone/share';
 import { CommentService } from '@services/comment.service';
 
@@ -10,18 +10,21 @@ import { CommentService } from '@services/comment.service';
 export class CommentItemComponent implements OnInit {
   @Input() comment: Comment;
   @Input() nestedLevel = 1;
+  @Output() onReplyTo = new EventEmitter();
   currentResponse: Pagination<Comment> = null;
-  childrenComments: Comment[] = [];
   showChildren = false;
   hasMoreChildrenComments = false;
   constructor(
     private commentService: CommentService,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.comment.children = this.comment.children || [];
+  }
 
   toggleShowChildren() {
-    if (this.showChildren === false && this.childrenComments.length === 0) {
+    if (this.showChildren === false) {
+      this.comment.children = [];
       this.loadChildComments(1);
     }
     this.showChildren = !this.showChildren;
@@ -30,8 +33,8 @@ export class CommentItemComponent implements OnInit {
   loadChildComments(page = 1) {
     this.commentService.getChildComments(this.comment.id, page).subscribe(response => {
       this.currentResponse = response;
-      this.childrenComments = [
-        ...this.childrenComments,
+      this.comment.children = [
+        ... this.comment.children || [],
         ...response.items
       ];
       this.hasMoreChildrenComments = +response.meta.currentPage < +response.meta.totalPages;
@@ -41,6 +44,14 @@ export class CommentItemComponent implements OnInit {
 
   viewMoreChilren() {
     this.loadChildComments(+this.currentResponse.meta.currentPage + 1)
+  }
+
+  replyTo(comment: Comment) {
+    this.onReplyTo.next(comment);
+  }
+
+  onReplied(newComment: Comment) {
+    this.comment.children.push(newComment);
   }
 
 }

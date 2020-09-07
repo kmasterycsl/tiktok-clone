@@ -10,10 +10,10 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  postComment(tweetId: number, content: string, parentId?: number): Observable<any> {
+  postComment(tweetId: number, content: string, parent_id?: number): Observable<any> {
     return this.http.post<any>(`tweets/${tweetId}/comments`, {
       content,
-      parentId,
+      parent_id,
     });
   }
 

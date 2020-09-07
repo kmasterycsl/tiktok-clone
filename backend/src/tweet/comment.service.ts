@@ -12,27 +12,22 @@ export class CommentService {
     private commentRepository: Repository<Comment>,
   ) { }
 
+  getComment(commentId: number): Promise<Comment> {
+    const queryBuilder = this.commentRepository
+      .createQueryBuilder('c1')
+      .where({
+        id: commentId,
+      })
+      .leftJoin('comments', 'c2', 'c1.id = c2.parent_id')
+      .leftJoinAndSelect('c1.user', 'c1.user')
+      .addSelect('COUNT(c2.id)', 'c1_children_count')
+      .orderBy('c1_children_count', 'DESC')
+      .groupBy('c1.id');
+
+    return queryBuilder.getOne();
+  }
+
   getRootCommentForTweets(tweetId: string, options: IPaginationOptions): any {
-    // const queryBuilder = this.commentRepository
-    //   .createQueryBuilder('comment')
-    //   .where({
-    //     tweet_id: tweetId,
-    //     parent_id: null
-    //   })
-    //   .loadRelationCountAndMap('children_count', 'children')
-    //   .orderBy('children_count', 'DESC');
-
-    // const queryBuilder = this.commentRepository
-    //   .createQueryBuilder('c1')
-    //   .where({
-    //     tweet_id: tweetId,
-    //     parent_id: null
-    //   })
-    //   .addSelect(sq => {
-    //     return sq.select(`COUNT(id) as total_children`).from('comments', 'c2').where('c1.id = c2.parent_id');
-    //   }, 'c1_children_count')
-    //   .orderBy('c1_children_count', 'DESC').printSql();
-
     const queryBuilder = this.commentRepository
       .createQueryBuilder('c1')
       .where({
@@ -43,23 +38,11 @@ export class CommentService {
       .leftJoinAndSelect('c1.user', 'c1.user')
       .addSelect('COUNT(c2.id)', 'c1_children_count')
       .orderBy('c1_children_count', 'DESC')
+      .addOrderBy('c1.created_at', 'DESC')
       .groupBy('c1.id');
 
 
     return paginate<Comment>(queryBuilder, options);
-    // return paginate<Comment>(
-    //   this.commentRepository,
-    //   options,
-    //   {
-    //     where: {
-    //       tweet_id: tweetId,
-    //       parent_id: null,
-    //     },
-    //     order: {
-    //       created_at: 'DESC'
-    //     },
-    //   }
-    // );
   }
 
   getChildComment(parentId: string, options: IPaginationOptions): any {
@@ -73,13 +56,14 @@ export class CommentService {
       .leftJoinAndSelect('c1.user', 'c1.user')
       .addSelect('COUNT(c2.id)', 'c1_children_count')
       .orderBy('c1_children_count', 'DESC')
+      .addOrderBy('c1.created_at', 'DESC')
       .groupBy('c1.id');
 
     return paginate<Comment>(queryBuilder, options);
   }
 
-  async postTweetComment(params: PostTweetRequest & {userId: number, tweetId: number}): Promise<any> {
-    const comment: Partial<Comment> = {
+  async postTweetComment(params: PostTweetRequest & { userId: number, tweetId: number }): Promise<Comment> {
+    const commentData: Partial<Comment> = {
       user_id: params.userId,
       tweet_id: params.tweetId,
       parent_id: params.parent_id,
@@ -87,6 +71,8 @@ export class CommentService {
       children_count: 0,
     }
 
-    await this.commentRepository.save(comment);
+    const comment = await this.commentRepository.save(commentData);
+
+    return this.getComment(comment.id);
   }
 }
