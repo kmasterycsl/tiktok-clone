@@ -23,7 +23,11 @@ export class CommentService {
       .leftJoinAndSelect('c1.user', 'c1.user')
       .addSelect('COUNT(c2.id)', 'c1_children_count')
       .orderBy('c1_children_count', 'DESC')
-      .groupBy('c1.id');
+      .groupBy('c1.id')
+      .leftJoin('likes', 'likes', 'likes.likable_type = :likableType AND likes.likable_id = c1.id', {
+        likableType: LikableType.COMMENT,
+      })
+      .addSelect(`COUNT(DISTINCT(likes.user_id))`, 'c1_total_likes');
 
     return queryBuilder.getOne();
   }
