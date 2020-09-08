@@ -1,11 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{ title }}</ion-title>
+    <ion-button slot="end" (click)="close()" fill="clear" color="dark">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <tiktok-comment-item *ngFor="let comment of comments" [comment]="comment" (onReplyTo)="onReply($event)"></tiktok-comment-item>
+  <tiktok-comment-item *ngFor="let comment of comments" [comment]="comment" (onReplyTo)="onReply($event)">
+  </tiktok-comment-item>
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
@@ -14,6 +18,7 @@
 
 <ion-footer>
   <ion-toolbar>
-    <tiktok-comment-input [tweetId]="tweet.id" [parentComment]="replyToComment" (onReplySuccess)="onReplySuccess($event)"></tiktok-comment-input>
+    <tiktok-comment-input [tweetId]="tweet.id" [parentComment]="replyToComment"
+      (onReplySuccess)="onReplySuccess($event)"></tiktok-comment-input>
   </ion-toolbar>
 </ion-footer>

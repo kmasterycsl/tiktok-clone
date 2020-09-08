@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Tweet, Pagination, Comment } from '@tiktok-clone/share';
 import { CommentService } from '@services/comment.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'tiktok-comment',
@@ -15,6 +16,7 @@ export class CommentPage implements OnInit {
   comments: Comment[] = [];
   constructor(
     private commentService: CommentService,
+    private modalCtl: ModalController,
   ) { }
 
   ngOnInit() {
@@ -62,5 +64,9 @@ export class CommentPage implements OnInit {
 
   scrollToComment(newComment: Comment) {
 
+  }
+
+  close() {
+    this.modalCtl.dismiss();
   }
 }
