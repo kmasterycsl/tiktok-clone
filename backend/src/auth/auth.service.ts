@@ -1,4 +1,4 @@
-
+  
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -15,7 +15,7 @@ export class AuthService {
   ) { }
 
   async validateUser(phoneNumber: string, pass: string): Promise<any> {
-    const user = await this.userService.findOne(phoneNumber, ['id', 'password', 'phone_number']);
+    const user = await this.userService.findOneByPhoneNumber(phoneNumber, ['id', 'password', 'phone_number']);
     if (!user) return null;
     const { password, ...result } = user;
     // Load hash from your password DB.

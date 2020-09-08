@@ -28,4 +28,37 @@ export class User extends CommonEntity {
 
   @OneToMany(type => Like, like => like.user)
   likes: Like[];
+
+  @Column('int', {
+    select: false,
+    transformer: {
+      from: x => {
+        return parseInt(x);
+      },
+      to: x => x,
+    }
+  })
+  total_followers?: number;
+
+  @Column('int', {
+    select: false,
+    transformer: {
+      from: x => {
+        return parseInt(x);
+      },
+      to: x => x,
+    }
+  })
+  total_followings?: number;
+
+  @Column('int', {
+    select: false,
+    transformer: {
+      from: x => {
+        return parseInt(x);
+      },
+      to: x => x,
+    }
+  })
+  total_received_tweet_likes?: number;
 }

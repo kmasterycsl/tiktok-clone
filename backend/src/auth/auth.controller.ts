@@ -20,6 +20,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    return this.userService.findOne(req.user.phoneNumber);
+    return this.userService.findOneByPhoneNumber(req.user.phoneNumber);
   }
 }

@@ -1,9 +1,61 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-icon name="person-add-outline"></ion-icon>
+    </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button>
+        <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title *ngIf="user">{{ user.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  {{ user | json }}
+  <div class="general" *ngIf="user">
+    <ion-avatar>
+      <img [src]="'https://api.adorable.io/avatars/100.png'" />
+    </ion-avatar>
+    <div class="general__username">{{ user.phone_number }}</div>
+    <div class="general__stats">
+      <div>
+        <div class="general__stat_num">{{ user.total_followings }}</div>
+        <div class="general__stat_prop">Following</div>
+      </div>
+      <div>
+        <div class="general__stat_num">{{ user.total_followers }}</div>
+        <div class="general__stat_prop">Followers</div>
+      </div>
+      <div>
+        <div class="general__stat_num">{{ user.total_received_tweet_likes }}</div>
+        <div class="general__stat_prop">Likes</div>
+      </div>
+    </div>
+    <div class="general__bio">
+      Some bio go here
+    </div>
+  </div>
+
+  <ion-segment (ionChange)="segmentChanged($event)" [value]="selectedSegment">
+    <ion-segment-button value="public-tweets">
+      <ion-icon name="list-outline"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="liked-tweets">
+      <ion-icon name="heart-outline"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="private-tweets">
+      <ion-icon name="videocam-outline"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div class="tweets-grid">
+    <ion-row>
+      <ion-col [sizeSm]="4" [sizeMd]="3" [sizeLg]="2" [sizeXs]="4" *ngFor="let tweet of tweets">
+        <tiktok-tweet-grid-item (click)="showDetailTweet(tweet)" [tweet]="tweet"></tiktok-tweet-grid-item>
+      </ion-col>
+    </ion-row>
+
+  </div>
 </ion-content>

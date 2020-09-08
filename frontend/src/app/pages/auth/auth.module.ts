@@ -8,6 +8,7 @@ import { AuthPageRoutingModule } from './auth-routing.module';
 
 import { LoginPage } from './login/login.page';
 import { ProfilePage } from './profile/profile.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ProfilePage } from './profile/profile.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    AuthPageRoutingModule
+    AuthPageRoutingModule,
+    SharedModule
   ],
   declarations: [LoginPage, ProfilePage]
 })

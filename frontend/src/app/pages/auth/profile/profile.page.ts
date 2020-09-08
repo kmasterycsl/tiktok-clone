@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth.service';
 import { NoticeService } from '@services/notice.service';
-import { User } from '@tiktok-clone/share';
+import { User, Tweet, Pagination } from '@tiktok-clone/share';
+import { CommentPage } from '../../comment/comment.page';
+import { ModalController } from '@ionic/angular';
+import { tap, switchMap } from 'rxjs/operators';
+import { TweetService } from '@services/tweet.service';
+import { HomeTweetComponent } from 'src/app/shared/components/home-tweet/home-tweet.component';
+import { UserService } from '@services/user.service';
 
 @Component({
   selector: 'tiktok-profile',
@@ -11,18 +17,58 @@ import { User } from '@tiktok-clone/share';
 })
 export class ProfilePage implements OnInit {
   user: User;
+  currentResponse: Pagination<Tweet> = null;
+  selectedSegment = 'liked-tweets';
+  tweets: Tweet[] = [];
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private noticeService: NoticeService,
+    private modalController: ModalController,
+    private tweetService: TweetService,
+    private userService: UserService,
   ) { }
 
   ngOnInit() {
+    this.authService.profile().pipe(
+      switchMap(user => this.userService.getUser(user.id)),
+      tap(user => this.user = user)
+    ).subscribe(() => {
+      this.loadData(1);
+    });
   }
-  
-  ionViewWillEnter () {
-    this.authService.profile().subscribe(user => {
-      this.user = user;
+
+  ionViewWillEnter() {
+
+  }
+
+  loadData(page: number) {
+    this.tweetService
+      .getLikedTweetsOfUser(this.user.id, page)
+      .subscribe(response => {
+        this.currentResponse = response;
+        this.tweets = [
+          ...this.tweets,
+          ...response.items
+        ];
+      });
+  }
+
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
+  }
+
+  async showDetailTweet(tweet: Tweet) {
+    const modal = await this.modalController.create({
+      component: HomeTweetComponent,
+      showBackdrop: false,
+      componentProps: {
+        tweet,
+      }
+    });
+
+    modal.present().then(t => {
+      console.log(t);
     });
   }
 
