@@ -2,11 +2,11 @@
   align-items: center;
   display: flex;
   flex-direction: column;
+  font-size: var(--font-size, 1rem);
 }
 
 ion-icon {
-  margin-top: var(--ion-padding);
-  font-size: 2rem;
+  font-size: var(--icon-size, 2rem);
   &[name="heart"] {
     color: red;
   }
