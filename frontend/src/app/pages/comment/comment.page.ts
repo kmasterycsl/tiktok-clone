@@ -59,11 +59,16 @@ export class CommentPage implements OnInit {
       this.tweet.comments_count++;
       this.comments.push(newComment);
     }
-    this.scrollToComment(newComment);
+    setTimeout(() => {
+      this.scrollToComment(newComment);
+    })
   }
 
   scrollToComment(newComment: Comment) {
-
+    const ele = document.querySelector(`[data-comment-id="${newComment.id}"]`);
+    if (ele) {
+      ele.scrollIntoView();
+    }
   }
 
   close() {

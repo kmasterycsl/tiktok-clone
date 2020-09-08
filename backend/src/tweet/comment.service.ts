@@ -16,8 +16,8 @@ export class CommentService {
   getComment(commentId: number): Promise<Comment> {
     const queryBuilder = this.commentRepository
       .createQueryBuilder('c1')
-      .where({
-        id: commentId,
+      .where('c1.id = :commentId', {
+        commentId
       })
       .leftJoin('comments', 'c2', 'c1.id = c2.parent_id')
       .leftJoinAndSelect('c1.user', 'c1.user')

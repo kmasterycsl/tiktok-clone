@@ -1,4 +1,4 @@
-<div class="comment" (click)="replyTo(comment)">
+<div class="comment" (click)="replyTo(comment)" [attr.data-comment-id]="comment.id">
   <div class="comment__avatar">
     <img [src]="'https://api.adorable.io/avatars/50' + comment.id + '.png'" />
   </div>
