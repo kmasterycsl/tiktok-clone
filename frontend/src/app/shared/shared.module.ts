@@ -7,12 +7,14 @@ import { ErrorHandlerInterceptor } from './interceptors/ErrorHandler.intercepter
 import { InjectTokenInterceptor } from './interceptors/InjectToken.intercepter';
 import { IonicModule } from '@ionic/angular';
 import { LikableComponent } from './components/likable/likable.component';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 
 @NgModule({
   declarations: [
     HomeTweetComponent,
     LikableComponent,
+    TimeAgoPipe,
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { LikableComponent } from './components/likable/likable.component';
   exports: [
     HomeTweetComponent,
     LikableComponent,
+    TimeAgoPipe,
   ]
 })
 export class SharedModule { }

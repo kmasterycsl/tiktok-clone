@@ -7,7 +7,8 @@
       {{ comment.user.name }}
     </div>
     <div class="comment__content">
-      {{ comment.content }}
+      {{ comment.content }} 
+      <span class="comment__created-at">{{ comment.created_at | timeAgo }}</span>
     </div>
     <div *ngIf="comment.children_count > 0" class="comment__view-more" (click)="toggleShowChildren()">
       View replies ({{ comment.children_count }}) <ion-icon name="chevron-down-outline"></ion-icon>
