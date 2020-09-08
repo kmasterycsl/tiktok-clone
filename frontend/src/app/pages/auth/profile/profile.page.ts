@@ -18,6 +18,9 @@ export class ProfilePage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+  
+  ionViewWillEnter () {
     this.authService.profile().subscribe(user => {
       this.user = user;
     });

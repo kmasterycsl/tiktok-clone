@@ -19,4 +19,8 @@ export class StorageService {
   get(key: STORAGE_KEYS) {
     return localStorage.getItem(key);
   }
+
+  remove(key: STORAGE_KEYS) {
+    return localStorage.removeItem(key);
+  }
 }

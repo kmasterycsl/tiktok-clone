@@ -6,11 +6,13 @@ import { NoticeService } from '@services/notice.service';
 import { map, catchError } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 import { Route, ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '@services/auth.service';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
     constructor(
         private noticeService: NoticeService,
+        private authService: AuthService,
         private navController: NavController,
         private router: Router,
     ) { }
@@ -23,7 +25,8 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
             }),
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401 && this.router.url !== '/tabs/auth/login') {
-                    this.navController.navigateRoot(['/tabs/auth/login'], {
+                    this.authService.resetAuth();
+                    this.navController.navigateForward(['/tabs/auth/login'], {
                         queryParams: {
                             back: this.router.url
                         }

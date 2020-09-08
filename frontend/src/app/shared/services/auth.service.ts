@@ -47,4 +47,8 @@ export class AuthService {
   isLogined() {
     return !!this.storageService.get(STORAGE_KEYS.TOKEN);
   }
+
+  resetAuth() {
+    this.storageService.remove(STORAGE_KEYS.TOKEN);
+  }
 }
