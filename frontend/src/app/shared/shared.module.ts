@@ -6,11 +6,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlerInterceptor } from './interceptors/ErrorHandler.intercepter';
 import { InjectTokenInterceptor } from './interceptors/InjectToken.intercepter';
 import { IonicModule } from '@ionic/angular';
+import { LikableComponent } from './components/likable/likable.component';
 
 
 @NgModule({
   declarations: [
     HomeTweetComponent,
+    LikableComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { IonicModule } from '@ionic/angular';
   ],
   exports: [
     HomeTweetComponent,
+    LikableComponent,
   ]
 })
 export class SharedModule { }

@@ -24,5 +24,9 @@ export class LikeService {
   likeTweet(tweetId: number) {
     return this.like('TWEET', tweetId);
   }
+  
+  likeComment(commentId: number) {
+    return this.like('COMMENT', commentId);
+  }
 }
 

@@ -9,12 +9,14 @@ import { IonicModule } from '@ionic/angular';
 import { CommentPage } from './comment.page';
 import { CommentItemComponent } from './components/comment-item/comment-item.component';
 import { CommentInputComponent } from './components/comment-input/comment-input.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     // CommentPageRoutingModule
   ],
   declarations: [

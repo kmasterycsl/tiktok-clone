@@ -5,11 +5,13 @@ import { LikableType } from './consts';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like } from '@tiktok-clone/share/entities';
+import { CommentService } from 'src/tweet/comment.service';
 
 @Injectable()
 export class LikeService {
     constructor(
         private tweetService: TweetService,
+        private commentService: CommentService,
         @InjectRepository(Like)
         private tweetRepository: Repository<Like>,
     ) {
@@ -20,6 +22,12 @@ export class LikeService {
                 const tweet = this.tweetService.getTweet(params.likableId);
                 if (!tweet) {
                     throw new NotFoundException('Tweet not found');
+                }
+                break;
+            case LikableType.COMMENT:
+                const comment = this.commentService.getComment(params.likableId);
+                if (!comment) {
+                    throw new NotFoundException('Comment not found');
                 }
                 break;
             default:

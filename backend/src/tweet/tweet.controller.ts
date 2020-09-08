@@ -28,14 +28,17 @@ export class TweetController {
   }
 
   @Get(':tweetId/comments')
+  @UseGuards(NoStrictlyJwtAuthGuard)
   getTweetRootComments(
     @Param('tweetId') tweetId: string,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
+    @Request() request,
   ) {
     return this.commentService.getRootCommentForTweets(tweetId, {
       page,
       limit,
+      userId: request.user?.userId
     });
   }
 

@@ -54,4 +54,14 @@ export class CommentItemComponent implements OnInit {
     this.comment.children.push(newComment);
   }
 
+  onLike() {
+    this.comment.total_likes++;
+    this.comment.is_liked = true;
+  }
+ 
+  onDislike() {
+    this.comment.total_likes--;
+    this.comment.is_liked = false;
+  }
+
 }

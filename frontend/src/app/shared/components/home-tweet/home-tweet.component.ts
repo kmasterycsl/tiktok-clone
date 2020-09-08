@@ -14,7 +14,6 @@ export class HomeTweetComponent implements OnInit {
   @Output() onComment = new EventEmitter();
 
   constructor(
-    private likeService: LikeService,
   ) { }
 
   @HostListener('click')
@@ -40,12 +39,15 @@ export class HomeTweetComponent implements OnInit {
     this.onComment.next(true);
   }
 
-  like(event: MouseEvent) {
-    event.stopPropagation();
-    this.likeService.likeTweet(this.tweet.id).subscribe(response => {
-      this.tweet.total_likes = !this.tweet.is_liked ? this.tweet.total_likes + 1 : this.tweet.total_likes - 1;
-      this.tweet.is_liked = !this.tweet.is_liked;
-    });
+  onLike() {
+    this.tweet.total_likes++;
+    this.tweet.is_liked = true;
   }
+ 
+  onDislike() {
+    this.tweet.total_likes--;
+    this.tweet.is_liked = false;
+  }
+
 
 }

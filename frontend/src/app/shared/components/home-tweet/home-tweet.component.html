@@ -16,11 +16,13 @@
             </div>
         </div>
         <div class="tweet__right">
-            <div (click)="like($event)">
+            <tiktok-likable [likableId]="tweet.id" [totalLikes]="tweet.total_likes" [isLiked]="tweet.is_liked"
+                [likableType]="'TWEET'" (onDislike)="onDislike()" (onLike)="onLike()"></tiktok-likable>
+            <!-- <div (click)="like($event)">
                 <ion-icon *ngIf="tweet.is_liked" name="heart"></ion-icon>
                 <ion-icon *ngIf="!tweet.is_liked" name="heart-outline"></ion-icon>
                 <span>{{ tweet.total_likes }}</span>
-            </div>
+            </div> -->
             <div (click)="onClickComment($event)">
                 <ion-icon name="chatbubble-ellipses"></ion-icon>
                 <span>{{ tweet.comments_count }}</span>

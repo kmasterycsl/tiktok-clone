@@ -12,6 +12,6 @@ import { CommentController } from './comment.controller';
   imports: [
     TypeOrmModule.forFeature([Tweet, Comment])
   ],
-  exports: [TweetService]
+  exports: [TweetService, CommentService]
 })
 export class TweetModule { }

@@ -1,0 +1,13 @@
+.likable {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+ion-icon {
+  margin-top: var(--ion-padding);
+  font-size: 2rem;
+  &[name="heart"] {
+    color: red;
+  }
+}

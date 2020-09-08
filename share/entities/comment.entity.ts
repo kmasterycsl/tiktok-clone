@@ -48,4 +48,27 @@ export class Comment extends CommonEntity {
     }
   })
   children_count?: number;
+
+  @Column('int', {
+    select: false,
+    transformer: {
+      from: x => {
+        return parseInt(x) > 0;
+      },
+      to: x => x,
+    }
+  })
+  is_liked?: boolean;
+
+
+  @Column('int', {
+    select: false,
+    transformer: {
+      from: x => {
+        return parseInt(x);
+      },
+      to: x => x,
+    }
+  })
+  total_likes?: number;
 }

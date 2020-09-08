@@ -19,7 +19,8 @@ import { LikeModule } from './like/like.module';
         index: false,
       },
     }),
-    TypeOrmModule.forRoot(),
+    TypeOrmModule.forRoot({
+    }),
     UserModule,
     TweetModule,
     AuthModule,

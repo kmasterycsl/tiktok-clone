@@ -14,9 +14,8 @@
     </div>
   </div>
   <div class="comment__reaction">
-    <div>
-      <ion-icon name="heart-outline"></ion-icon>
-    </div>
+    <tiktok-likable [likableId]="comment.id" [totalLikes]="comment.total_likes" [isLiked]="comment.is_liked"
+      [likableType]="'COMMENT'" (onDislike)="onDislike()" (onLike)="onLike()"></tiktok-likable>
   </div>
 </div>
 
