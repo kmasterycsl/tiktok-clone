@@ -17,4 +17,12 @@ export class TweetService {
   getLikedTweetsOfUser(userId: number, page: number = 1): Observable<Pagination<Tweet>> {
     return this.http.get<Pagination<Tweet>>(`users/${userId}/liked-tweets`, { params: { page: page.toString() } });
   }
+
+  getPublicTweetsOfUser(userId: number, page: number = 1): Observable<Pagination<Tweet>> {
+    return this.http.get<Pagination<Tweet>>(`users/${userId}/public-tweets`, { params: { page: page.toString() } });
+  }
+
+  getPrivateTweetsOfUser(userId: number, page: number = 1): Observable<Pagination<Tweet>> {
+    return this.http.get<Pagination<Tweet>>(`users/${userId}/private-tweets`, { params: { page: page.toString() } });
+  }
 }

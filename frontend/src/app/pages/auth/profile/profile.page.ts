@@ -16,6 +16,11 @@ import { UserService } from '@services/user.service';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  SEGMENTS = {
+    PUBLIC_TWEETS: 'public-tweets',
+    LIKED_TWEETS: 'liked-tweets',
+    PRIVATE_TWEETS: 'private-tweets',
+  }
   user: User;
   currentResponse: Pagination<Tweet> = null;
   selectedSegment = 'liked-tweets';
@@ -34,7 +39,7 @@ export class ProfilePage implements OnInit {
       switchMap(user => this.userService.getUser(user.id)),
       tap(user => this.user = user)
     ).subscribe(() => {
-      this.loadData(1);
+      this.loadLikeTweets(1);
     });
   }
 
@@ -42,7 +47,7 @@ export class ProfilePage implements OnInit {
 
   }
 
-  loadData(page: number) {
+  loadLikeTweets(page: number) {
     this.tweetService
       .getLikedTweetsOfUser(this.user.id, page)
       .subscribe(response => {
@@ -54,8 +59,46 @@ export class ProfilePage implements OnInit {
       });
   }
 
-  segmentChanged(ev: any) {
-    console.log('Segment changed', ev);
+  loadPublicTweets(page: number) {
+    this.tweetService
+      .getPublicTweetsOfUser(this.user.id, page)
+      .subscribe(response => {
+        this.currentResponse = response;
+        this.tweets = [
+          ...this.tweets,
+          ...response.items
+        ];
+      });
+  }
+
+  loadPrivateTweets(page: number) {
+    this.tweetService
+      .getPrivateTweetsOfUser(this.user.id, page)
+      .subscribe(response => {
+        this.currentResponse = response;
+        this.tweets = [
+          ...this.tweets,
+          ...response.items
+        ];
+      });
+  }
+
+  segmentChanged(ev: CustomEvent) {
+    this.selectedSegment = ev.detail.value;
+    this.currentResponse = null;
+    this.tweets = [];
+
+    switch (this.selectedSegment) {
+      case this.SEGMENTS.LIKED_TWEETS:
+        this.loadLikeTweets(1);
+        break;
+      case this.SEGMENTS.PUBLIC_TWEETS:
+        this.loadPublicTweets(1);
+        break;
+      case this.SEGMENTS.PRIVATE_TWEETS:
+        this.loadPrivateTweets(1);
+        break;
+    }
   }
 
   async showDetailTweet(tweet: Tweet) {

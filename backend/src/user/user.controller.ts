@@ -14,12 +14,38 @@ export class UserController {
   }
 
   @Get(':userId/liked-tweets')
-  getTweetsOfUser(
+  getLikedTweetsOfUser(
     @Param('userId') userId: number,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
   ) {
     return this.tweetService.getLikedTweets({
+      page,
+      limit,
+      userId
+    });
+  }
+
+  @Get(':userId/public-tweets')
+  getPublicTweetsOfUser(
+    @Param('userId') userId: number,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.tweetService.getPublicTweets({
+      page,
+      limit,
+      userId
+    });
+  }
+
+  @Get(':userId/private-tweets')
+  getPrivateTweetsOfUser(
+    @Param('userId') userId: number,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.tweetService.getPrivateTweets({
       page,
       limit,
       userId

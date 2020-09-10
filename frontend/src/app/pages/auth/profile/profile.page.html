@@ -39,13 +39,13 @@
   </div>
 
   <ion-segment (ionChange)="segmentChanged($event)" [value]="selectedSegment">
-    <ion-segment-button value="public-tweets">
+    <ion-segment-button [value]="SEGMENTS.PUBLIC_TWEETS">
       <ion-icon name="list-outline"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="liked-tweets">
+    <ion-segment-button [value]="SEGMENTS.LIKED_TWEETS">
       <ion-icon name="heart-outline"></ion-icon>
     </ion-segment-button>
-    <ion-segment-button value="private-tweets">
+    <ion-segment-button [value]="SEGMENTS.PRIVATE_TWEETS">
       <ion-icon name="videocam-outline"></ion-icon>
     </ion-segment-button>
   </ion-segment>
@@ -56,6 +56,6 @@
         <tiktok-tweet-grid-item (click)="showDetailTweet(tweet)" [tweet]="tweet"></tiktok-tweet-grid-item>
       </ion-col>
     </ion-row>
-
   </div>
+
 </ion-content>
