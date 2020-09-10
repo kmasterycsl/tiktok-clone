@@ -58,4 +58,9 @@
     </ion-row>
   </div>
 
+  <ion-infinite-scroll threshold="10px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

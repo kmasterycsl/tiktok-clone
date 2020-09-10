@@ -9,6 +9,7 @@ import { tap, switchMap } from 'rxjs/operators';
 import { TweetService } from '@services/tweet.service';
 import { HomeTweetComponent } from 'src/app/shared/components/home-tweet/home-tweet.component';
 import { UserService } from '@services/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tiktok-profile',
@@ -25,6 +26,7 @@ export class ProfilePage implements OnInit {
   currentResponse: Pagination<Tweet> = null;
   selectedSegment = 'liked-tweets';
   tweets: Tweet[] = [];
+  fetching = false;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -39,7 +41,7 @@ export class ProfilePage implements OnInit {
       switchMap(user => this.userService.getUser(user.id)),
       tap(user => this.user = user)
     ).subscribe(() => {
-      this.loadLikeTweets(1);
+      this.loadData(1);
     });
   }
 
@@ -47,58 +49,48 @@ export class ProfilePage implements OnInit {
 
   }
 
-  loadLikeTweets(page: number) {
-    this.tweetService
-      .getLikedTweetsOfUser(this.user.id, page)
-      .subscribe(response => {
-        this.currentResponse = response;
-        this.tweets = [
-          ...this.tweets,
-          ...response.items
-        ];
-      });
-  }
+  async loadData(page: number) {
+    if (this.fetching) return;
+    this.fetching = true;
+    let p: Observable<Pagination<Tweet>>;
+    switch (this.selectedSegment) {
+      case this.SEGMENTS.LIKED_TWEETS:
+        p = this.tweetService.getLikedTweetsOfUser(this.user.id, page);
+        break;
+      case this.SEGMENTS.PUBLIC_TWEETS:
+        p = this.tweetService.getPublicTweetsOfUser(this.user.id, page);
+        break;
+      case this.SEGMENTS.PRIVATE_TWEETS:
+        p = this.tweetService.getPrivateTweetsOfUser(this.user.id, page);
+        break;
+    }
 
-  loadPublicTweets(page: number) {
-    this.tweetService
-      .getPublicTweetsOfUser(this.user.id, page)
-      .subscribe(response => {
-        this.currentResponse = response;
-        this.tweets = [
-          ...this.tweets,
-          ...response.items
-        ];
-      });
-  }
+    const response = await p.toPromise();
 
-  loadPrivateTweets(page: number) {
-    this.tweetService
-      .getPrivateTweetsOfUser(this.user.id, page)
-      .subscribe(response => {
-        this.currentResponse = response;
-        this.tweets = [
-          ...this.tweets,
-          ...response.items
-        ];
-      });
+    this.currentResponse = response;
+    this.tweets = [
+      ...this.tweets,
+      ...response.items
+    ];
+    this.fetching = false;;
+
+    return response;
   }
 
   segmentChanged(ev: CustomEvent) {
     this.selectedSegment = ev.detail.value;
     this.currentResponse = null;
     this.tweets = [];
+    this.loadData(1);
+  }
 
-    switch (this.selectedSegment) {
-      case this.SEGMENTS.LIKED_TWEETS:
-        this.loadLikeTweets(1);
-        break;
-      case this.SEGMENTS.PUBLIC_TWEETS:
-        this.loadPublicTweets(1);
-        break;
-      case this.SEGMENTS.PRIVATE_TWEETS:
-        this.loadPrivateTweets(1);
-        break;
-    }
+  loadMore(event) {
+    return this.loadData((+this.currentResponse?.meta?.currentPage || 0) + 1).then(response => {
+      event.target.complete();
+      // if (+response.meta.currentPage === +response.meta.totalPages) {
+      //   // event.target.disabled = true;
+      // }
+    });
   }
 
   async showDetailTweet(tweet: Tweet) {
