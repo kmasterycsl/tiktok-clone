@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TikTok clone</string>
+    <string name="title_activity_main">TikTok clone</string>
+    <string name="package_name">com.example.tiktokclone</string>
+    <string name="custom_url_scheme">com.example.tiktokclone</string>
+</resources>
