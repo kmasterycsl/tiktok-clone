@@ -9,6 +9,7 @@ import { IonicModule } from '@ionic/angular';
 import { LikableComponent } from './components/likable/likable.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { TweetGridItemComponent } from './components/tweet-grid-item/tweet-grid-item.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -22,6 +23,8 @@ import { TweetGridItemComponent } from './components/tweet-grid-item/tweet-grid-
     CommonModule,
     IonicModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InjectTokenInterceptor, multi: true },
@@ -29,6 +32,10 @@ import { TweetGridItemComponent } from './components/tweet-grid-item/tweet-grid-
     { provide: HTTP_INTERCEPTORS, useClass: InjectBaseURLInterceptor, multi: true }
   ],
   exports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     HomeTweetComponent,
     LikableComponent,
     TimeAgoPipe,

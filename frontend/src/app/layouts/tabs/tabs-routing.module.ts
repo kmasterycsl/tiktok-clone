@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('../../pages/auth/auth.module').then( m => m.AuthPageModule)
       },
       {
+        path: 'user',
+        loadChildren: () => import('../../pages/user/user.module').then( m => m.UserModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full'
