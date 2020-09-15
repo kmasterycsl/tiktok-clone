@@ -14,6 +14,8 @@ for (let i = 1; i <= TOTAL_TWEETS; i++) {
         comments_count: 0,
         video_id: _.random(101, 103),
         description: faker.lorem.sentence(),
+        is_liked: false,
+        total_likes: 0,
     });
 }
 
@@ -35,6 +37,8 @@ export class TweetSeeding1597876104815 implements MigrationInterface {
                     parent_id: null,
                     children_count: 0,
                     content: faker.lorem.sentence(),
+                    is_liked: false,
+                    total_likes: 0,
                 });
             }
             comments = await getRepository(Comment).save(
@@ -52,6 +56,8 @@ export class TweetSeeding1597876104815 implements MigrationInterface {
                     parent_id: parentComment.id,
                     children_count: 0,
                     content: faker.lorem.sentence(),
+                    is_liked: false,
+                    total_likes: 0,
                 });
             }
         }

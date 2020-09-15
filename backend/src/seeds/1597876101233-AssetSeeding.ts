@@ -11,6 +11,16 @@ const songs = [1, 2, 3].map(num => ({
     title: 'Song ' + num,
 }));
 
+const videoThumbs = [201, 202, 203].map(num => ({
+    id: num,
+    file_extension: 'gif',
+    file_name: num + '.gif',
+    file_mime: 'image/gif',
+    file_relative_path: '/video-gifs',
+    user_id: 1,
+    title: 'Video thumb ' + num,
+}));
+
 const videos = [101, 102, 103].map(num => ({
     id: num,
     file_extension: 'mp4',
@@ -19,9 +29,10 @@ const videos = [101, 102, 103].map(num => ({
     file_relative_path: '/videos',
     user_id: 1,
     title: 'Video ' + num,
+    thumbnail_id: num + 100,
 }));
 
-const assets: Partial<Asset>[] = [...songs, ...videos];
+const assets: Partial<Asset>[] = [...songs, ...videoThumbs, ...videos];
 
 export class AssetSeeding1597876101233 implements MigrationInterface {
 

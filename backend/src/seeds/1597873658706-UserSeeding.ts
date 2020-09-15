@@ -11,7 +11,10 @@ for (let i = 1; i <= TOTAL_USERS; i++) {
         name: faker.name.findName(),
         phone_number: faker.phone.phoneNumber(),
         password: '$2b$04$k3PucSCz1Ij2NWLIzxQGF.HjDeZG6FyRhUAara2zjuPkU8FQ0vWnu', // 123456
-        tweets: []
+        tweets: [],
+        total_followings: 0,
+        total_followers: 0,
+        total_received_tweet_likes: 0,
     })
 }
 

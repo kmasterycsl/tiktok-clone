@@ -86,6 +86,7 @@ export class TweetService {
       .leftJoinAndSelect('tweets.user', 'user')
       .leftJoinAndSelect('tweets.song', 'song')
       .leftJoinAndSelect('tweets.video', 'video')
+      .leftJoinAndSelect('video.thumbnail', 'thumbnail')
       .leftJoin('comments', 'comments', 'comments.tweet_id = tweets.id')
       .leftJoin('likes', 'likes2', 'likes2.likable_type = :likableType and likes2.likable_id = tweets.id', {
         likableType: LikableType.TWEET,
