@@ -38,29 +38,31 @@
     </div>
   </div>
 
-  <ion-segment (ionChange)="segmentChanged($event)" [value]="selectedSegment">
-    <ion-segment-button [value]="SEGMENTS.PUBLIC_TWEETS">
-      <ion-icon name="list-outline"></ion-icon>
-    </ion-segment-button>
-    <ion-segment-button [value]="SEGMENTS.LIKED_TWEETS">
-      <ion-icon name="heart-outline"></ion-icon>
-    </ion-segment-button>
-    <ion-segment-button [value]="SEGMENTS.PRIVATE_TWEETS">
-      <ion-icon name="videocam-outline"></ion-icon>
-    </ion-segment-button>
-  </ion-segment>
+  <ng-container *ngIf="selectedSegment$ | async as selectedSegment">
+    <ion-segment (ionChange)="segmentChanged($event)" [value]="selectedSegment">
+      <ion-segment-button [value]="SEGMENTS.PUBLIC_TWEETS">
+        <ion-icon name="list-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button [value]="SEGMENTS.LIKED_TWEETS">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button [value]="SEGMENTS.PRIVATE_TWEETS">
+        <ion-icon name="videocam-outline"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
 
-  <div class="tweets-grid">
-    <ion-row>
-      <ion-col [sizeSm]="4" [sizeMd]="3" [sizeLg]="2" [sizeXs]="4" *ngFor="let tweet of tweets">
-        <tiktok-tweet-grid-item (click)="showDetailTweet(tweet)" [tweet]="tweet"></tiktok-tweet-grid-item>
-      </ion-col>
-    </ion-row>
-  </div>
+    <div class="tweets-grid">
+      <ion-row>
+        <ion-col [sizeSm]="4" [sizeMd]="3" [sizeLg]="2" [sizeXs]="4" *ngFor="let tweet of tweets">
+          <tiktok-tweet-grid-item (click)="showDetailTweet(tweet)" [tweet]="tweet"></tiktok-tweet-grid-item>
+        </ion-col>
+      </ion-row>
+    </div>
 
-  <ion-infinite-scroll threshold="10px" (ionInfinite)="loadMore($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    <ion-infinite-scroll threshold="10px" (ionInfinite)="loadMore($event, selectedSegment)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
 
 </ion-content>

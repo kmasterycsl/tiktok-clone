@@ -13,6 +13,12 @@ const routes: Routes = [
     canActivateChild: [UserGuard]
   },
   {
+    path: 'profile/:userId',
+    component: ProfilePage,
+    canActivate: [UserGuard],
+    canActivateChild: [UserGuard]
+  },
+  {
     path: '',
     redirectTo: 'profile'
   },

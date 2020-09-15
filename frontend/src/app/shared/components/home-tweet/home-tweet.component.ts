@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Tweet } from '@tiktok-clone/share/entities';
 import { LikeService } from '@services/like.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'tiktok-home-tweet',
@@ -14,6 +15,7 @@ export class HomeTweetComponent implements OnInit {
   @Output() onComment = new EventEmitter();
 
   constructor(
+    private navCtl: NavController,
   ) { }
 
   @HostListener('click')
@@ -43,10 +45,18 @@ export class HomeTweetComponent implements OnInit {
     this.tweet.total_likes++;
     this.tweet.is_liked = true;
   }
- 
+
   onDislike() {
     this.tweet.total_likes--;
     this.tweet.is_liked = false;
+  }
+
+  goToAuthorProfile() {
+    this.navCtl.navigateForward(['/tabs/user/profile/' + this.tweet.user_id], {
+      queryParams: {
+        activeTab: 'public-tweets'
+      }
+    });
   }
 
 

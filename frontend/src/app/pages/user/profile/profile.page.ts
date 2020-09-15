@@ -5,11 +5,12 @@ import { NoticeService } from '@services/notice.service';
 import { User, Tweet, Pagination } from '@tiktok-clone/share';
 import { CommentPage } from '../../comment/comment.page';
 import { ModalController } from '@ionic/angular';
-import { tap, switchMap } from 'rxjs/operators';
+import { tap, switchMap, map } from 'rxjs/operators';
 import { TweetService } from '@services/tweet.service';
 import { HomeTweetComponent } from 'src/app/shared/components/home-tweet/home-tweet.component';
 import { UserService } from '@services/user.service';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, Subject, of, BehaviorSubject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tiktok-profile',
@@ -24,7 +25,7 @@ export class ProfilePage implements OnInit {
   }
   user: User;
   currentResponse: Pagination<Tweet> = null;
-  selectedSegment = 'liked-tweets';
+  selectedSegment$ = new BehaviorSubject<string>(null);
   tweets: Tweet[] = [];
   fetching = false;
   constructor(
@@ -34,14 +35,28 @@ export class ProfilePage implements OnInit {
     private modalController: ModalController,
     private tweetService: TweetService,
     private userService: UserService,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    this.authService.profile().pipe(
-      switchMap(user => this.userService.getUser(user.id)),
-      tap(user => this.user = user)
-    ).subscribe(() => {
-      this.loadData(1);
+    this.activatedRoute.queryParamMap.subscribe(qs => {
+      this.selectedSegment$.next(qs.get('activeTab') || 'public-tweets');
+    });
+
+    combineLatest([
+      this.authService.profile(),
+      this.activatedRoute.paramMap,
+      this.selectedSegment$,
+    ]).pipe(
+      map(([authUser, paramsMap, segment]) => [+paramsMap.get('userId') || authUser.id, segment]),
+      switchMap(([userId, segment]) => combineLatest([this.userService.getUser(+userId), of(segment)])),
+      tap(([user, segment]) => {
+        this.user = user
+      })
+    ).subscribe(([user, segment]) => {
+      this.currentResponse = null;
+      this.tweets = [];
+      this.loadData(1, segment.toString());
     });
   }
 
@@ -49,11 +64,12 @@ export class ProfilePage implements OnInit {
 
   }
 
-  async loadData(page: number) {
+  async loadData(page: number, segment: string) {
     if (this.fetching) return;
+
     this.fetching = true;
     let p: Observable<Pagination<Tweet>>;
-    switch (this.selectedSegment) {
+    switch (segment) {
       case this.SEGMENTS.LIKED_TWEETS:
         p = this.tweetService.getLikedTweetsOfUser(this.user.id, page);
         break;
@@ -78,14 +94,11 @@ export class ProfilePage implements OnInit {
   }
 
   segmentChanged(ev: CustomEvent) {
-    this.selectedSegment = ev.detail.value;
-    this.currentResponse = null;
-    this.tweets = [];
-    this.loadData(1);
+    this.selectedSegment$.next(ev.detail.value);
   }
 
-  loadMore(event) {
-    return this.loadData((+this.currentResponse?.meta?.currentPage || 0) + 1).then(response => {
+  loadMore(event, segment: string) {
+    return this.loadData((+this.currentResponse?.meta?.currentPage || 0) + 1, segment).then(response => {
       event.target.complete();
       // if (+response.meta.currentPage === +response.meta.totalPages) {
       //   // event.target.disabled = true;
@@ -106,6 +119,5 @@ export class ProfilePage implements OnInit {
       console.log(t);
     });
   }
-
 
 }
