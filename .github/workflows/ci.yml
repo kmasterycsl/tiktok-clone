@@ -39,6 +39,11 @@ jobs:
           export GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-8)
           echo "::set-env name=BRANCH_NAME::${BRANCH_NAME}"
           echo "::set-env name=GITHUB_SHA_SHORT::${GITHUB_SHA_SHORT}"
+      - name: set up share modules
+        working-directory: ./share
+        run: |
+          npm install
+          npm run build
       - name: npm install
         working-directory: ./frontend
         run: |
