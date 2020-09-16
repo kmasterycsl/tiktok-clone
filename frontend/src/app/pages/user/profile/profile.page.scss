@@ -38,4 +38,17 @@ ion-icon {
   &__stat_prop {
     color: silver;
   }
+  &__action {
+    ion-button {
+      --border-radius: 0;
+      &.large {
+        --border-radius: 0;
+        --padding-start: 3rem;
+        --padding-end: 3rem;
+      }
+      ion-icon {
+        color: var(--ion-color-light);
+      }
+    }
+  }
 }

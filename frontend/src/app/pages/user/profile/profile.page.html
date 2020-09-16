@@ -33,6 +33,15 @@
         <div class="general__stat_prop">Likes</div>
       </div>
     </div>
+    <div class="general__action" *ngIf="authUser.id !== user.id">
+      <ion-button class="large" *ngIf="!user.is_liked" [color]="'danger'" strong (click)="toggleFollow()">Follow
+      </ion-button>
+      <ion-button class="large" *ngIf="user.is_liked" [color]="'dark'" strong>Message
+      </ion-button>
+      <ion-button *ngIf="user.is_liked" [color]="'dark'" (click)="toggleFollow()">
+        <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
+    </div>
     <div class="general__bio">
       Some bio go here
     </div>

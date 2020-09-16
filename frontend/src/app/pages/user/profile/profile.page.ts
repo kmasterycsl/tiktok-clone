@@ -11,6 +11,7 @@ import { HomeTweetComponent } from 'src/app/shared/components/home-tweet/home-tw
 import { UserService } from '@services/user.service';
 import { Observable, combineLatest, Subject, of, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { LikeService } from '@services/like.service';
 
 @Component({
   selector: 'tiktok-profile',
@@ -23,6 +24,7 @@ export class ProfilePage implements OnInit {
     LIKED_TWEETS: 'liked-tweets',
     PRIVATE_TWEETS: 'private-tweets',
   }
+  authUser: User;
   user: User;
   currentResponse: Pagination<Tweet> = null;
   selectedSegment$ = new BehaviorSubject<string>(null);
@@ -36,6 +38,7 @@ export class ProfilePage implements OnInit {
     private tweetService: TweetService,
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
+    private likeService: LikeService,
   ) { }
 
   ngOnInit() {
@@ -48,6 +51,9 @@ export class ProfilePage implements OnInit {
       this.activatedRoute.paramMap,
       this.selectedSegment$,
     ]).pipe(
+      tap(([authUser]) => {
+        this.authUser = authUser;
+      }),
       map(([authUser, paramsMap, segment]) => [+paramsMap.get('userId') || authUser.id, segment]),
       switchMap(([userId, segment]) => combineLatest([this.userService.getUser(+userId), of(segment)])),
       tap(([user, segment]) => {
@@ -57,6 +63,13 @@ export class ProfilePage implements OnInit {
       this.currentResponse = null;
       this.tweets = [];
       this.loadData(1, segment.toString());
+    });
+  }
+
+  toggleFollow() {
+    this.likeService.likeUser(this.user.id).subscribe(res => {
+      !this.user.is_liked ? this.user.total_followers++ : this.user.total_followers--;
+      this.user.is_liked = !this.user.is_liked;
     });
   }
 

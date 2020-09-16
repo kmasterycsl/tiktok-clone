@@ -4,11 +4,13 @@ import { LikeService } from './like.service';
 import { TweetModule } from 'src/tweet/tweet.module';
 import { Like } from '@tiktok-clone/share/entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     TweetModule,
-    TypeOrmModule.forFeature([Like])
+    TypeOrmModule.forFeature([Like]),
+    UserModule,
   ],
   controllers: [LikeController],
   providers: [LikeService]

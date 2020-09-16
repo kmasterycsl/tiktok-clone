@@ -28,5 +28,9 @@ export class LikeService {
   likeComment(commentId: number) {
     return this.like('COMMENT', commentId);
   }
+
+  likeUser(userId: number) {
+    return this.like('USER', userId);
+  }
 }
 

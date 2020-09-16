@@ -3,6 +3,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { TweetService } from 'src/tweet/tweet.service';
 import { UserService } from './user.service';
 import { userInfo } from 'os';
+import { NoStrictlyJwtAuthGuard } from 'src/auth/guards/no-strictly-jwt-auth.guard';
 
 @Controller('users')
 export class UserController {
@@ -53,9 +54,11 @@ export class UserController {
   }
 
   @Get(':userId')
+  @UseGuards(NoStrictlyJwtAuthGuard)
   getUser(
     @Param('userId') userId: number,
+    @Request() request,
   ) {
-    return this.userService.getUser(userId);
+    return this.userService.getUser(userId, request.user?.userId);
   }
 }
