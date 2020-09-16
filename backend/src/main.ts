@@ -9,11 +9,13 @@ async function bootstrap() {
   app.enableCors();
   const configService = app.get(ConfigService);
   setEnvVariables(configService);
-  await app.listen(process.env.API_PORT);
+  console.log(`Start api on ${process.env.HOST_NAME}:${process.env.API_PORT}`);
+  await app.listen(process.env.API_PORT, process.env.HOST_NAME);
 }
 bootstrap();
 
 function setEnvVariables(configService: ConfigService) {
   process.env['API_URL'] = configService.get('API_URL');
   process.env['API_PORT'] = configService.get('API_PORT');
+  process.env['HOST_NAME'] = configService.get('HOST_NAME');
 }
