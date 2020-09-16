@@ -20,6 +20,11 @@ export class User extends CommonEntity {
   @Column()
   phone_number: string;
 
+  @Column({
+    nullable: true
+  })
+  biography: string;
+
   @OneToMany(type => Tweet, tweet => tweet.user)
   tweets: Tweet[];
 

@@ -42,8 +42,8 @@
         <ion-icon name="checkmark-outline"></ion-icon>
       </ion-button>
     </div>
-    <div class="general__bio">
-      Some bio go here
+    <div class="general__bio" *ngIf="user.biography">
+      {{ user.biography }}
     </div>
   </div>
 
