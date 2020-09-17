@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../../pages/user/user.module').then( m => m.UserModule)
       },
       {
+        path: 'tweet',
+        loadChildren: () => import('../../pages/tweet/tweet.module').then( m => m.TweetModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/home',
         pathMatch: 'full'
