@@ -9,6 +9,7 @@ import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { LikeModule } from './like/like.module';
+import { AssetModule } from './asset/asset.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LikeModule } from './like/like.module';
     TweetModule,
     AuthModule,
     LikeModule,
+    AssetModule,
 
   ],
   controllers: [AppController],

@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tweet, Comment } from '@tiktok-clone/share/entities';
 import { CommentService } from './comment.service';
 import { CommentController } from './comment.controller';
+import { AssetModule } from 'src/asset/asset.module';
 
 @Module({
   controllers: [TweetController, CommentController],
   providers: [TweetService, CommentService],
   imports: [
-    TypeOrmModule.forFeature([Tweet, Comment])
+    TypeOrmModule.forFeature([Tweet, Comment]),
+    AssetModule,
   ],
   exports: [TweetService, CommentService]
 })

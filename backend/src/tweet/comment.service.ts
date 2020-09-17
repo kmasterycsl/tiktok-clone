@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Tweet, Comment } from '@tiktok-clone/share/entities';
 import { Repository } from 'typeorm';
 import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { PostTweetRequest } from './post-tweet.request';
+import { PostTweetCommentRequest } from './post-tweet-comment.request';
 import { LikableType } from 'src/like/consts';
 
 @Injectable()
@@ -94,7 +94,7 @@ export class CommentService {
     return paginate<Comment>(queryBuilder, options);
   }
 
-  async postTweetComment(params: PostTweetRequest & { userId: number, tweetId: number }): Promise<Comment> {
+  async postTweetComment(params: PostTweetCommentRequest & { userId: number, tweetId: number }): Promise<Comment> {
     const commentData: Partial<Comment> = {
       user_id: params.userId,
       tweet_id: params.tweetId,

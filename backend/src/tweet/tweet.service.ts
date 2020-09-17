@@ -12,6 +12,22 @@ export class TweetService {
     private tweetRepository: Repository<Tweet>,
   ) { }
 
+  async postTweet(userId: number, description: string, video_id: number, song_id: number): Promise<Tweet> {
+    const tweet: Partial<Tweet> = {
+      user_id: userId,
+      song_id,
+      video_id,
+      description,
+      // @TODO: hack ambigious error
+      comments_count: 0,
+      is_liked: false,
+      total_likes: 0,
+    }
+    const { id } = await this.tweetRepository.save(tweet);
+
+    return this.getTweet(id);
+  }
+
   getTweet(tweetId: number): Promise<Tweet> {
     return this.tweetRepository.findOne(tweetId);
   }
