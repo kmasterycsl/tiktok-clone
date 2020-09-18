@@ -14,6 +14,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="general" *ngIf="user">
     <ion-avatar>
       <img [src]="'https://api.adorable.io/avatars/100.png'" />
@@ -70,7 +74,7 @@
       </ion-row>
     </div>
 
-    <ion-infinite-scroll threshold="10px" (ionInfinite)="loadMore($event, selectedSegment)">
+    <ion-infinite-scroll threshold="10px" (ionInfinite)="doLoadMore($event, selectedSegment)">
       <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>

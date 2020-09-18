@@ -5,7 +5,7 @@ import { NoticeService } from '@services/notice.service';
 import { User, Tweet, Pagination } from '@tiktok-clone/share';
 import { CommentPage } from '../../comment/comment.page';
 import { ModalController } from '@ionic/angular';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { tap, switchMap, map, share, shareReplay, first } from 'rxjs/operators';
 import { TweetService } from '@services/tweet.service';
 import { HomeTweetComponent } from 'src/app/shared/components/home-tweet/home-tweet.component';
 import { UserService } from '@services/user.service';
@@ -30,6 +30,9 @@ export class ProfilePage implements OnInit {
   selectedSegment$ = new BehaviorSubject<string>(null);
   tweets: Tweet[] = [];
   fetching = false;
+  isRefreshing = false;
+  refresh$ = new BehaviorSubject(false);
+  refreshEvent;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -41,15 +44,29 @@ export class ProfilePage implements OnInit {
     private likeService: LikeService,
   ) { }
 
+  doRefresh(event) {
+    this.refreshEvent = event;
+    this.refresh$.next(true);
+  }
+
   ngOnInit() {
+    this.loadSegment();
+    this.loadData();
+  }
+
+  loadSegment() {
     this.activatedRoute.queryParamMap.subscribe(qs => {
       this.selectedSegment$.next(qs.get('activeTab') || 'public-tweets');
     });
+  }
 
+  loadData() {
+    this.fetching = true;
     combineLatest([
       this.authService.profile(),
       this.activatedRoute.paramMap,
       this.selectedSegment$,
+      this.refresh$,
     ]).pipe(
       tap(([authUser]) => {
         this.authUser = authUser;
@@ -57,12 +74,25 @@ export class ProfilePage implements OnInit {
       map(([authUser, paramsMap, segment]) => [+paramsMap.get('userId') || authUser.id, segment]),
       switchMap(([userId, segment]) => combineLatest([this.userService.getUser(+userId), of(segment)])),
       tap(([user, segment]) => {
-        this.user = user
-      })
-    ).subscribe(([user, segment]) => {
-      this.currentResponse = null;
-      this.tweets = [];
-      this.loadData(1, segment.toString());
+        this.user = user;
+        this.currentResponse = null;
+        this.tweets = [];
+      }),
+      switchMap(([user, segment]) => this.loadTweets(1, segment.toString()))
+    ).subscribe((response) => {
+      this.currentResponse = response;
+      this.tweets = [
+        ...this.tweets,
+        ...response.items
+      ];
+
+      if (this.refreshEvent) {
+        this.refreshEvent.target.complete()
+      }
+      this.fetching = false;
+    }, e => {
+      console.error(e);
+      this.fetching = false;
     });
   }
 
@@ -77,10 +107,7 @@ export class ProfilePage implements OnInit {
 
   }
 
-  async loadData(page: number, segment: string) {
-    if (this.fetching) return;
-
-    this.fetching = true;
+  loadTweets(page: number, segment: string): Observable<Pagination<Tweet>> {
     let p: Observable<Pagination<Tweet>>;
     switch (segment) {
       case this.SEGMENTS.LIKED_TWEETS:
@@ -94,28 +121,21 @@ export class ProfilePage implements OnInit {
         break;
     }
 
-    const response = await p.toPromise();
-
-    this.currentResponse = response;
-    this.tweets = [
-      ...this.tweets,
-      ...response.items
-    ];
-    this.fetching = false;;
-
-    return response;
+    return p.pipe(
+      share(),
+    );
   }
 
   segmentChanged(ev: CustomEvent) {
     this.selectedSegment$.next(ev.detail.value);
   }
 
-  loadMore(event, segment: string) {
-    return this.loadData((+this.currentResponse?.meta?.currentPage || 0) + 1, segment).then(response => {
+  doLoadMore(event, segment: string) {
+    return this.loadTweets((+this.currentResponse?.meta?.currentPage || 0) + 1, segment).subscribe(response => {
       event.target.complete();
-      // if (+response.meta.currentPage === +response.meta.totalPages) {
-      //   // event.target.disabled = true;
-      // }
+      if (+response.meta.currentPage === +response.meta.totalPages) {
+        event.target.disabled = true;
+      }
     });
   }
 
