@@ -14,6 +14,7 @@ export class PostTweetPage implements OnInit {
   video: File;
   videoBase64: string;
   description: string;
+  readonly maxFileSize = 50 * 1000 * 1000;
 
   constructor(
     private tweetService: TweetService,
@@ -27,6 +28,12 @@ export class PostTweetPage implements OnInit {
 
   pickVideo() {
     this.uploadService.pickVideo().then(file => {
+      if (file.size > this.maxFileSize) {
+        return this.noticeService.showToast({
+          color: 'warning',
+          message: 'Please choose file <= ' + this.maxFileSize / (1000 * 1000) + 'MB'
+        })
+      }
       this.video = file;
 
       const reader = new FileReader();
