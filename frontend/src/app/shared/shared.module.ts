@@ -10,6 +10,7 @@ import { LikableComponent } from './components/likable/likable.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { TweetGridItemComponent } from './components/tweet-grid-item/tweet-grid-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LikableComponent,
     TimeAgoPipe,
     TweetGridItemComponent,
+    SpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -40,6 +42,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LikableComponent,
     TimeAgoPipe,
     TweetGridItemComponent,
+    SpinnerComponent,
   ]
 })
 export class SharedModule { }

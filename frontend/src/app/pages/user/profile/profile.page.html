@@ -60,6 +60,8 @@
       </ion-segment-button>
     </ion-segment>
 
+    <tiktok-spinner *ngIf="fetching" ></tiktok-spinner>
+
     <div class="tweets-grid">
       <ion-row>
         <ion-col [sizeSm]="4" [sizeMd]="3" [sizeLg]="2" [sizeXs]="4" *ngFor="let tweet of tweets">
