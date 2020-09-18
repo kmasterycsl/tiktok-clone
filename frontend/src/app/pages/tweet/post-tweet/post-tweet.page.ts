@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { NoticeService } from '@services/notice.service';
 import { TweetService } from '@services/tweet.service';
 import { UploadService } from '@services/upload.service';
+import { ROUTE_PROFILE_PAGE } from 'src/app/shared/consts';
 
 @Component({
   selector: 'tiktok-post-tweet',
@@ -17,6 +19,7 @@ export class PostTweetPage implements OnInit {
     private tweetService: TweetService,
     private uploadService: UploadService,
     private noticeService: NoticeService,
+    private navController: NavController,
   ) { }
 
   ngOnInit() {
@@ -48,6 +51,19 @@ export class PostTweetPage implements OnInit {
       })
     }
 
-    this.tweetService.postTweet(this.description, this.video).subscribe();
+    this.tweetService.postTweet(this.description, this.video).subscribe(tweet => {
+      this.description = null;
+      this.video = null;
+      this.videoBase64 = null;
+      this.navController.navigateForward([ROUTE_PROFILE_PAGE(tweet.user_id)], {
+        queryParams: {
+          activeTab: 'public-tweets'
+        }
+      });
+      return this.noticeService.showToast({
+        color: 'success',
+        message: 'Post tweet successfully!'
+      })
+    });
   }
 }

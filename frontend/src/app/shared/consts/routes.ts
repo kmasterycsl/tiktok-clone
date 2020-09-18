@@ -1,0 +1,1 @@
+export const ROUTE_PROFILE_PAGE = (userId?) => `/tabs/user/profile/` + (userId || '')

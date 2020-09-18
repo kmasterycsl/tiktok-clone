@@ -10,11 +10,11 @@ export class TweetService {
 
   constructor(private http: HttpClient) { }
 
-  postTweet(description: string, video: File): Observable<Pagination<Tweet>> {
+  postTweet(description: string, video: File): Observable<Tweet> {
     const formData = new FormData();
     formData.append('description', description);
     formData.append('file', video);
-    return this.http.post<Pagination<Tweet>>('tweets', formData);
+    return this.http.post<Tweet>('tweets', formData);
   }
 
   getTweets(page: number = 1): Observable<Pagination<Tweet>> {
