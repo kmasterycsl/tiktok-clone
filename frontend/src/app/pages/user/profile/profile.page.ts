@@ -4,14 +4,15 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { NoticeService } from '@services/notice.service';
 import { User, Tweet, Pagination } from '@tiktok-clone/share';
 import { CommentPage } from '../../comment/comment.page';
-import { ModalController } from '@ionic/angular';
-import { tap, switchMap, map, share, shareReplay, first } from 'rxjs/operators';
+import { ModalController, NavController } from '@ionic/angular';
+import { tap, switchMap, map, share, shareReplay, first, distinctUntilChanged } from 'rxjs/operators';
 import { TweetService } from '@services/tweet.service';
 import { HomeTweetComponent } from 'src/app/shared/components/home-tweet/home-tweet.component';
 import { UserService } from '@services/user.service';
 import { Observable, combineLatest, Subject, of, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { LikeService } from '@services/like.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'tiktok-profile',
@@ -42,6 +43,7 @@ export class ProfilePage implements OnInit {
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private likeService: LikeService,
+    private navController: NavController,
   ) { }
 
   doRefresh(event) {
@@ -55,8 +57,11 @@ export class ProfilePage implements OnInit {
   }
 
   loadSegment() {
-    this.activatedRoute.queryParamMap.subscribe(qs => {
-      this.selectedSegment$.next(qs.get('activeTab') || 'public-tweets');
+    this.activatedRoute.queryParamMap.pipe(
+      map(qs => qs.get('activeTab') || 'public-tweets'),
+      distinctUntilChanged(),
+    ).subscribe(segment => {
+      this.selectedSegment$.next(segment);
     });
   }
 
@@ -64,14 +69,22 @@ export class ProfilePage implements OnInit {
     this.fetching = true;
     combineLatest([
       this.authService.profile(),
-      this.activatedRoute.paramMap,
+      this.activatedRoute.paramMap.pipe(
+        map(pm => pm.get('userId')),
+        distinctUntilChanged()
+      ),
       this.selectedSegment$,
       this.refresh$,
     ]).pipe(
-      tap(([authUser]) => {
+      tap(([authUser, _, segment]) => {
+        this.navController.navigateForward([], {
+          queryParams: {
+            activeTab: segment
+          }
+        });
         this.authUser = authUser;
       }),
-      map(([authUser, paramsMap, segment]) => [+paramsMap.get('userId') || authUser.id, segment]),
+      map(([authUser, userId, segment]) => [+userId || authUser.id, segment]),
       switchMap(([userId, segment]) => combineLatest([this.userService.getUser(+userId), of(segment)])),
       tap(([user, segment]) => {
         this.user = user;
