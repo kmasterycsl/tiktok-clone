@@ -24,7 +24,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
                 return event;
             }),
             catchError((error: HttpErrorResponse) => {
-                if (error.status === 401 && this.router.url.startsWith('/tabs/auth/login')) {
+                if (error.status === 401 && !this.router.url.startsWith('/tabs/auth/login')) {
                     this.authService.resetAuth();
                     this.navController.navigateForward(['/tabs/auth/login'], {
                         queryParams: {

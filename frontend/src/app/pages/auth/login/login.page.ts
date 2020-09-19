@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
         message: 'Login success',
         color: 'success'
       });
-      this.navController.navigateForward(this.backUrl)
+      this.navController.navigateRoot(this.backUrl)
     });
   }
 }
