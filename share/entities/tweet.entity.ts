@@ -1,8 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn, JoinTable, ManyToMany } from 'typeorm';
 import { CommonEntity } from './common.entity';
 import { User } from './user.entity';
 import { Asset } from './asset.entity';
 import { Comment } from './comment.entity';
+import { Tag } from './tag.entity';
+import { TagTweet } from './tag-tweet.entity';
 
 @Entity({
   name: 'tweets'
@@ -22,6 +24,9 @@ export class Tweet extends CommonEntity {
 
   @Column()
   description: string;
+
+  @OneToMany(type => TagTweet, tagTweet => tagTweet.tweet)
+  tagTweets: TagTweet[];
 
   @ManyToOne(type => User, user => user.tweets)
   @JoinColumn({ name: "user_id" })
