@@ -22,6 +22,11 @@ export class Tweet extends CommonEntity {
   @Column()
   video_id: number;
 
+  @Column({
+    default: 0
+  })
+  views_count: number;
+
   @Column()
   description: string;
 
