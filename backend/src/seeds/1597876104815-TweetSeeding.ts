@@ -19,7 +19,7 @@ for (let i = 1; i <= TOTAL_TWEETS; i++) {
     });
 }
 
-export class TweetSeeding1597876104815 implements MigrationInterface {
+export class TweetSeeding2231597876104815 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         const ts = await getRepository(Tweet).save(

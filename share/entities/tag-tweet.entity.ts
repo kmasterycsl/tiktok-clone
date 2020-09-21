@@ -16,7 +16,7 @@ export class TagTweet extends CommonEntity {
     tag_id: number;
 
     @PrimaryColumn()
-    tweet_id: string;
+    tweet_id: number;
 
     @ManyToOne(type => Tag, tag => tag.tagTweets)
     @JoinColumn({ name: "tag_id" })

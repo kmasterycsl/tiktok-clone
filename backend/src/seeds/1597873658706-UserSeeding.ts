@@ -14,6 +14,7 @@ for (let i = 1; i <= TOTAL_USERS; i++) {
         tweets: [],
         total_followings: 0,
         total_followers: 0,
+        is_liked: false,
         total_received_tweet_likes: 0,
     })
 }

@@ -16,6 +16,12 @@ export class Tag extends CommonEntity {
     id: number;
 
     @Column()
+    slug: string;
+
+    @Column()
+    description: string;
+
+    @Column()
     created_user_id: number;
 
     @OneToMany(type => TagTweet, tagTweet => tagTweet.tag)
