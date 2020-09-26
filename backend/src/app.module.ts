@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { LikeModule } from './like/like.module';
 import { AssetModule } from './asset/asset.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AssetModule } from './asset/asset.module';
     AuthModule,
     LikeModule,
     AssetModule,
+    TagModule,
 
   ],
   controllers: [AppController],

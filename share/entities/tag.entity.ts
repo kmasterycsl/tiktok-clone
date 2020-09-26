@@ -29,4 +29,6 @@ export class Tag extends CommonEntity {
 
     @JoinColumn({ name: "created_user_id" })
     user: User;
+
+    tweets: Tweet[]
 }

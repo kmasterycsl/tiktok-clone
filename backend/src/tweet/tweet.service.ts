@@ -97,7 +97,7 @@ export class TweetService {
     });
   }
 
-  private loadCommonStuffs(userId?: number): SelectQueryBuilder<Tweet> {
+  public loadCommonStuffs(userId?: number): SelectQueryBuilder<Tweet> {
     const queryBuilder = this.tweetRepository.createQueryBuilder('tweets')
       .leftJoinAndSelect('tweets.user', 'user')
       .leftJoinAndSelect('tweets.song', 'song')
