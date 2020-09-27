@@ -65,6 +65,10 @@
     </ion-segment>
 
     <tiktok-spinner *ngIf="fetching" ></tiktok-spinner>
+    
+    <ng-container *ngIf="!fetching && tweets.length === 0">
+      <div class="ion-text-center ion-margin">No item here</div>
+    </ng-container>
 
     <div class="tweets-grid">
       <ion-row>
