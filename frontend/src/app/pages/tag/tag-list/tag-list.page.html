@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="ion-padding-horizontal">
-  <tiktok-tag-with-tweet *ngFor="let tag of tags" [tag]="tag"></tiktok-tag-with-tweet>
+  <tiktok-tag-with-tweet (click)="goToDetail(tag)" *ngFor="let tag of tags" [tag]="tag"></tiktok-tag-with-tweet>
 
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">

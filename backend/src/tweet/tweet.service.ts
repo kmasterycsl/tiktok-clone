@@ -4,12 +4,16 @@ import { Tweet } from '@tiktok-clone/share/entities';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { LikableType } from 'src/like/consts';
+import { TagTweet } from '@tiktok-clone/share/entities/tag-tweet.entity';
+import { keyBy } from 'lodash';
 
 @Injectable()
 export class TweetService {
   constructor(
     @InjectRepository(Tweet)
     private tweetRepository: Repository<Tweet>,
+    @InjectRepository(TagTweet)
+    private tagTweetRepository: Repository<TagTweet>,
   ) { }
 
   async postTweet(userId: number, description: string, video_id: number, song_id: number): Promise<Tweet> {
@@ -89,6 +93,22 @@ export class TweetService {
       .orderBy('tweets.created_at', 'DESC');
 
     return paginate<Tweet>(queryBuilder, options).then(result => {
+      result.items.map(tweet => {
+        tweet.video.setExtraInfo();
+        tweet.song.setExtraInfo();
+      });
+      return result;
+    });
+  }
+
+  async getTagTweets(options: IPaginationOptions & { tagId: number }): Promise<any> {
+    const tagQueryBuilder = this
+      .loadCommonStuffs()
+      .innerJoin('tweets.tagTweets', 'tagTweets')
+      .where('tagTweets.tag_id = :tagId', { tagId: options.tagId })
+      .orderBy('tweets.created_at', 'DESC');
+
+    return paginate<Tweet>(tagQueryBuilder, options).then(result => {
       result.items.map(tweet => {
         tweet.video.setExtraInfo();
         tweet.song.setExtraInfo();
