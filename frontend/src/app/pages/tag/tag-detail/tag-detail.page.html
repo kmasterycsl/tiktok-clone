@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>{{ tag?.slug }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div>{{ tag?.description }}</div>
+
+
+  <tiktok-spinner *ngIf="fetching"></tiktok-spinner>
+
+  <ng-container *ngIf="!fetching && tweets.length === 0">
+    <div class="ion-text-center ion-margin">No item here</div>
+  </ng-container>
+
+  <div class="tweets-grid">
+    <ion-row>
+      <ion-col [sizeSm]="4" [sizeMd]="3" [sizeLg]="2" [sizeXs]="4" *ngFor="let tweet of tweets">
+        <tiktok-tweet-grid-item (click)="showDetailTweet(tweet)" [tweet]="tweet"></tiktok-tweet-grid-item>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-infinite-scroll threshold="10px" (ionInfinite)="doLoadMore($event, selectedSegment)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

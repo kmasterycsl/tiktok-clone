@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { TagService } from '@services/tag.service';
 import { Pagination, Tag } from '@tiktok-clone/share';
+import { ROUTE_TAG_DETAIL_PAGE } from 'src/app/shared/consts';
 
 @Component({
   selector: 'tiktok-tag-list',
@@ -13,6 +15,7 @@ export class TagListPage implements OnInit {
   title: string;
   constructor(
     private tagService: TagService,
+    private navController: NavController,
   ) { }
 
   ngOnInit() {
@@ -38,6 +41,10 @@ export class TagListPage implements OnInit {
         event.target.disabled = true;
       }
     });
+  }
+
+  goToDetail(tag: Tag) {
+    this.navController.navigateForward([ROUTE_TAG_DETAIL_PAGE(tag.id)]);
   }
 
 }

@@ -20,6 +20,10 @@ export class TagService {
     private tweetService: TweetService,
   ) { }
 
+  async getTag(tagId: number) {
+    return this.tagRepository.findOne(tagId);
+  }
+
 
   async getTags(options: IPaginationOptions & { userId?: number }): Promise<any> {
     const tagQueryBuilder = this.tagRepository
