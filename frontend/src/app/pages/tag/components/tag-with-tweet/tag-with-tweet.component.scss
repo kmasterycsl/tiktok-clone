@@ -1,0 +1,32 @@
+:host {
+    display: block;
+}
+
+.tag {
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &-symbol {
+            display: flex;
+            align-items: center;
+            margin-right: var(--ion-padding);
+            ion-icon {
+                border: 1px solid silver;
+                border-radius: 50%;
+                padding: 5px;
+            }
+        }
+        &-title {
+            flex-grow: 1;
+            margin-right: var(--ion-padding);
+        }
+    }
+
+    &__content {
+        ion-row {
+            flex-wrap: nowrap;
+            overflow-x: scroll;
+        }
+    }
+}

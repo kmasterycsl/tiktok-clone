@@ -1,0 +1,9 @@
+tiktok-tag-with-tweet {
+    &:not(:first-child) {
+        padding-top: var(--ion-padding);
+    }
+    &:not(:last-child) {
+        padding-bottom: var(--ion-padding);
+        border-bottom: 1px solid silver;
+    }
+}

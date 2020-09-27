@@ -27,12 +27,18 @@ export class TagService {
 
     const paginateResult = await paginate<Tag>(tagQueryBuilder, options);
 
-    const tagIds = paginateResult.items.map(tag => tag.id);
+    const tagTweets = [];
 
-    const tagTweets = await this.tagTweetRepository
-      .createQueryBuilder()
-      .where(`tag_id in (:tagIds)`, { tagIds })
-      .getMany();
+    // @TODO: can do with window function to reduce number of queries here
+    for (const tag of paginateResult.items) {
+      const tagTweetsOfTag = await this.tagTweetRepository
+        .createQueryBuilder()
+        .where(`tag_id = :tagId`, { tagId: tag.id })
+        .orderBy('created_at', 'DESC')
+        .limit(5)
+        .getMany();
+      tagTweets.push(...tagTweetsOfTag);
+    }
 
     const tweetIds = tagTweets.map(tagTweet => tagTweet.tweet_id);
 
@@ -43,13 +49,22 @@ export class TagService {
       })
       .getMany();
 
+    // @TODO: find some way to resolve this duplicated code
+    tweets.forEach(tweet => {
+      tweet.video.setExtraInfo();
+      tweet.song.setExtraInfo();
+    })
+
     const tweetById = keyBy(tweets, 'id');
 
     paginateResult.items.forEach(tag => {
       tag.tweets = [];
-      tag.tagTweets.forEach(tagTweet => {
+      for (const tagTweet of tagTweets) {
+        if (tag.id !== tagTweet.tag_id) {
+          continue;
+        }
         tag.tweets.push(tweetById[tagTweet.tweet_id]);
-      });
+      }
     })
 
     return paginateResult;
