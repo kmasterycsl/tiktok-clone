@@ -30,5 +30,16 @@ export class Tag extends CommonEntity {
     @JoinColumn({ name: "created_user_id" })
     user: User;
 
+    @Column('int', {
+        select: false,
+        transformer: {
+            from: x => {
+                return parseInt(x);
+            },
+            to: x => x,
+        }
+    })
+    total_likes?: number;
+
     tweets: Tweet[]
 }

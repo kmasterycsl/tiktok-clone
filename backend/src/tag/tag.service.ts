@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { keyBy } from 'lodash';
 import { TweetService } from 'src/tweet/tweet.service';
 import { TagTweet } from '@tiktok-clone/share/entities/tag-tweet.entity';
+import { LikableType } from 'src/like/consts';
 
 @Injectable()
 export class TagService {
@@ -23,7 +24,14 @@ export class TagService {
   async getTags(options: IPaginationOptions & { userId?: number }): Promise<any> {
     const tagQueryBuilder = this.tagRepository
       .createQueryBuilder('tags')
-      .orderBy('tags.created_at', 'DESC');
+      .leftJoin('tags.tagTweets', 'tagTweets')
+      .leftJoin('tagTweets.tweet', 'tweet')
+      .leftJoin('likes', 'likes', 'likes.likable_type = :likableType and likes.likable_id = tweet.id', {
+        likableType: LikableType.TWEET,
+      })
+      .addSelect(`COUNT(DISTINCT(likes.user_id))`, 'tags_total_likes')
+      .groupBy('tags.id')
+      .orderBy('tags_total_likes', 'DESC');
 
     const paginateResult = await paginate<Tag>(tagQueryBuilder, options);
 
@@ -49,6 +57,7 @@ export class TagService {
       })
       .getMany();
 
+  
     // @TODO: find some way to resolve this duplicated code
     tweets.forEach(tweet => {
       tweet.video.setExtraInfo();
