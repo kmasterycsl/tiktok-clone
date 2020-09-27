@@ -21,6 +21,9 @@
             flex-grow: 1;
             margin-right: var(--ion-padding);
         }
+        &-count {
+            align-self: flex-start;
+        }
     }
 
     &__content {
