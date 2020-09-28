@@ -1,0 +1,11 @@
+<div [ngStyle]="style">
+  {{ text }}
+  <span (click)="setStyle(true)" class="show-more" *ngIf="!showAll">
+    Expand 
+    <ion-icon name="caret-down-outline"></ion-icon>
+  </span>
+  <span (click)="setStyle(false)" class="show-more" *ngIf="showAll">
+    Collapse
+    <ion-icon name="caret-up-outline"></ion-icon>
+  </span>
+</div>

@@ -1,0 +1,19 @@
+.tag-detail {
+    &__header {
+        display: flex;
+        &_left {
+            flex-basis: 25%;
+        }
+        &_right {
+            margin-left: var(--ion-padding);
+        }
+    }
+    tiktok-collapse-text {
+        --color: var(--ion-color-step-600);
+    }
+}
+
+.tweets-grid {
+    margin-left: -5px;
+    margin-right: -5px;
+}

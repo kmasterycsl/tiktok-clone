@@ -18,7 +18,9 @@ export class Tag extends CommonEntity {
     @Column()
     slug: string;
 
-    @Column()
+    @Column({
+        type: 'text'
+    })
     description: string;
 
     @Column()

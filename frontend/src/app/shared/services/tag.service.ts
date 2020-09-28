@@ -20,6 +20,6 @@ export class TagService {
   }
 
   getTweetsOfTag(tagId: number, page: number = 1): Observable<Pagination<Tweet>> {
-    return this.http.get<Pagination<Tweet>>(`tags/${tagId}/tweets`, { params: { page: page.toString() } });
+    return this.http.get<Pagination<Tag>>(`tags/${tagId}/tweets`, { params: { page: page.toString() } });
   }
 }
