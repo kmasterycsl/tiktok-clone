@@ -11,6 +11,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { TweetGridItemComponent } from './components/tweet-grid-item/tweet-grid-item.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { CollapseTextComponent } from './components/collapse-text/collapse-text.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     TimeAgoPipe,
     TweetGridItemComponent,
     SpinnerComponent,
+    CollapseTextComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     TimeAgoPipe,
     TweetGridItemComponent,
     SpinnerComponent,
+    CollapseTextComponent,
   ]
 })
 export class SharedModule { }
