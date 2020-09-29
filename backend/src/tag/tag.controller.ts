@@ -15,11 +15,13 @@ export class TagController {
   getTags(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
+    @Query('query') query: string = '',
     @Request() request,
   ) {
     return this.tagService.getTags({
       page,
       limit,
+      query,
       userId: request.user?.userId
     });
   }

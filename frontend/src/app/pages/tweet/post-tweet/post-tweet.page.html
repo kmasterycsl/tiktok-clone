@@ -7,7 +7,7 @@
 <ion-content>
   <ion-row class="post-main">
     <ion-col [size]="9" class="post-main__left">
-      <ion-textarea [(ngModel)]="description" [rows]="5" [placeholder]="'Write some words for your tweet'"></ion-textarea>
+      <ion-textarea [(ngModel)]="description" [rows]="5" (ngModelChange)="onTweetDescriptionChange($event)" [placeholder]="'Write some words for your tweet'"></ion-textarea>
     </ion-col>
     <ion-col [size]="3" class="post-main__right ion-activatable" (click)="pickVideo()">
       <ion-ripple-effect></ion-ripple-effect>
@@ -18,6 +18,10 @@
         <ion-icon name="videocam-outline"></ion-icon>
       </ng-container>
     </ion-col>
+  </ion-row>
+
+  <ion-row class="tag-suggestions">
+    <h1 (click)="selectTag(tag)" *ngFor="let tag of suggestedTags">{{ tag.slug }}</h1>
   </ion-row>
 
   <div slot="fixed" class="post-actions">

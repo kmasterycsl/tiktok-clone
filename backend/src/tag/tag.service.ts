@@ -25,7 +25,7 @@ export class TagService {
   }
 
 
-  async getTags(options: IPaginationOptions & { userId?: number }): Promise<any> {
+  async getTags(options: IPaginationOptions & { userId?: number, query: string }): Promise<any> {
     const tagQueryBuilder = this.tagRepository
       .createQueryBuilder('tags')
       .leftJoin('tags.tagTweets', 'tagTweets')
@@ -36,6 +36,10 @@ export class TagService {
       .addSelect(`COUNT(DISTINCT(likes.user_id))`, 'tags_total_likes')
       .groupBy('tags.id')
       .orderBy('tags_total_likes', 'DESC');
+
+    if (options.query) {
+      tagQueryBuilder.where('tags.slug LIKE :query', { query: `${options.query}%` });
+    }
 
     const paginateResult = await paginate<Tag>(tagQueryBuilder, options);
 
@@ -54,31 +58,33 @@ export class TagService {
 
     const tweetIds = tagTweets.map(tagTweet => tagTweet.tweet_id);
 
-    const tweets = await this.tweetService
-      .loadCommonStuffs()
-      .where(`tweets.id IN (:tweetIds)`, {
-        tweetIds
+    if (tweetIds.length > 0) {
+      const tweets = await this.tweetService
+        .loadCommonStuffs()
+        .where(`tweets.id IN (:tweetIds)`, {
+          tweetIds
+        })
+        .getMany();
+
+
+      // @TODO: find some way to resolve this duplicated code
+      tweets.forEach(tweet => {
+        tweet.video.setExtraInfo();
+        tweet.song.setExtraInfo();
       })
-      .getMany();
 
-  
-    // @TODO: find some way to resolve this duplicated code
-    tweets.forEach(tweet => {
-      tweet.video.setExtraInfo();
-      tweet.song.setExtraInfo();
-    })
+      const tweetById = keyBy(tweets, 'id');
 
-    const tweetById = keyBy(tweets, 'id');
-
-    paginateResult.items.forEach(tag => {
-      tag.tweets = [];
-      for (const tagTweet of tagTweets) {
-        if (tag.id !== tagTweet.tag_id) {
-          continue;
+      paginateResult.items.forEach(tag => {
+        tag.tweets = [];
+        for (const tagTweet of tagTweets) {
+          if (tag.id !== tagTweet.tag_id) {
+            continue;
+          }
+          tag.tweets.push(tweetById[tagTweet.tweet_id]);
         }
-        tag.tweets.push(tweetById[tagTweet.tweet_id]);
-      }
-    })
+      })
+    }
 
     return paginateResult;
   }
