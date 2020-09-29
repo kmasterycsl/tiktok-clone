@@ -13,6 +13,7 @@ export class CommentPage implements OnInit {
   @Input() tweet: Tweet;
   title: string;
   replyToComment: Comment = null;
+  fetching = false;
   comments: Comment[] = [];
   constructor(
     private commentService: CommentService,
@@ -25,6 +26,7 @@ export class CommentPage implements OnInit {
   }
 
   loadComments(page: number) {
+    this.fetching = true;
     return this.commentService.getRootComments(this.tweet.id, page).toPromise().then(response => {
       this.currentResponse = response;
       this.comments = [
@@ -32,6 +34,8 @@ export class CommentPage implements OnInit {
         ...response.items
       ];
       return response;
+    }).finally(() => {
+      this.fetching = false;
     })
   }
 

@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { Tweet } from '@tiktok-clone/share/entities';
 import { LikeService } from '@services/like.service';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
+import { CommentPage } from 'src/app/pages/comment/comment.page';
 
 @Component({
   selector: 'tiktok-home-tweet',
@@ -12,10 +13,10 @@ export class HomeTweetComponent implements OnInit {
   @Input() tweet: Tweet;
   @Input() autoPlay: boolean = false;
   @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
-  @Output() onComment = new EventEmitter();
 
   constructor(
     private navCtl: NavController,
+    private modalController: ModalController,
   ) { }
 
   @HostListener('click')
@@ -38,7 +39,7 @@ export class HomeTweetComponent implements OnInit {
 
   onClickComment(event: MouseEvent) {
     event.stopPropagation();
-    this.onComment.next(true);
+    this.showCommentPage(this.tweet);
   }
 
   onLike() {
@@ -57,6 +58,19 @@ export class HomeTweetComponent implements OnInit {
         activeTab: 'public-tweets'
       }
     });
+  }
+
+  async showCommentPage(tweet: Tweet) {
+    const modal = await this.modalController.create({
+      component: CommentPage,
+      cssClass: 'chat-box',
+      showBackdrop: false,
+      componentProps: {
+        tweet,
+      }
+    });
+
+    modal.present();
   }
 
 
