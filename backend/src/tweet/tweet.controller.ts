@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Param, Request, UseGuards, Post, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Query, Param, Request, UseGuards, Post, Body, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { TweetService } from './tweet.service';
 import { CommentService } from './comment.service';
@@ -14,7 +14,7 @@ import { AssetService } from 'src/asset/asset.service';
 
 export const videoFilter = (req, file, callback) => {
   if (file.mimetype !== 'video/mp4' || !file.originalname.match(/\.(mp4)$/)) {
-    return callback(new Error('Only mp4 videos are allowed!'), false);
+    return callback(new BadRequestException('Only mp4 videos are allowed!'), false);
   }
   callback(null, true);
 };

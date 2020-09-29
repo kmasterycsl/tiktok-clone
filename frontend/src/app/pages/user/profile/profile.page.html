@@ -73,7 +73,7 @@
     <div class="tweets-grid">
       <ion-row>
         <ion-col [sizeSm]="4" [sizeMd]="3" [sizeLg]="2" [sizeXs]="4" *ngFor="let tweet of tweets">
-          <tiktok-tweet-grid-item (click)="showDetailTweet(tweet)" [tweet]="tweet"></tiktok-tweet-grid-item>
+          <tiktok-tweet-grid-item [tweet]="tweet"></tiktok-tweet-grid-item>
         </ion-col>
       </ion-row>
     </div>

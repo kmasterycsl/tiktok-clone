@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -37,7 +37,7 @@
   <div class="tweets-grid">
     <ion-row>
       <ion-col [sizeSm]="4" [sizeMd]="3" [sizeLg]="2" [sizeXs]="4" *ngFor="let tweet of tweets">
-        <tiktok-tweet-grid-item (click)="showDetailTweet(tweet)" [tweet]="tweet"></tiktok-tweet-grid-item>
+        <tiktok-tweet-grid-item [tweet]="tweet"></tiktok-tweet-grid-item>
       </ion-col>
     </ion-row>
   </div>

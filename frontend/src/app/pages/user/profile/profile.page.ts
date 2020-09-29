@@ -152,18 +152,4 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  async showDetailTweet(tweet: Tweet) {
-    const modal = await this.modalController.create({
-      component: HomeTweetComponent,
-      showBackdrop: false,
-      componentProps: {
-        tweet,
-      }
-    });
-
-    modal.present().then(t => {
-      console.log(t);
-    });
-  }
-
 }
