@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonTextarea, NavController } from '@ionic/angular';
 import { NoticeService } from '@services/notice.service';
+import { TagService } from '@services/tag.service';
 import { TweetService } from '@services/tweet.service';
 import { UploadService } from '@services/upload.service';
+import { Tag } from '@tiktok-clone/share';
 import { ROUTE_PROFILE_PAGE } from 'src/app/shared/consts';
+
 
 @Component({
   selector: 'tiktok-post-tweet',
@@ -15,9 +18,14 @@ export class PostTweetPage implements OnInit {
   videoBase64: string;
   description: string;
   readonly maxFileSize = 50 * 1000 * 1000;
+  suggestedTags: Tag[] = [];
+  currentQuery: string = '';
+
+  @ViewChild(IonTextarea) textarea: IonTextarea;
 
   constructor(
     private tweetService: TweetService,
+    private tagService: TagService,
     private uploadService: UploadService,
     private noticeService: NoticeService,
     private navController: NavController,
@@ -41,6 +49,34 @@ export class PostTweetPage implements OnInit {
         this.videoBase64 = e.target.result as string;
       };
       reader.readAsDataURL(file);
+    });
+  }
+
+  onTweetDescriptionChange(event) {
+    const shouldShowTagRegex = new RegExp(/\.*#([a-zA-Z0-9]*)$/g);
+    const result = shouldShowTagRegex.exec(event);
+    if (result?.[1]) {
+      this.currentQuery = result[1];
+      this.loadSuggestedTags();
+    } else {
+      this.currentQuery = '';
+      this.suggestedTags = [];
+    }
+  }
+
+  async selectTag(tag: Tag) {
+    const inputEle = await this.textarea.getInputElement();
+    console.log(inputEle.selectionStart);
+    const textToFind = `#${this.currentQuery}`;
+    this.description = this.description.replace(textToFind, `#${tag.slug} `);
+    this.textarea.setFocus();
+    this.suggestedTags = [];
+    this.currentQuery = '';
+  }
+
+  loadSuggestedTags() {
+    this.tagService.getTags(1, this.currentQuery).toPromise().then(response => {
+      this.suggestedTags = response.items;
     });
   }
 
