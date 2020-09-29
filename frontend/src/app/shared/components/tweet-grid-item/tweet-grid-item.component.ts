@@ -15,21 +15,32 @@ export class TweetGridItemComponent implements OnInit {
     private modalController: ModalController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  async showDetailTweet(tweet: Tweet) {
+  async showDetailTweet($event) {
+    $event.stopImmediatePropagation();
+
     const modal = await this.modalController.create({
       component: HomeTweetComponent,
       showBackdrop: false,
+      swipeToClose: true,
+      mode: 'ios',
       componentProps: {
-        tweet,
+        tweet: this.tweet,
         autoPlay: true,
+        showBackBtn: true,
       }
     });
 
     modal.present().then(t => {
       console.log(t);
     });
+
+    modal.onWillDismiss().then(({ data }) => {
+      if (data?.back) {
+        this.modalController.dismiss();
+      }
+    })
   }
 
 }

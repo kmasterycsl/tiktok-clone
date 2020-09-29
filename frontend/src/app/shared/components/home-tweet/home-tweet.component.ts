@@ -12,6 +12,7 @@ import { CommentPage } from 'src/app/pages/comment/comment.page';
 export class HomeTweetComponent implements OnInit {
   @Input() tweet: Tweet;
   @Input() autoPlay: boolean = false;
+  @Input() showBackBtn: boolean = false;
   @ViewChild('video') videoElement: ElementRef<HTMLVideoElement>;
 
   constructor(
@@ -31,6 +32,12 @@ export class HomeTweetComponent implements OnInit {
 
   play() {
     this.videoElement.nativeElement.play();
+  }
+
+  onBack() {
+    this.modalController.dismiss({
+      back: true
+    });
   }
 
   pause() {
