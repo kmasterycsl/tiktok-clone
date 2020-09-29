@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <tiktok-spinner *ngIf="fetching" ></tiktok-spinner>
+  <ng-container *ngIf="!fetching && comments.length === 0">
+    <div class="ion-text-center ion-margin">No comment here. Can you write one?</div>
+  </ng-container>
+
   <tiktok-comment-item *ngFor="let comment of comments" [comment]="comment" (onReplyTo)="onReply($event)">
   </tiktok-comment-item>
   <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">

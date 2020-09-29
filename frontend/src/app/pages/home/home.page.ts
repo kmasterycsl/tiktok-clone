@@ -69,17 +69,4 @@ export class HomePage implements OnInit {
     return item.id;
   }
 
-  async showCommentPage(tweet: Tweet) {
-    const modal = await this.modalController.create({
-      component: CommentPage,
-      cssClass: 'chat-box',
-      showBackdrop: false,
-      componentProps: {
-        tweet,
-      }
-    });
-
-    modal.present();
-  }
-
 }
