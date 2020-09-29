@@ -1,4 +1,4 @@
-<div class="tweet-item">
+<div class="tweet-item" (click)="showDetailTweet(tweet)">
   <video *ngIf="!tweet.video.thumbnail?.file_url" [src]="tweet.video.file_url"></video>
   <img *ngIf="tweet.video.thumbnail?.file_url" [src]="tweet.video.thumbnail.file_url" />
 </div>
