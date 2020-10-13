@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tweet } from '@tiktok-clone/share/entities';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { LikableType } from 'src/like/consts';
 import { TagTweet } from '@tiktok-clone/share/entities/tag-tweet.entity';
-import { keyBy } from 'lodash';
+import { uniq } from 'lodash';
+import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
 export class TweetService {
@@ -14,6 +15,8 @@ export class TweetService {
     private tweetRepository: Repository<Tweet>,
     @InjectRepository(TagTweet)
     private tagTweetRepository: Repository<TagTweet>,
+    @Inject(forwardRef(() => TagService))
+    private tagService: TagService,
   ) { }
 
   async postTweet(userId: number, description: string, video_id: number, song_id: number): Promise<Tweet> {
@@ -28,6 +31,18 @@ export class TweetService {
       total_likes: 0,
     }
     const { id } = await this.tweetRepository.save(tweet);
+
+    const tagSlugsRegex = new RegExp(/#([^ ]*)/gm);
+    let [_, ...tagSlugs] = tagSlugsRegex.exec(tweet.description);
+    tagSlugs = uniq(tagSlugs);
+
+    const tags = await this.tagService.getOrCreateTagsFromSlugs(tagSlugs);
+    for (const tag of tags) {
+      this.tagTweetRepository.save({
+        tag_id: tag.id,
+        tweet_id: id,
+      });
+    }
 
     return this.getTweet(id);
   }

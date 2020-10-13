@@ -16,7 +16,7 @@ export class TagService {
   }
 
   getTags(page: number = 1, query?: string): Observable<Pagination<Tag>> {
-    return this.http.get<Pagination<Tag>>('tags', { params: { page: page.toString(), limit: '5', query } });
+    return this.http.get<Pagination<Tag>>('tags', { params: { page: page.toString(), limit: '5', query: query || '' } });
   }
 
   getTweetsOfTag(tagId: number, page: number = 1): Observable<Pagination<Tweet>> {

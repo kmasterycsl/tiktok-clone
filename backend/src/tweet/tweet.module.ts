@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TweetController } from './tweet.controller';
 import { TweetService } from './tweet.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { CommentService } from './comment.service';
 import { CommentController } from './comment.controller';
 import { AssetModule } from 'src/asset/asset.module';
 import { TagTweet } from '@tiktok-clone/share/entities/tag-tweet.entity';
+import { TagModule } from 'src/tag/tag.module';
 
 @Module({
   controllers: [TweetController, CommentController],
@@ -14,6 +15,7 @@ import { TagTweet } from '@tiktok-clone/share/entities/tag-tweet.entity';
   imports: [
     TypeOrmModule.forFeature([Tweet, Comment, Tag, TagTweet]),
     AssetModule,
+    forwardRef(() => TagModule),
   ],
   exports: [TweetService, CommentService]
 })
