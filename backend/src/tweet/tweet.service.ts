@@ -36,7 +36,7 @@ export class TweetService {
     let [_, ...tagSlugs] = tagSlugsRegex.exec(tweet.description);
     tagSlugs = uniq(tagSlugs);
 
-    const tags = await this.tagService.getOrCreateTagsFromSlugs(tagSlugs);
+    const tags = await this.tagService.getOrCreateTagsFromSlugs(tagSlugs, userId);
     for (const tag of tags) {
       this.tagTweetRepository.save({
         tag_id: tag.id,

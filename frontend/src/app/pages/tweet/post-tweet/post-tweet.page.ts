@@ -75,7 +75,7 @@ export class PostTweetPage implements OnInit {
   }
 
   loadSuggestedTags() {
-    this.tagService.getTags(1, this.currentQuery).toPromise().then(response => {
+    this.tagService.getTags(1, 10, this.currentQuery).toPromise().then(response => {
       this.suggestedTags = response.items;
     });
   }

@@ -25,7 +25,7 @@ export class TagService {
     return this.tagRepository.findOne(tagId);
   }
 
-  async getOrCreateTagsFromSlugs(slugs: string[]): Promise<Tag[]> {
+  async getOrCreateTagsFromSlugs(slugs: string[], createdById: number): Promise<Tag[]> {
     const tags = [];
     for (const slug of slugs) {
       let tag = await this.tagRepository.findOne({ where: { slug } });
@@ -33,7 +33,7 @@ export class TagService {
         tag = await this.tagRepository.save({
           slug,
           description: '',
-          created_user_id: null,
+          created_user_id: createdById,
           total_likes: 0,
         })
       }

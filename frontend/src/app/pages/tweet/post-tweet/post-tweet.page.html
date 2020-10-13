@@ -7,7 +7,8 @@
 <ion-content>
   <ion-row class="post-main">
     <ion-col [size]="9" class="post-main__left">
-      <ion-textarea [(ngModel)]="description" [rows]="5" (ngModelChange)="onTweetDescriptionChange($event)" [placeholder]="'Write some words for your tweet'"></ion-textarea>
+      <ion-textarea [(ngModel)]="description" [rows]="5" (ngModelChange)="onTweetDescriptionChange($event)"
+        [placeholder]="'Write some words for your tweet'"></ion-textarea>
     </ion-col>
     <ion-col [size]="3" class="post-main__right ion-activatable" (click)="pickVideo()">
       <ion-ripple-effect></ion-ripple-effect>
@@ -20,9 +21,13 @@
     </ion-col>
   </ion-row>
 
-  <ion-row class="tag-suggestions">
-    <h1 (click)="selectTag(tag)" *ngFor="let tag of suggestedTags">{{ tag.slug }}</h1>
-  </ion-row>
+  <ion-list class="tag-suggestions ion-padding" *ngIf="suggestedTags.length > 0">
+    <ion-note>Suggested tags:</ion-note>
+    <ion-item class="ion-no-padding ion-no-margin" button detail (click)="selectTag(tag)"
+      *ngFor="let tag of suggestedTags">
+      <ion-label>{{ tag.slug }}</ion-label>
+    </ion-item>
+  </ion-list>
 
   <div slot="fixed" class="post-actions">
     <ion-button class="large" [color]="'dark'" strong>
