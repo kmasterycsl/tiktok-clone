@@ -30,11 +30,11 @@
   </ion-list>
 
   <div slot="fixed" class="post-actions">
-    <ion-button class="large" [color]="'dark'" strong>
+    <ion-button class="large" [color]="'dark'" strong (click)="postTweet('DRAFT')">
       <ion-icon name="document-outline"></ion-icon>
       <span>Drafts</span>
     </ion-button>
-    <ion-button class="large" [color]="'danger'" strong (click)="postTweet()">
+    <ion-button class="large" [color]="'danger'" strong (click)="postTweet('PUBLIC')">
       <ion-icon name="cloud-upload-outline"></ion-icon>
       <span>Post</span>
     </ion-button>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tweet, Pagination } from '@tiktok-clone/share';
+import { Tweet, Pagination, TweetStatus } from '@tiktok-clone/share';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,11 @@ export class TweetService {
 
   constructor(private http: HttpClient) { }
 
-  postTweet(description: string, video: File): Observable<Tweet> {
+  postTweet(description: string, video: File, status: TweetStatus): Observable<Tweet> {
     const formData = new FormData();
     formData.append('description', description);
     formData.append('file', video);
+    formData.append('status', status);
     return this.http.post<Tweet>('tweets', formData);
   }
 

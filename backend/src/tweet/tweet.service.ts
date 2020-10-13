@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tweet } from '@tiktok-clone/share/entities';
+import { Tweet, TweetStatus } from '@tiktok-clone/share/entities';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { LikableType } from 'src/like/consts';
@@ -19,12 +19,13 @@ export class TweetService {
     private tagService: TagService,
   ) { }
 
-  async postTweet(userId: number, description: string, video_id: number, song_id: number): Promise<Tweet> {
+  async postTweet(userId: number, description: string, video_id: number, song_id: number, status: TweetStatus): Promise<Tweet> {
     const tweet: Partial<Tweet> = {
       user_id: userId,
       song_id,
       video_id,
       description,
+      status,
       // @TODO: hack ambigious error
       comments_count: 0,
       is_liked: false,
@@ -33,15 +34,18 @@ export class TweetService {
     const { id } = await this.tweetRepository.save(tweet);
 
     const tagSlugsRegex = new RegExp(/#([^ ]*)/gm);
-    let [_, ...tagSlugs] = tagSlugsRegex.exec(tweet.description);
-    tagSlugs = uniq(tagSlugs);
+    const regexResult = tagSlugsRegex.exec(tweet.description);
+    if (regexResult !== null) {
+      let [_, ...tagSlugs] = regexResult;
+      tagSlugs = uniq(tagSlugs);
 
-    const tags = await this.tagService.getOrCreateTagsFromSlugs(tagSlugs, userId);
-    for (const tag of tags) {
-      this.tagTweetRepository.save({
-        tag_id: tag.id,
-        tweet_id: id,
-      });
+      const tags = await this.tagService.getOrCreateTagsFromSlugs(tagSlugs, userId);
+      for (const tag of tags) {
+        this.tagTweetRepository.save({
+          tag_id: tag.id,
+          tweet_id: id,
+        });
+      }
     }
 
     return this.getTweet(id);
@@ -74,6 +78,9 @@ export class TweetService {
       .where('tweets.user_id = :ownerId', {
         ownerId: options.userId,
       })
+      .where('tweets.status = :status', {
+        status: TweetStatus.PUBLIC,
+      })
       .orderBy('tweets.created_at', 'DESC');
 
     return paginate<Tweet>(queryBuilder, options).then(result => {
@@ -91,6 +98,9 @@ export class TweetService {
       .where('tweets.user_id = :ownerId', {
         ownerId: options.userId,
       })
+      .where('tweets.status = :status', {
+        status: TweetStatus.DRAFT,
+      })
       .orderBy('tweets.created_at', 'DESC');
 
     return paginate<Tweet>(queryBuilder, options).then(result => {
@@ -105,6 +115,9 @@ export class TweetService {
   getTweets(options: IPaginationOptions & { userId?: number }): any {
     const queryBuilder = this
       .loadCommonStuffs(options.userId)
+      .where('tweets.status = :status', {
+        status: TweetStatus.PUBLIC,
+      })
       .orderBy('tweets.created_at', 'DESC');
 
     return paginate<Tweet>(queryBuilder, options).then(result => {
