@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, Tag, Tweet } from '@tiktok-clone/share';
 import { paginate } from 'nestjs-typeorm-paginate';
@@ -17,11 +17,30 @@ export class TagService {
     private tagTweetRepository: Repository<TagTweet>,
     @InjectRepository(Tweet)
     private tweetRepository: Repository<Tweet>,
+    @Inject(forwardRef(() => TweetService))
     private tweetService: TweetService,
   ) { }
 
   async getTag(tagId: number) {
     return this.tagRepository.findOne(tagId);
+  }
+
+  async getOrCreateTagsFromSlugs(slugs: string[]): Promise<Tag[]> {
+    const tags = [];
+    for (const slug of slugs) {
+      let tag = await this.tagRepository.findOne({ where: { slug } });
+      if (!tag) {
+        tag = await this.tagRepository.save({
+          slug,
+          description: '',
+          created_user_id: null,
+          total_likes: 0,
+        })
+      }
+      tags.push(tag);
+    }
+
+    return tags;
   }
 
 
