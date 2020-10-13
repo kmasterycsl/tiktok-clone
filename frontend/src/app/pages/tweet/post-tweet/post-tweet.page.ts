@@ -80,7 +80,7 @@ export class PostTweetPage implements OnInit {
     });
   }
 
-  postTweet() {
+  postTweet(status: string) {
     if (!this.description) {
       return this.noticeService.showToast({
         color: 'warning',
@@ -94,15 +94,23 @@ export class PostTweetPage implements OnInit {
       })
     }
 
-    this.tweetService.postTweet(this.description, this.video).subscribe(tweet => {
+    this.tweetService.postTweet(this.description, this.video, status).subscribe(tweet => {
       this.description = null;
       this.video = null;
       this.videoBase64 = null;
-      this.navController.navigateForward([ROUTE_PROFILE_PAGE(tweet.user_id)], {
-        queryParams: {
-          activeTab: 'public-tweets'
-        }
-      });
+      if (status === 'DRAFT') {
+        this.navController.navigateForward([ROUTE_PROFILE_PAGE(tweet.user_id)], {
+          queryParams: {
+            activeTab: 'private-tweets'
+          }
+        });
+      } else if (status === 'PUBLIC') {
+        this.navController.navigateForward([ROUTE_PROFILE_PAGE(tweet.user_id)], {
+          queryParams: {
+            activeTab: 'public-tweets'
+          }
+        });
+      }
       return this.noticeService.showToast({
         color: 'success',
         message: 'Post tweet successfully!'

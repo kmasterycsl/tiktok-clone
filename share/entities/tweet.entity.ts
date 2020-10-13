@@ -6,6 +6,12 @@ import { Comment } from './comment.entity';
 import { Tag } from './tag.entity';
 import { TagTweet } from './tag-tweet.entity';
 
+
+export enum TweetStatus {
+  PUBLIC = 'PUBLIC',
+  DRAFT = 'DRAFT',
+}
+
 @Entity({
   name: 'tweets'
 })
@@ -21,6 +27,13 @@ export class Tweet extends CommonEntity {
 
   @Column()
   video_id: number;
+
+  @Column({
+    type: 'enum',
+    enum: TweetStatus,
+    default: TweetStatus.PUBLIC
+  })
+  status: TweetStatus;
 
   @Column({
     default: 0
@@ -49,7 +62,7 @@ export class Tweet extends CommonEntity {
   comments: Comment[];
 
   @Column('int', {
-    select: false, 
+    select: false,
     transformer: {
       from: x => parseInt(x),
       to: x => parseInt(x),

@@ -63,7 +63,7 @@ export class TweetController {
       file_relative_path: file.destination.replace('./public', ''),
     });
 
-    const tweet = this.tweetService.postTweet(request.user.userId, params.description, asset.id, 1);
+    const tweet = this.tweetService.postTweet(request.user.userId, params.description, asset.id, 1, params.status);
 
     return tweet;
   }
