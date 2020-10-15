@@ -10,7 +10,7 @@ export class TweetService {
 
   constructor(private http: HttpClient) { }
 
-  postTweet(description: string, video: File, status: TweetStatus): Observable<Tweet> {
+  postTweet(description: string, video: File, status: string): Observable<Tweet> {
     const formData = new FormData();
     formData.append('description', description);
     formData.append('file', video);

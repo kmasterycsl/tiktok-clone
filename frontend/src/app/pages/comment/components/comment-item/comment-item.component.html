@@ -1,13 +1,13 @@
 <div class="comment" (click)="replyTo(comment)" [attr.data-comment-id]="comment.id">
   <div class="comment__avatar">
-    <img [src]="'https://api.adorable.io/avatars/50' + comment.id + '.png'" />
+    <img [src]="'https://ui-avatars.com/api/?background=random&name=' + comment.user.name" />
   </div>
   <div class="comment__body">
     <div class="comment__username">
       {{ comment.user.name }}
     </div>
     <div class="comment__content">
-      {{ comment.content }} 
+      {{ comment.content }}
       <span class="comment__created-at">{{ comment.created_at | timeAgo }}</span>
     </div>
     <div *ngIf="comment.children_count > 0" class="comment__view-more" (click)="toggleShowChildren()">

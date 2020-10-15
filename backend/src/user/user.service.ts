@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { User, Like } from '@tiktok-clone/share/entities';
+import { User, Like, Tweet } from '@tiktok-clone/share/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { getManager } from "typeorm";
 import { LikableType } from 'src/like/consts';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UserService {
@@ -75,5 +76,31 @@ export class UserService {
     user.is_liked = isLiked;
 
     return user;
+  }
+
+  getFollowers(options: IPaginationOptions & { userId: number }): any {
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('users')
+      .innerJoin('likes', 'likes', 'likes.user_id = users.id AND likes.likable_type = :likableType', {
+        likableType: LikableType.USER,
+      })
+      .where(`likes.likable_id = :userId`, {
+        userId: options.userId,
+      });
+
+    return paginate<User>(queryBuilder, options);
+  }
+
+  getFollowings(options: IPaginationOptions & { userId: number }): any {
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('users')
+      .innerJoin('likes', 'likes', 'likes.likable_id = users.id AND likes.likable_type = :likableType', {
+        likableType: LikableType.USER,
+      })
+      .where(`likes.user_id = :userId`, {
+        userId: options.userId,
+      });
+
+    return paginate<User>(queryBuilder, options);
   }
 }
