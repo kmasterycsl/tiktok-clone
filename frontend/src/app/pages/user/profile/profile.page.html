@@ -24,11 +24,11 @@
     </ion-avatar>
     <div class="general__username">{{ user.phone_number }}</div>
     <div class="general__stats">
-      <div>
+      <div (click)="goToFollowing()">
         <div class="general__stat_num">{{ user.total_followings }}</div>
-        <div class="general__stat_prop">Following</div>
+        <div class="general__stat_prop">Followings</div>
       </div>
-      <div>
+      <div (click)="goToFollower()">
         <div class="general__stat_num">{{ user.total_followers }}</div>
         <div class="general__stat_prop">Followers</div>
       </div>

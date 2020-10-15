@@ -27,6 +27,33 @@ export class UserController {
     });
   }
 
+  @Get(':userId/followers')
+  getFollowersOfUser(
+    @Param('userId') userId: number,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.userService.getFollowers({
+      page,
+      limit,
+      userId
+    });
+  }
+
+  @Get(':userId/followings')
+  getFollowingsOfUser(
+    @Param('userId') userId: number,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.userService.getFollowings({
+      page,
+      limit,
+      userId
+    });
+  }
+
+
   @Get(':userId/public-tweets')
   getPublicTweetsOfUser(
     @Param('userId') userId: number,

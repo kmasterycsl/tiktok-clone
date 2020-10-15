@@ -1,0 +1,11 @@
+<ion-item>
+  <ion-avatar slot="start">
+    <img [src]="'https://ui-avatars.com/api/?background=random&name=' + user.name" />
+  </ion-avatar>
+  <ion-label>
+    <h3>{{ user.name }}</h3>
+    <!-- <h3>I'm a big deal</h3>
+    <p>Listen, I've had a pretty messed up day...</p> -->
+  </ion-label>
+  <ng-content></ng-content>
+</ion-item>

@@ -12,34 +12,27 @@ import { Observable, combineLatest, Subject, of, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { LikeService } from '@services/like.service';
 import { Location } from '@angular/common';
-import { ROUTE_FOLLOWER_FOLLOWING_PAGE } from '../../../shared/consts';
+import { ROUTE_PROFILE_PAGE } from '../../../shared/consts';
 
 @Component({
   selector: 'tiktok-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  templateUrl: './following-follower.page.html',
+  styleUrls: ['./following-follower.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class FollowingFollowerPage implements OnInit {
   SEGMENTS = {
-    PUBLIC_TWEETS: 'public-tweets',
-    LIKED_TWEETS: 'liked-tweets',
-    PRIVATE_TWEETS: 'private-tweets',
+    FOLLOWING: 'FOLLOWING',
+    FOLLOWER: 'FOLLOWER',
   }
-  authUser: User;
-  user: User;
-  currentResponse: Pagination<Tweet> = null;
+  currentResponse: Pagination<User> = null;
   selectedSegment$ = new BehaviorSubject<string>(null);
-  tweets: Tweet[] = [];
+  users: (User & { isFollowing: boolean })[] = [];
+  userId: number;
   fetching = false;
   isRefreshing = false;
   refresh$ = new BehaviorSubject(false);
   refreshEvent;
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private noticeService: NoticeService,
-    private modalController: ModalController,
-    private tweetService: TweetService,
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private likeService: LikeService,
@@ -58,7 +51,7 @@ export class ProfilePage implements OnInit {
 
   loadSegment() {
     this.activatedRoute.queryParamMap.pipe(
-      map(qs => qs.get('activeTab') || 'public-tweets'),
+      map(qs => qs.get('activeTab') || 'FOLLOWER'),
       distinctUntilChanged(),
     ).subscribe(segment => {
       this.selectedSegment$.next(segment);
@@ -68,35 +61,33 @@ export class ProfilePage implements OnInit {
   loadData() {
     this.fetching = true;
     combineLatest([
-      this.authService.profile(),
       this.activatedRoute.paramMap.pipe(
-        map(pm => pm.get('userId')),
+        map(pm => +pm.get('userId')),
         distinctUntilChanged()
       ),
       this.selectedSegment$,
       this.refresh$,
     ]).pipe(
-      tap(([authUser, _, segment]) => {
+      tap(console.log),
+      tap(([userId, segment]) => {
+        this.userId = userId;
+        this.currentResponse = null;
+        this.users = [];
         this.navController.navigateForward([], {
           queryParams: {
             activeTab: segment
           }
         });
-        this.authUser = authUser;
       }),
-      map(([authUser, userId, segment]) => [+userId || authUser.id, segment]),
-      switchMap(([userId, segment]) => combineLatest([this.userService.getUser(+userId), of(segment)])),
-      tap(([user, segment]) => {
-        this.user = user;
-        this.currentResponse = null;
-        this.tweets = [];
-      }),
-      switchMap(([user, segment]) => this.loadTweets(1, segment.toString()))
+      switchMap(([userId, segment]) => this.loadUsers(1, segment.toString()))
     ).subscribe((response) => {
       this.currentResponse = response;
-      this.tweets = [
-        ...this.tweets,
-        ...response.items
+      this.users = [
+        ...this.users,
+        ...response.items.map(u => ({
+          ...u,
+          isFollowing: true,
+        }))
       ];
 
       if (this.refreshEvent) {
@@ -109,28 +100,30 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  toggleFollow() {
-    this.likeService.likeUser(this.user.id).subscribe(res => {
-      !this.user.is_liked ? this.user.total_followers++ : this.user.total_followers--;
-      this.user.is_liked = !this.user.is_liked;
+  toggleFollow(event, user: User & { isFollowing: boolean }) {
+    event.stopPropagation();
+    this.likeService.likeUser(user.id).subscribe(res => {
+      // !this.user.is_liked ? this.user.total_followers++ : this.user.total_followers--;
+      user.isFollowing = !user.isFollowing
     });
+  }
+
+  goToProfile(user: User) {
+    this.navController.navigateForward(ROUTE_PROFILE_PAGE(user.id));
   }
 
   ionViewWillEnter() {
 
   }
 
-  loadTweets(page: number, segment: string): Observable<Pagination<Tweet>> {
-    let p: Observable<Pagination<Tweet>>;
+  loadUsers(page: number, segment: string): Observable<Pagination<User>> {
+    let p: Observable<Pagination<User>>;
     switch (segment) {
-      case this.SEGMENTS.LIKED_TWEETS:
-        p = this.tweetService.getLikedTweetsOfUser(this.user.id, page);
+      case this.SEGMENTS.FOLLOWER:
+        p = this.userService.getFollowers(this.userId, page);
         break;
-      case this.SEGMENTS.PUBLIC_TWEETS:
-        p = this.tweetService.getPublicTweetsOfUser(this.user.id, page);
-        break;
-      case this.SEGMENTS.PRIVATE_TWEETS:
-        p = this.tweetService.getPrivateTweetsOfUser(this.user.id, page);
+      case this.SEGMENTS.FOLLOWING:
+        p = this.userService.getFollowings(this.userId, page);
         break;
     }
 
@@ -144,28 +137,12 @@ export class ProfilePage implements OnInit {
   }
 
   doLoadMore(event, segment: string) {
-    return this.loadTweets((+this.currentResponse?.meta?.currentPage || 0) + 1, segment).subscribe(response => {
+    return this.loadUsers((+this.currentResponse?.meta?.currentPage || 0) + 1, segment).subscribe(response => {
       event.target.complete();
       if (+response.meta.currentPage === +response.meta.totalPages) {
         event.target.disabled = true;
       }
     });
-  }
-
-  goToFollowing() {
-    this.navController.navigateForward(ROUTE_FOLLOWER_FOLLOWING_PAGE(this.user.id), {
-      queryParams: {
-        activeTab: 'FOLLOWING'
-      }
-    })
-  }
-
-  goToFollower() {
-    this.navController.navigateForward(ROUTE_FOLLOWER_FOLLOWING_PAGE(this.user.id), {
-      queryParams: {
-        activeTab: 'FOLLOWER'
-      }
-    })
   }
 
 }

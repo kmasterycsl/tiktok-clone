@@ -12,6 +12,7 @@ import { TweetGridItemComponent } from './components/tweet-grid-item/tweet-grid-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { CollapseTextComponent } from './components/collapse-text/collapse-text.component';
+import { UserListItemComponent } from './components/user-list-item/user-list-item.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { CollapseTextComponent } from './components/collapse-text/collapse-text.
     TweetGridItemComponent,
     SpinnerComponent,
     CollapseTextComponent,
+    UserListItemComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { CollapseTextComponent } from './components/collapse-text/collapse-text.
     TweetGridItemComponent,
     SpinnerComponent,
     CollapseTextComponent,
+    UserListItemComponent,
   ]
 })
 export class SharedModule { }
