@@ -86,7 +86,13 @@ export class UserService {
       })
       .where(`likes.likable_id = :userId`, {
         userId: options.userId,
-      });
+      })
+      .leftJoin('likes', 'likes2', 'likes2.likable_id = users.id AND likes2.likable_type = :likableType AND likes2.user_id = :userId', {
+        likableType: LikableType.USER,
+        userId: options.userId,
+      })
+      .groupBy('users.id')
+      .addSelect(`CASE WHEN COUNT(likes2.user_id) > 0 THEN 1 ELSE 0 END`, 'users_is_liked');
 
     return paginate<User>(queryBuilder, options);
   }
@@ -99,7 +105,8 @@ export class UserService {
       })
       .where(`likes.user_id = :userId`, {
         userId: options.userId,
-      });
+      })
+      .addSelect(`1`, 'users_is_liked');
 
     return paginate<User>(queryBuilder, options);
   }

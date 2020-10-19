@@ -5,7 +5,7 @@ import { NoticeService } from '@services/notice.service';
 import { User, Tweet, Pagination } from '@tiktok-clone/share';
 import { CommentPage } from '../../comment/comment.page';
 import { ModalController, NavController } from '@ionic/angular';
-import { tap, switchMap, map, share, shareReplay, first, distinctUntilChanged } from 'rxjs/operators';
+import { tap, switchMap, map, share, shareReplay, first, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 import { TweetService } from '@services/tweet.service';
 import { UserService } from '@services/user.service';
 import { Observable, combineLatest, Subject, of, BehaviorSubject } from 'rxjs';
@@ -24,9 +24,14 @@ export class FollowingFollowerPage implements OnInit {
     FOLLOWING: 'FOLLOWING',
     FOLLOWER: 'FOLLOWER',
   }
+  counts = {
+    FOLLOWING: 0,
+    FOLLOWER: 0,
+  }
   currentResponse: Pagination<User> = null;
   selectedSegment$ = new BehaviorSubject<string>(null);
-  users: (User & { isFollowing: boolean })[] = [];
+  users: User[] = [];
+  authUser: User;
   userId: number;
   fetching = false;
   isRefreshing = false;
@@ -37,6 +42,7 @@ export class FollowingFollowerPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private likeService: LikeService,
     private navController: NavController,
+    private authService: AuthService,
   ) { }
 
   doRefresh(event) {
@@ -66,11 +72,12 @@ export class FollowingFollowerPage implements OnInit {
         distinctUntilChanged()
       ),
       this.selectedSegment$,
+      this.authService.profile(),
       this.refresh$,
     ]).pipe(
-      tap(console.log),
-      tap(([userId, segment]) => {
+      tap(([userId, segment, authUser]) => {
         this.userId = userId;
+        this.authUser = authUser;
         this.currentResponse = null;
         this.users = [];
         this.navController.navigateForward([], {
@@ -79,16 +86,21 @@ export class FollowingFollowerPage implements OnInit {
           }
         });
       }),
-      switchMap(([userId, segment]) => this.loadUsers(1, segment.toString()))
-    ).subscribe((response) => {
+      switchMap(([userId, segment]) => this.loadUsers(1, segment.toString())
+        .pipe(
+          withLatestFrom(
+            of(segment)
+          )
+        )
+      )
+    ).subscribe(([response, segment]) => {
+      if (segment === this.SEGMENTS.FOLLOWER) {
+        this.counts.FOLLOWER = response.meta.totalItems;
+      } else if (segment === this.SEGMENTS.FOLLOWING) {
+        this.counts.FOLLOWING = response.meta.totalItems;
+      }
       this.currentResponse = response;
-      this.users = [
-        ...this.users,
-        ...response.items.map(u => ({
-          ...u,
-          isFollowing: true,
-        }))
-      ];
+      this.users = response.items;
 
       if (this.refreshEvent) {
         this.refreshEvent.target.complete()
@@ -100,11 +112,10 @@ export class FollowingFollowerPage implements OnInit {
     });
   }
 
-  toggleFollow(event, user: User & { isFollowing: boolean }) {
+  toggleFollow(event, user: User) {
     event.stopPropagation();
     this.likeService.likeUser(user.id).subscribe(res => {
-      // !this.user.is_liked ? this.user.total_followers++ : this.user.total_followers--;
-      user.isFollowing = !user.isFollowing
+      user.is_liked = !user.is_liked
     });
   }
 

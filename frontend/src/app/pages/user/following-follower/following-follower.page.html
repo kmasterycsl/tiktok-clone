@@ -15,11 +15,11 @@
 
   <ng-container *ngIf="selectedSegment$ | async as selectedSegment">
     <ion-segment (ionChange)="segmentChanged($event)" [value]="selectedSegment">
-      <ion-segment-button [value]="SEGMENTS.FOLLOWER">
-        Follower
-      </ion-segment-button>
       <ion-segment-button [value]="SEGMENTS.FOLLOWING">
-        Following
+        Followings ({{ counts.FOLLOWING }})
+      </ion-segment-button>
+      <ion-segment-button [value]="SEGMENTS.FOLLOWER">
+        Followers ({{ counts.FOLLOWER }})
       </ion-segment-button>
     </ion-segment>
 
@@ -31,10 +31,18 @@
 
     <ion-list>
       <tiktok-user-list-item (click)="goToProfile(user)" *ngFor="let user of users" [user]="user">
-        <ng-container *ngIf="selectedSegment === 'FOLLOWER'">
-          <ion-button slot="end" (click)="toggleFollow($event, user)" [color]="user.isFollowing ? 'primary' : 'dark'">
-            {{ user.isFollowing ? 'Following' : 'Follow' }}
-          </ion-button>
+        <ng-container *ngIf="authUser.id === userId">
+          <ng-container *ngIf="selectedSegment === SEGMENTS.FOLLOWER">
+            <ion-button *ngIf="!user.is_liked" slot="end" (click)="toggleFollow($event, user)"
+              [color]="user.is_liked ? 'primary' : 'dark'">
+              Follow back
+            </ion-button>
+          </ng-container>
+          <ng-container *ngIf="selectedSegment === SEGMENTS.FOLLOWING">
+            <ion-button slot="end" (click)="toggleFollow($event, user)" [color]="user.is_liked ? 'primary' : 'dark'">
+              {{ user.is_liked ? 'Following' : 'Follow' }}
+            </ion-button>
+          </ng-container>
         </ng-container>
       </tiktok-user-list-item>
     </ion-list>
