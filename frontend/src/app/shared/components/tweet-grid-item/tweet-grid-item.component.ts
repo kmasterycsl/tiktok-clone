@@ -32,9 +32,7 @@ export class TweetGridItemComponent implements OnInit {
       }
     });
 
-    modal.present().then(t => {
-      console.log(t);
-    });
+    modal.present();
 
     modal.onWillDismiss().then(({ data }) => {
       if (data?.back) {

@@ -26,7 +26,7 @@ export class ProfilePage implements OnInit {
     PRIVATE_TWEETS: 'private-tweets',
   }
   authUser: User;
-  user: User;
+  targetUser: User;
   currentResponse: Pagination<Tweet> = null;
   selectedSegment$ = new BehaviorSubject<string>(null);
   tweets: Tweet[] = [];
@@ -80,14 +80,15 @@ export class ProfilePage implements OnInit {
         this.navController.navigateForward([], {
           queryParams: {
             activeTab: segment
-          }
+          },
+          replaceUrl: true
         });
         this.authUser = authUser;
       }),
       map(([authUser, userId, segment]) => [+userId || authUser.id, segment]),
       switchMap(([userId, segment]) => combineLatest([this.userService.getUser(+userId), of(segment)])),
       tap(([user, segment]) => {
-        this.user = user;
+        this.targetUser = user;
         this.currentResponse = null;
         this.tweets = [];
       }),
@@ -110,9 +111,9 @@ export class ProfilePage implements OnInit {
   }
 
   toggleFollow() {
-    this.likeService.likeUser(this.user.id).subscribe(res => {
-      !this.user.is_liked ? this.user.total_followers++ : this.user.total_followers--;
-      this.user.is_liked = !this.user.is_liked;
+    this.likeService.likeUser(this.targetUser.id).subscribe(res => {
+      !this.targetUser.is_liked ? this.targetUser.total_followers++ : this.targetUser.total_followers--;
+      this.targetUser.is_liked = !this.targetUser.is_liked;
     });
   }
 
@@ -124,13 +125,13 @@ export class ProfilePage implements OnInit {
     let p: Observable<Pagination<Tweet>>;
     switch (segment) {
       case this.SEGMENTS.LIKED_TWEETS:
-        p = this.tweetService.getLikedTweetsOfUser(this.user.id, page);
+        p = this.tweetService.getLikedTweetsOfUser(this.targetUser.id, page);
         break;
       case this.SEGMENTS.PUBLIC_TWEETS:
-        p = this.tweetService.getPublicTweetsOfUser(this.user.id, page);
+        p = this.tweetService.getPublicTweetsOfUser(this.targetUser.id, page);
         break;
       case this.SEGMENTS.PRIVATE_TWEETS:
-        p = this.tweetService.getPrivateTweetsOfUser(this.user.id, page);
+        p = this.tweetService.getPrivateTweetsOfUser(this.targetUser.id, page);
         break;
     }
 
@@ -153,7 +154,7 @@ export class ProfilePage implements OnInit {
   }
 
   goToFollowing() {
-    this.navController.navigateForward(ROUTE_FOLLOWER_FOLLOWING_PAGE(this.user.id), {
+    this.navController.navigateForward(ROUTE_FOLLOWER_FOLLOWING_PAGE(this.targetUser.id), {
       queryParams: {
         activeTab: 'FOLLOWING'
       }
@@ -161,10 +162,18 @@ export class ProfilePage implements OnInit {
   }
 
   goToFollower() {
-    this.navController.navigateForward(ROUTE_FOLLOWER_FOLLOWING_PAGE(this.user.id), {
+    this.navController.navigateForward(ROUTE_FOLLOWER_FOLLOWING_PAGE(this.targetUser.id), {
       queryParams: {
         activeTab: 'FOLLOWER'
       }
+    })
+  }
+
+  alertReceivedLikes() {
+    const actor = this.authUser.id === this.targetUser.id ? `You've` : `${this.targetUser.name} has`; 
+    this.noticeService.showToast({
+      color: 'tertiary',
+      message: `${actor} received total ${this.targetUser.total_received_tweet_likes} likes from your tweets!`
     })
   }
 

@@ -9,7 +9,7 @@
       </ion-button>
     </ion-buttons>
 
-    <ion-title *ngIf="user">{{ user.name }}</ion-title>
+    <ion-title *ngIf="targetUser">{{ targetUser.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -18,36 +18,36 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div class="general" *ngIf="user">
+  <div class="general" *ngIf="targetUser">
     <ion-avatar>
       <img [src]="'https://api.adorable.io/avatars/100.png'" />
     </ion-avatar>
-    <div class="general__username">{{ user.phone_number }}</div>
+    <div class="general__username">{{ targetUser.phone_number }}</div>
     <div class="general__stats">
       <div (click)="goToFollowing()">
-        <div class="general__stat_num">{{ user.total_followings }}</div>
+        <div class="general__stat_num">{{ targetUser.total_followings }}</div>
         <div class="general__stat_prop">Followings</div>
       </div>
       <div (click)="goToFollower()">
-        <div class="general__stat_num">{{ user.total_followers }}</div>
+        <div class="general__stat_num">{{ targetUser.total_followers }}</div>
         <div class="general__stat_prop">Followers</div>
       </div>
-      <div>
-        <div class="general__stat_num">{{ user.total_received_tweet_likes }}</div>
+      <div (click)="alertReceivedLikes()">
+        <div class="general__stat_num">{{ targetUser.total_received_tweet_likes }}</div>
         <div class="general__stat_prop">Likes</div>
       </div>
     </div>
-    <div class="general__action" *ngIf="authUser.id !== user.id">
-      <ion-button class="large" *ngIf="!user.is_liked" [color]="'danger'" strong (click)="toggleFollow()">Follow
+    <div class="general__action" *ngIf="authUser.id !== targetUser.id">
+      <ion-button class="large" *ngIf="!targetUser.is_liked" [color]="'danger'" strong (click)="toggleFollow()">Follow
       </ion-button>
-      <ion-button class="large" *ngIf="user.is_liked" [color]="'dark'" strong>Message
+      <ion-button class="large" *ngIf="targetUser.is_liked" [color]="'dark'" strong>Message
       </ion-button>
-      <ion-button *ngIf="user.is_liked" [color]="'dark'" (click)="toggleFollow()">
+      <ion-button *ngIf="targetUser.is_liked" [color]="'dark'" (click)="toggleFollow()">
         <ion-icon name="checkmark-outline"></ion-icon>
       </ion-button>
     </div>
-    <div class="general__bio" *ngIf="user.biography">
-      {{ user.biography }}
+    <div class="general__bio" *ngIf="targetUser.biography">
+      {{ targetUser.biography }}
     </div>
   </div>
 
