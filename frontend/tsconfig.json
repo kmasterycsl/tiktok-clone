@@ -16,7 +16,10 @@
       "dom"
     ],
     "paths": {
-      "@services/*": ["src/app/shared/services/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@cores/*": ["src/app/core/*"],
+      "@tag/*": ["src/app/tag/*"],
+      "@tweet/*": ["src/app/tweet/*"]
     },
     "types": [
       "@types/swiper"

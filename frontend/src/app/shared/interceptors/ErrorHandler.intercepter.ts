@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { NoticeService } from '@services/notice.service';
-import { map, catchError } from 'rxjs/operators';
+import { NoticeService } from '@cores/services/notice.service';
+import { catchError, map } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
-import { Route, ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '@services/auth.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
@@ -15,7 +14,9 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         private authService: AuthService,
         private navController: NavController,
         private router: Router,
-    ) { }
+    ) {
+    }
+
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             map((event: HttpEvent<any>) => {

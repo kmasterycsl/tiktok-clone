@@ -1,5 +1,5 @@
-<div class="likable" (click)="like($event)">
-  <ion-icon *ngIf="isLiked" name="heart"></ion-icon>
-  <ion-icon *ngIf="!isLiked" name="heart-outline"></ion-icon>
-  <span>{{ totalLikes }}</span>
+<div (click)="like($event)" class="likable">
+    <ion-icon *ngIf="isLiked" name="heart"></ion-icon>
+    <ion-icon *ngIf="!isLiked" name="heart-outline"></ion-icon>
+    <span>{{ totalLikes }}</span>
 </div>

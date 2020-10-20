@@ -1,14 +1,14 @@
 :host {
-    color: var(--color);
+  color: var(--color);
 }
 
 .show-more {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background-color: var(--ion-background-color);
-    padding-left: 20px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: var(--ion-background-color);
+  padding-left: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }

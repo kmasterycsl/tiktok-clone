@@ -1,0 +1,68 @@
+:host {
+  display: block;
+  margin-bottom: var(--ion-padding);
+}
+
+.comment {
+  display: flex;
+  margin-bottom: var(--ion-padding);
+
+  &__avatar {
+    flex-shrink: 0;
+    flex-basis: 30px;
+
+    img {
+      width: 100%;
+      border-radius: 50%;
+      height: auto;
+    }
+  }
+
+  &__body {
+    flex-grow: 1;
+    margin-left: var(--ion-padding);
+    margin-right: var(--ion-padding);
+  }
+
+  &__reaction {
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__username {
+    font-weight: 600;
+    color: silver;
+    margin-bottom: 5px;
+  }
+
+  &__content {
+    margin-bottom: 5px;
+  }
+
+  &__view-more {
+    font-weight: 600;
+    color: silver;
+    display: flex;
+    align-items: center;
+  }
+
+  &__created-at {
+    color: silver;
+    font-size: 0.7rem;
+  }
+}
+
+.children-comments {
+  &__view-more {
+    display: flex;
+    align-items: center;
+  }
+
+  margin-bottom: var(--ion-padding);
+}
+
+tiktok-likable {
+  --icon-size: 1.2rem;
+  --font-size: 0.685rem;
+}

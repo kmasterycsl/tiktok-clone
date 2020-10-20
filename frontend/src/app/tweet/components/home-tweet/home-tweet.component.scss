@@ -1,0 +1,84 @@
+:host {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.back-btn {
+  position: absolute;
+  color: var(--ion-text-color);
+
+  ion-icon {
+    font-size: 1.6rem;
+  }
+
+  z-index: 1;
+}
+
+.tweet {
+  height: 100%;
+
+  video {
+    height: 100%;
+    width: 100%;
+    object-fit: var(--video-object-fit, contain);
+  }
+
+  &__info {
+    padding: var(--ion-padding);
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__left {
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  &__right {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    & > div {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+
+      ion-icon {
+        margin-top: var(--ion-padding);
+        font-size: 2rem;
+
+        &[name="logo-facebook"] {
+          color: #3171e0;
+        }
+
+        &[name="heart"] {
+          color: red;
+        }
+      }
+    }
+  }
+
+  &__owner {
+  }
+
+  &__title {
+    margin-top: var(--ion-padding);
+  }
+
+  &__song {
+    margin-top: var(--ion-padding);
+    display: flex;
+    align-items: center;
+
+    span {
+      //   margin-left: calc(var(--ion-padding)/2);
+    }
+  }
+}

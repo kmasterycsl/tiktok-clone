@@ -1,0 +1,31 @@
+<div (click)="replyTo(comment)" [attr.data-comment-id]="comment.id" class="comment">
+    <div class="comment__avatar">
+        <img [src]="'https://ui-avatars.com/api/?background=random&name=' + comment.user.name"/>
+    </div>
+    <div class="comment__body">
+        <div class="comment__username">
+            {{ comment.user.name }}
+        </div>
+        <div class="comment__content">
+            {{ comment.content }}
+            <span class="comment__created-at">{{ comment.created_at | timeAgo }}</span>
+        </div>
+        <div (click)="toggleShowChildren()" *ngIf="comment.children_count > 0" class="comment__view-more">
+            View replies ({{ comment.children_count }})
+            <ion-icon name="chevron-down-outline"></ion-icon>
+        </div>
+    </div>
+    <div class="comment__reaction">
+        <tiktok-likable (onDislike)="onDislike()" (onLike)="onLike()" [isLiked]="comment.is_liked"
+                        [likableId]="comment.id" [likableType]="'COMMENT'" [totalLikes]="comment.total_likes"></tiktok-likable>
+    </div>
+</div>
+
+<div *ngIf="showChildren" [ngStyle]="{marginLeft: nestedLevel * 10 + 'px'}" class="children-comments">
+    <tiktok-comment-item (onReplyTo)="replyTo(childComment)" *ngFor="let childComment of comment.children"
+                         [comment]="childComment" [nestedLevel]="nestedLevel+1"></tiktok-comment-item>
+    <div (click)="viewMoreChilren()" *ngIf="hasMoreChildrenComments" class="children-comments__view-more">
+        View more
+        <ion-icon name="chevron-down-outline"></ion-icon>
+    </div>
+</div>

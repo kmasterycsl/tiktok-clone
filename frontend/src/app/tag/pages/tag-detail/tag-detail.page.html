@@ -1,0 +1,50 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="tag-detail">
+    <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <div class="ion-padding">
+
+        <div class="tag-detail__header">
+            <div class="tag-detail__header_left">
+                <img [src]="'https://api.adorable.io/avatars/250.png'"/>
+            </div>
+            <div class="tag-detail__header_right">
+                <h6 class="ion-no-margin">#{{ tag?.slug }}</h6>
+                <small>50M views</small>
+            </div>
+        </div>
+
+        <div class="ion-padding-top">
+            <tiktok-collapse-text [text]="tag?.description"></tiktok-collapse-text>
+        </div>
+    </div>
+
+    <tiktok-spinner *ngIf="fetching"></tiktok-spinner>
+
+    <ng-container *ngIf="!fetching && tweets.length === 0">
+        <div class="ion-text-center ion-margin">No item here</div>
+    </ng-container>
+
+    <div class="tweets-grid">
+        <ion-row>
+            <ion-col *ngFor="let tweet of tweets" [sizeLg]="2" [sizeMd]="3" [sizeSm]="4" [sizeXs]="4">
+                <tiktok-tweet-grid-item [tweet]="tweet"></tiktok-tweet-grid-item>
+            </ion-col>
+        </ion-row>
+    </div>
+
+    <ion-infinite-scroll (ionInfinite)="doLoadMore($event)" threshold="10px">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+</ion-content>
