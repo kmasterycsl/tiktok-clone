@@ -1,0 +1,41 @@
+<ion-content>
+    <ion-button (click)="onBack()" *ngIf="showBackBtn" class="back-btn" color="transparent">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <div class="tweet">
+        <video #video [autoplay]="autoPlay" [src]="tweet.video.file_url" loop></video>
+        <div class="tweet__info">
+            <div class="tweet__left">
+                <div (click)="goToAuthorProfile()" class="tweet__owner font-large font-500">
+                    @{{ tweet.user.name }}
+                </div>
+                <div class="tweet__title">
+                    {{ tweet.description }}
+                </div>
+                <div class="tweet__song">
+                    <ion-icon name="musical-notes-outline"></ion-icon>
+                    <span>
+                        {{ tweet.song.title }}
+                    </span>
+                </div>
+            </div>
+            <div class="tweet__right">
+                <tiktok-likable (onDislike)="onDislike()" (onLike)="onLike()" [isLiked]="tweet.is_liked"
+                                [likableId]="tweet.id" [likableType]="'TWEET'" [totalLikes]="tweet.total_likes"></tiktok-likable>
+                <!-- <div (click)="like($event)">
+                    <ion-icon *ngIf="tweet.is_liked" name="heart"></ion-icon>
+                    <ion-icon *ngIf="!tweet.is_liked" name="heart-outline"></ion-icon>
+                    <span>{{ tweet.total_likes }}</span>
+                </div> -->
+                <div (click)="onClickComment($event)">
+                    <ion-icon name="chatbubble-ellipses"></ion-icon>
+                    <span>{{ tweet.comments_count }}</span>
+                </div>
+                <div>
+                    <ion-icon name="logo-facebook"></ion-icon>
+                    <span>2.5K</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

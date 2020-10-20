@@ -4,21 +4,21 @@ import { IonicModule } from '@ionic/angular';
 import { CollapseTextComponent } from './collapse-text.component';
 
 describe('CollapseTextComponent', () => {
-  let component: CollapseTextComponent;
-  let fixture: ComponentFixture<CollapseTextComponent>;
+    let component: CollapseTextComponent;
+    let fixture: ComponentFixture<CollapseTextComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CollapseTextComponent ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [CollapseTextComponent],
+            imports: [IonicModule.forRoot()]
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(CollapseTextComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+        fixture = TestBed.createComponent(CollapseTextComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    }));
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

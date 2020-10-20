@@ -1,0 +1,88 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-icon name="person-add-outline"></ion-icon>
+        </ion-buttons>
+        <ion-buttons slot="primary">
+            <ion-button>
+                <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-title *ngIf="targetUser">{{ targetUser.name }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <div *ngIf="targetUser" class="general">
+        <ion-avatar>
+            <img [src]="'https://api.adorable.io/avatars/100.png'"/>
+        </ion-avatar>
+        <div class="general__username">{{ targetUser.phone_number }}</div>
+        <div class="general__stats">
+            <div (click)="goToFollowing()">
+                <div class="general__stat_num">{{ targetUser.total_followings }}</div>
+                <div class="general__stat_prop">Followings</div>
+            </div>
+            <div (click)="goToFollower()">
+                <div class="general__stat_num">{{ targetUser.total_followers }}</div>
+                <div class="general__stat_prop">Followers</div>
+            </div>
+            <div (click)="alertReceivedLikes()">
+                <div class="general__stat_num">{{ targetUser.total_received_tweet_likes }}</div>
+                <div class="general__stat_prop">Likes</div>
+            </div>
+        </div>
+        <div *ngIf="authUser.id !== targetUser.id" class="general__action">
+            <ion-button (click)="toggleFollow()" *ngIf="!targetUser.is_liked" [color]="'danger'" class="large" strong>
+                Follow
+            </ion-button>
+            <ion-button *ngIf="targetUser.is_liked" [color]="'dark'" class="large" strong>Message
+            </ion-button>
+            <ion-button (click)="toggleFollow()" *ngIf="targetUser.is_liked" [color]="'dark'">
+                <ion-icon name="checkmark-outline"></ion-icon>
+            </ion-button>
+        </div>
+        <div *ngIf="targetUser.biography" class="general__bio">
+            {{ targetUser.biography }}
+        </div>
+    </div>
+
+    <ng-container *ngIf="selectedSegment$ | async as selectedSegment">
+        <ion-segment (ionChange)="segmentChanged($event)" [value]="selectedSegment">
+            <ion-segment-button [value]="SEGMENTS.PUBLIC_TWEETS">
+                <ion-icon name="list-outline"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button [value]="SEGMENTS.LIKED_TWEETS">
+                <ion-icon name="heart-outline"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button [value]="SEGMENTS.PRIVATE_TWEETS">
+                <ion-icon name="videocam-outline"></ion-icon>
+            </ion-segment-button>
+        </ion-segment>
+
+        <tiktok-spinner *ngIf="fetching"></tiktok-spinner>
+
+        <ng-container *ngIf="!fetching && tweets.length === 0">
+            <div class="ion-text-center ion-margin">No item here</div>
+        </ng-container>
+
+        <div class="tweets-grid">
+            <ion-row>
+                <ion-col *ngFor="let tweet of tweets" [sizeLg]="2" [sizeMd]="3" [sizeSm]="4" [sizeXs]="4">
+                    <tiktok-tweet-grid-item [tweet]="tweet"></tiktok-tweet-grid-item>
+                </ion-col>
+            </ion-row>
+        </div>
+
+        <ion-infinite-scroll (ionInfinite)="doLoadMore($event, selectedSegment)" threshold="10px">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+            </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </ng-container>
+
+</ion-content>

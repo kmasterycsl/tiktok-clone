@@ -1,0 +1,49 @@
+.post-main {
+  padding: var(--ion-padding);
+  border-bottom: 1px solid silver;
+
+  &__left {
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dotted silver;
+
+    ion-icon {
+      font-size: 2rem;
+    }
+
+    video {
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+}
+
+.post-actions {
+  padding: var(--ion-padding);
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  ion-button {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+
+    ion-icon {
+      margin-right: 5px;
+    }
+
+    --border-radius: 0;
+
+    &.large {
+      --border-radius: 0;
+      --padding-start: 3rem;
+      --padding-end: 3rem;
+    }
+  }
+}

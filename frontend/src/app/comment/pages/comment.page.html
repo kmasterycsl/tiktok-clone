@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>{{ title }}</ion-title>
+        <ion-button (click)="close()" color="dark" fill="clear" slot="end">
+            <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+    <tiktok-spinner *ngIf="fetching"></tiktok-spinner>
+    <ng-container *ngIf="!fetching && comments.length === 0">
+        <div class="ion-text-center ion-margin">No comment here. Can you write one?</div>
+    </ng-container>
+
+    <tiktok-comment-item (onReplyTo)="onReply($event)" *ngFor="let comment of comments" [comment]="comment">
+    </tiktok-comment-item>
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)" threshold="100px">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <tiktok-comment-input (onReplySuccess)="onReplySuccess($event)" [parentComment]="replyToComment"
+                              [tweetId]="tweet.id"></tiktok-comment-input>
+    </ion-toolbar>
+</ion-footer>

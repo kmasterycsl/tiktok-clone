@@ -1,13 +1,17 @@
 // source: https://github.com/AndrewPoyntz/time-ago-pipe/blob/master/time-ago.pipe.ts
 
-import { Pipe, PipeTransform, NgZone, ChangeDetectorRef, OnDestroy } from "@angular/core";
+import { ChangeDetectorRef, NgZone, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+
 @Pipe({
     name: 'timeAgo',
     pure: false
 })
 export class TimeAgoPipe implements PipeTransform, OnDestroy {
     private timer: number;
-    constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone) { }
+
+    constructor(private changeDetectorRef: ChangeDetectorRef, private ngZone: NgZone) {
+    }
+
     transform(value: string) {
         this.removeTimer();
         let d = new Date(value);
@@ -53,15 +57,18 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
             return years + 'y';
         }
     }
+
     ngOnDestroy(): void {
         this.removeTimer();
     }
+
     private removeTimer() {
         if (this.timer) {
             window.clearTimeout(this.timer);
             this.timer = null;
         }
     }
+
     private getSecondsUntilUpdate(seconds: number) {
         let min = 60;
         let hr = min * 60;
