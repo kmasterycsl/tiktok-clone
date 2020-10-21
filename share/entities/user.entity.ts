@@ -11,16 +11,20 @@ export class User extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'string' })
   name: string;
 
-  @Column({ select: false })
+  @Column({
+    type: 'string',
+    select: false
+  })
   password: string;
 
-  @Column()
+  @Column({ type: 'string' })
   phone_number: string;
 
   @Column({
+    type: 'string',
     nullable: true
   })
   biography: string;

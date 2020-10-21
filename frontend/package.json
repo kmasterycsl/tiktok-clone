@@ -7,7 +7,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -42,10 +43,13 @@
     "@ionic/angular-toolkit": "^2.3.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/jest": "^26.0.15",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
+    "jest": "^26.6.0",
+    "jest-preset-angular": "^8.3.1",
     "karma": "~5.0.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.2",
@@ -56,5 +60,15 @@
     "tslint": "~6.1.0",
     "typescript": "~3.9.5"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": ["<rootDir>/src/setupJest.ts"],
+    "moduleNameMapper": {
+      "@shared(.*)": "<rootDir>/src/app/shared/$1",
+      "@cores(.*)": "<rootDir>/src/app/core/$1",
+      "@tag(.*)": "<rootDir>/src/app/tag/$1",
+      "@tweet(.*)": "<rootDir>/src/app/tweet/$1"
+    }
+  }
 }

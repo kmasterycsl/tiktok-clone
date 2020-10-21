@@ -19,13 +19,13 @@ export class Tweet extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({type: 'int'})
   user_id: number;
 
-  @Column()
+  @Column({type: 'int'})
   song_id: number;
 
-  @Column()
+  @Column({type: 'int'})
   video_id: number;
 
   @Column({
@@ -36,11 +36,12 @@ export class Tweet extends CommonEntity {
   status: TweetStatus;
 
   @Column({
+    type: 'number',
     default: 0
   })
   views_count: number;
 
-  @Column()
+  @Column({type: 'string'})
   description: string;
 
   @OneToMany(type => TagTweet, tagTweet => tagTweet.tweet)

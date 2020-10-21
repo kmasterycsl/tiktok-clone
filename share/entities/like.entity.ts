@@ -10,13 +10,19 @@ export class Like extends CommonEntity {
     ) {
         super();
     }
-    @PrimaryColumn()
+    @PrimaryColumn({
+        type: 'int',
+    })
     user_id: number;
 
-    @PrimaryColumn()
-    likable_id: string;
+    @PrimaryColumn({
+        type: 'int',
+    })
+    likable_id: number;
 
-    @PrimaryColumn()
+    @PrimaryColumn({
+        type: 'string',
+    })
     likable_type: string; // TWEET, COMMENT
 
     @JoinColumn({ name: "user_id" })

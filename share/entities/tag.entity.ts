@@ -15,7 +15,7 @@ export class Tag extends CommonEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({type: 'string'})
     slug: string;
 
     @Column({
@@ -23,7 +23,7 @@ export class Tag extends CommonEntity {
     })
     description: string;
 
-    @Column()
+    @Column({type: 'int'})
     created_user_id: number;
 
     @OneToMany(type => TagTweet, tagTweet => tagTweet.tag)

@@ -11,18 +11,21 @@ export class Comment extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('number')
   user_id: number;
 
-  @Column()
+  @Column('number')
   tweet_id: number;
 
   @Column({
+    type: 'number',
     nullable: true,
   })
   parent_id?: number;
 
-  @Column()
+  @Column({
+    type: 'string',
+  })
   content: string;
 
   @ManyToOne(type => User, user => user.tweets)
