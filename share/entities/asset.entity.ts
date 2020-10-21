@@ -13,25 +13,31 @@ export class Asset extends CommonEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ type: 'int' })
     user_id: number;
 
-    @Column({ nullable: true })
+    @Column({
+        type: 'int',
+        nullable: true
+    })
     thumbnail_id?: number;
 
-    @Column({ nullable: true })
+    @Column({
+        type: 'string',
+        nullable: true
+    })
     title: string;
 
-    @Column()
+    @Column({ type: 'string' })
     file_mime: string;
 
-    @Column()
+    @Column({ type: 'string' })
     file_name: string;
 
-    @Column()
+    @Column({ type: 'string' })
     file_extension: string;
 
-    @Column()
+    @Column({ type: 'string' })
     file_relative_path: string;
 
     @OneToOne(type => Asset, asset => asset.thumbnail)

@@ -12,10 +12,10 @@ export class TagTweet extends CommonEntity {
     ) {
         super();
     }
-    @PrimaryColumn()
+    @PrimaryColumn({type: 'int'})
     tag_id: number;
 
-    @PrimaryColumn()
+    @PrimaryColumn({type: 'int'})
     tweet_id: number;
 
     @ManyToOne(type => Tag, tag => tag.tagTweets)
