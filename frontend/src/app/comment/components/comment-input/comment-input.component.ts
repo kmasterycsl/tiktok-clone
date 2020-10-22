@@ -12,6 +12,7 @@ export class CommentInputComponent implements OnInit, OnChanges {
     @Input() tweetId: number;
     @Input() parentComment?: Comment;
     @Output() onReplySuccess = new EventEmitter;
+
     commentContent: string = '';
     placeholder: string = '';
 
@@ -36,20 +37,24 @@ export class CommentInputComponent implements OnInit, OnChanges {
             return;
         }
 
-        this.commentService.postComment(this.tweetId, this.commentContent, this.parentComment?.id).subscribe((newComment: Comment) => {
-            this.onReplySuccess.next(newComment);
-            this.noticeService.showToast({
-                color: 'success',
-                message: 'Commented'
+        return this.commentService
+            .postComment(this.tweetId, this.commentContent, this.parentComment?.id)
+            .toPromise()
+            .then((newComment: Comment) => {
+                this.onReplySuccess.next(newComment);
+                this.noticeService.showToast({
+                    color: 'success',
+                    message: 'Commented'
+                });
+                this.commentContent = '';
+            })
+            .catch(e => {
+                console.error(e);
+                this.noticeService.showToast({
+                    color: 'danger',
+                    message: 'Comment error'
+                });
             });
-            this.commentContent = '';
-        }, e => {
-            console.error(e);
-            this.noticeService.showToast({
-                color: 'danger',
-                message: 'Comment error'
-            });
-        });
     }
 
 }
