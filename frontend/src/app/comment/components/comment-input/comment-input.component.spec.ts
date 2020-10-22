@@ -7,9 +7,10 @@ import { FormsModule } from '@angular/forms';
 import { CommentService } from '../../comment.service';
 import { NoticeService } from '@cores/services';
 import { mocked } from 'ts-jest/utils';
-import { Observable } from 'rxjs';
+import { from } from 'rxjs';
 
 const mockedCommentService = mocked(CommentService, true);
+const mockedNoticeService = mocked(NoticeService, true);
 
 jest.mock('../../comment.service');
 jest.mock('../../../core/services/notice.service');
@@ -18,16 +19,19 @@ describe('CommentInputComponent', () => {
     let component: CommentInputComponent;
     let fixture: ComponentFixture<CommentInputComponent>;
     let commentService: CommentService;
+    let noticeService: NoticeService;
 
     beforeEach(async(() => {
         mockedCommentService.mockClear();
+        mockedNoticeService.mockClear();
+        jest.spyOn(console, 'error').mockImplementation(() => undefined);
 
         TestBed.configureTestingModule({
             declarations: [CommentInputComponent],
             imports: [
                 CommonModule,
                 FormsModule,
-                IonicModule.forRoot(),
+                IonicModule,
             ],
             providers: [
                 CommentService,
@@ -37,9 +41,8 @@ describe('CommentInputComponent', () => {
 
         fixture = TestBed.createComponent(CommentInputComponent);
         commentService = mockedCommentService.mock.instances[0];
-        jest.spyOn(commentService, 'postComment').mockImplementation(() => {
-            return new Observable<any>();
-        });
+        noticeService = mockedNoticeService.mock.instances[0];
+
         component = fixture.componentInstance;
         fixture.detectChanges();
     }));
@@ -50,9 +53,47 @@ describe('CommentInputComponent', () => {
         expect(commentService.postComment).toHaveBeenCalledTimes(0);
     });
 
-    it('should call service when comment is not empty', () => {
+    it('should comment successfully', async () => {
+        const newComment = {};
         component.commentContent = 'ok';
-        component.onSubmit();
+        jest.spyOn(commentService, 'postComment').mockReturnValue(from(Promise.resolve(newComment)));
+        jest.spyOn(component.onReplySuccess, 'next');
+        await component.onSubmit();
+
+        // Call service
         expect(commentService.postComment).toHaveBeenCalledTimes(1);
+
+        // Alert
+        expect(noticeService.showToast).toHaveBeenCalledWith(expect.objectContaining({
+            color: 'success',
+        }));
+
+        // Reset content
+        expect(component.commentContent).toEqual('');
+
+        // Emit event
+        expect(component.onReplySuccess.next).toHaveBeenCalledWith(newComment);
     });
+
+    it('should not comment successfully', async () => {
+        component.commentContent = 'ok';
+        jest.spyOn(commentService, 'postComment').mockReturnValue(from(Promise.reject()));
+        jest.spyOn(component.onReplySuccess, 'next');
+        await component.onSubmit();
+
+        // Call service
+        expect(commentService.postComment).toHaveBeenCalledTimes(1);
+
+        // Alert
+        expect(noticeService.showToast).toHaveBeenCalledWith(expect.objectContaining({
+            color: 'danger',
+        }));
+
+        // Do not reset content
+        expect(component.commentContent).toEqual('ok');
+
+        // Do not emit event
+        expect(component.onReplySuccess.next).toHaveBeenCalledTimes(0);
+    });
+
 });
