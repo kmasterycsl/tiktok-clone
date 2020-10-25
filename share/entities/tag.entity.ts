@@ -15,7 +15,7 @@ export class Tag extends CommonEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'string'})
+    @Column({type: 'varchar'})
     slug: string;
 
     @Column({

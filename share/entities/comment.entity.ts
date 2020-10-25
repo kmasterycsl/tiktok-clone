@@ -11,20 +11,20 @@ export class Comment extends CommonEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('number')
+  @Column('int')
   user_id: number;
 
-  @Column('number')
+  @Column('int')
   tweet_id: number;
 
   @Column({
-    type: 'number',
+    type: 'int',
     nullable: true,
   })
   parent_id?: number;
 
   @Column({
-    type: 'string',
+    type: 'varchar',
   })
   content: string;
 

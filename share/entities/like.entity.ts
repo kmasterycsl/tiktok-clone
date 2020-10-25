@@ -21,7 +21,7 @@ export class Like extends CommonEntity {
     likable_id: number;
 
     @PrimaryColumn({
-        type: 'string',
+        type: 'varchar',
     })
     likable_type: string; // TWEET, COMMENT
 

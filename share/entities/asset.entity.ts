@@ -23,21 +23,21 @@ export class Asset extends CommonEntity {
     thumbnail_id?: number;
 
     @Column({
-        type: 'string',
+        type: 'varchar',
         nullable: true
     })
     title: string;
 
-    @Column({ type: 'string' })
+    @Column({ type: 'varchar' })
     file_mime: string;
 
-    @Column({ type: 'string' })
+    @Column({ type: 'varchar' })
     file_name: string;
 
-    @Column({ type: 'string' })
+    @Column({ type: 'varchar' })
     file_extension: string;
 
-    @Column({ type: 'string' })
+    @Column({ type: 'varchar' })
     file_relative_path: string;
 
     @OneToOne(type => Asset, asset => asset.thumbnail)
