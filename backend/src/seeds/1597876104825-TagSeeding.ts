@@ -12,6 +12,7 @@ for (let i = 1; i <= TOTAL_TAGS; i++) {
         created_user_id: 1,
         slug:_.kebabCase(faker.finance.accountName()),
         description: faker.lorem.sentence(),
+        total_likes: 0,
     });
 }
 

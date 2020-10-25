@@ -36,12 +36,12 @@ export class Tweet extends CommonEntity {
   status: TweetStatus;
 
   @Column({
-    type: 'number',
+    type: 'int',
     default: 0
   })
   views_count: number;
 
-  @Column({type: 'string'})
+  @Column({type: 'varchar'})
   description: string;
 
   @OneToMany(type => TagTweet, tagTweet => tagTweet.tweet)

@@ -43,7 +43,7 @@ export class LikeService {
         }
 
         const primaryKeys = {
-            likable_id: params.likableId.toString(),
+            likable_id: params.likableId,
             likable_type: params.likableType,
             user_id: params.userId
         };
