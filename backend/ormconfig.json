@@ -11,6 +11,5 @@
     "migrations": ["dist/seeds/*.js"],
     "cli": {
         "migrationsDir": "src/seeds"
-    },
-    "logging": ["query"]
+    }
 }

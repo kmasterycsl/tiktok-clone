@@ -1,9 +1,5 @@
-
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from "bcrypt";
-import { Asset, User } from '@tiktok-clone/share/entities';
+import { Asset } from '@tiktok-clone/share/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -22,12 +18,13 @@ export class AssetService {
   constructor(
     @InjectRepository(Asset)
     private assetRepository: Repository<Asset>,
-  ) { }
+  ) {
+  }
 
   saveAsset(params: IStoreAssetParams): Promise<Asset> {
     const asset: Partial<Asset> = {
       ...params,
-    }
+    };
 
     return this.assetRepository.save(asset);
   }
