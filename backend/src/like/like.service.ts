@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { LikeRequest } from './like.request';
-import { TweetService } from 'src/tweet/tweet.service';
+import { TweetService } from '../tweet/tweet.service';
 import { LikableType } from './consts';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like } from '@tiktok-clone/share/entities';
-import { CommentService } from 'src/tweet/comment.service';
-import { UserService } from 'src/user/user.service';
+import { CommentService } from '../tweet/comment.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class LikeService {
@@ -18,22 +18,23 @@ export class LikeService {
         private tweetRepository: Repository<Like>,
     ) {
     }
-    public async like(params: LikeRequest & { userId: number }) {
+
+    public async like(params: LikeRequest & { userId: number }): Promise<void> {
         switch (params.likableType) {
             case LikableType.TWEET:
-                const tweet = this.tweetService.getTweet(params.likableId);
+                const tweet = await this.tweetService.getTweet(params.likableId);
                 if (!tweet) {
                     throw new NotFoundException('Tweet not found');
                 }
                 break;
             case LikableType.COMMENT:
-                const comment = this.commentService.getComment(params.likableId);
+                const comment = await this.commentService.getComment(params.likableId);
                 if (!comment) {
                     throw new NotFoundException('Comment not found');
                 }
                 break;
             case LikableType.USER:
-                const user = this.userService.getUser(params.likableId);
+                const user = await this.userService.getUser(params.likableId);
                 if (!user) {
                     throw new NotFoundException('User not found');
                 }
@@ -45,11 +46,11 @@ export class LikeService {
         const primaryKeys = {
             likable_id: params.likableId,
             likable_type: params.likableType,
-            user_id: params.userId
+            user_id: params.userId,
         };
 
         const existLike = await this.tweetRepository.findOne({
-            where: primaryKeys
+            where: primaryKeys,
         });
 
         if (existLike) {
