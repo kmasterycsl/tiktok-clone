@@ -15,8 +15,8 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:watch": "jest --watch -forceExit --detectOpenHandles --maxWorkers=10",
+    "test:cov": "jest --coverage --forceExit --detectOpenHandles --maxWorkers=10",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
@@ -50,6 +50,7 @@
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
+    "@nestjs/testing": "^7.0.0",
     "@nestjs/testing": "^7.4.4",
     "@types/express": "^4.17.3",
     "@types/faker": "^4.1.12",
@@ -84,13 +85,14 @@
     "rootDir": "src",
     "testRegex": ".spec.ts$",
     "transform": {
-      "^.+\\.ts$": "ts-jest"
+      "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage",
-    "collectCoverageFrom": ["**/*.{ts}"],
+    "collectCoverageFrom": ["**/*.{ts,js}"],
     "testEnvironment": "node",
     "moduleNameMapper": {
       "src/(.*)": "<rootDir>/$1"
     }
   }
 }
+
