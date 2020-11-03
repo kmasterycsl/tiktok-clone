@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Asset } from '@tiktok-clone/share/entities';
+import { Asset } from '@simple-tiktok/share/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

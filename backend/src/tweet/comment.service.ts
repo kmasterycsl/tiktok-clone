@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tweet, Comment } from '@tiktok-clone/share/entities';
+import { Tweet, Comment } from '@simple-tiktok/share/entities';
 import { Repository } from 'typeorm';
 import { paginate, Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { PostTweetCommentRequest } from './post-tweet-comment.request';

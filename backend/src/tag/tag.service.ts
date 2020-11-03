@@ -1,11 +1,11 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IPaginationOptions, Tag, Tweet } from '@tiktok-clone/share';
+import { IPaginationOptions, Tag, Tweet } from '@simple-tiktok/share';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { Repository } from 'typeorm';
 import { keyBy } from 'lodash';
 import { TweetService } from 'src/tweet/tweet.service';
-import { TagTweet } from '@tiktok-clone/share/entities/tag-tweet.entity';
+import { TagTweet } from '@simple-tiktok/share/entities/tag-tweet.entity';
 import { LikableType } from 'src/like/consts';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class TagService {
     private tweetService: TweetService,
   ) { }
 
-  async getTag(tagId: number) {
+  async getTag(tagId: number) : Promise<Tag> {
     return this.tagRepository.findOne(tagId);
   }
 

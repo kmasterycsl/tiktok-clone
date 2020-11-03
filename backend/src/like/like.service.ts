@@ -4,7 +4,7 @@ import { TweetService } from '../tweet/tweet.service';
 import { LikableType } from './consts';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like } from '@tiktok-clone/share/entities';
+import { Like } from '@simple-tiktok/share/entities';
 import { CommentService } from '../tweet/comment.service';
 import { UserService } from '../user/user.service';
 
@@ -15,7 +15,7 @@ export class LikeService {
         private commentService: CommentService,
         private userService: UserService,
         @InjectRepository(Like)
-        private tweetRepository: Repository<Like>,
+        public likeRepository: Repository<Like>,
     ) {
     }
 
@@ -49,14 +49,14 @@ export class LikeService {
             user_id: params.userId,
         };
 
-        const existLike = await this.tweetRepository.findOne({
+        const existLike = await this.likeRepository.findOne({
             where: primaryKeys,
         });
 
         if (existLike) {
-            await this.tweetRepository.delete(primaryKeys);
+            await this.likeRepository.delete(primaryKeys);
         } else {
-            await this.tweetRepository.save(primaryKeys);
+            await this.likeRepository.save(primaryKeys);
         }
     }
 }

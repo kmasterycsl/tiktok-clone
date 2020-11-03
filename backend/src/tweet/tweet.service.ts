@@ -1,10 +1,10 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Tweet, TweetStatus } from '@tiktok-clone/share/entities';
+import { Tweet, TweetStatus } from '@simple-tiktok/share/entities';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { paginate, IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { LikableType } from 'src/like/consts';
-import { TagTweet } from '@tiktok-clone/share/entities/tag-tweet.entity';
+import { TagTweet } from '@simple-tiktok/share/entities/tag-tweet.entity';
 import { uniq } from 'lodash';
 import { TagService } from 'src/tag/tag.service';
 

@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
-import { Tweet, Comment } from "@tiktok-clone/share/entities";
+import { Tweet, Comment } from "@simple-tiktok/share/entities";
 import * as _ from "lodash";
 import { TOTAL_USERS } from "./1597873658706-UserSeeding";
 import * as faker from "faker";

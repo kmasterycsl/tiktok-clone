@@ -1,4 +1,4 @@
-import { TweetStatus } from "@tiktok-clone/share";
+import { TweetStatus } from "@simple-tiktok/share";
 import { IsString, IsInt, IsOptional, IsEnum } from "class-validator";
 
 export class PostTweetRequest {

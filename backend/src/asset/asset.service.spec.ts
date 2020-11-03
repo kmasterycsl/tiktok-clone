@@ -1,38 +1,37 @@
 import { AssetService } from './asset.service';
 import { Test } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Asset } from '@tiktok-clone/share/entities';
-import { getRepository } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Asset } from '@simple-tiktok/share/entities';
+import { Repository } from 'typeorm';
+import { mockProvideForRepository } from '@test/utils';
 
 describe('AssetServiceTest', () => {
-  let assetService: AssetService;
+    let assetService: AssetService;
+    let assetRepo: Repository<Asset>;
 
-  beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot(),
-        TypeOrmModule.forFeature([Asset]),
-      ],
-      providers: [
-        AssetService,
-      ],
-    }).compile();
-    assetService = moduleRef.get<AssetService>(AssetService);
-  });
-
-  it('i should saveAsset', async () => {
-    const repo = getRepository(Asset);
-    jest.spyOn(getRepository(Asset), 'save').mockImplementation(() => undefined);
-
-    await assetService.saveAsset({
-      file_extension: '',
-      file_mime: '',
-      file_name: '',
-      file_relative_path: '',
-      title: '',
-      user_id: 0,
+    beforeEach(async () => {
+        const moduleRef = await Test.createTestingModule({
+            providers: [
+                AssetService,
+                mockProvideForRepository(Asset),
+            ],
+        }).compile();
+        assetService = moduleRef.get<AssetService>(AssetService);
+        assetRepo = moduleRef.get<Repository<Asset>>(getRepositoryToken(Asset));
     });
 
-    expect(repo.save).toBeCalled();
-  });
+    it('i should saveAsset', async () => {
+        jest.spyOn(assetRepo, 'save');
+
+        await assetService.saveAsset({
+            file_extension: '',
+            file_mime: '',
+            file_name: '',
+            file_relative_path: '',
+            title: '',
+            user_id: 0,
+        });
+
+        expect(assetRepo.save).toBeCalled();
+    });
 });

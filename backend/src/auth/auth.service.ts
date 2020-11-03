@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from "bcrypt";
-import { User } from '@tiktok-clone/share/entities';
+import { User } from '@simple-tiktok/share/entities';
 
 export interface IJwtTokenPayload { phoneNumber: string, userId: number }
 

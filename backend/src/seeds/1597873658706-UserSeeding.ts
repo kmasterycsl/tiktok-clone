@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
-import { User } from "@tiktok-clone/share/entities";
+import { User } from "@simple-tiktok/share/entities";
 import * as faker from "faker";
 
 export const TOTAL_USERS = 500;

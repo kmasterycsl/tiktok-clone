@@ -1,9 +1,8 @@
 import { Test } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@tiktok-clone/share/entities';
+import { User } from '@simple-tiktok/share/entities';
 import { LikeService } from './like.service';
 import { LikeRequest } from './like.request';
-import { Like, Tweet, TagTweet, Comment, Tag } from '@tiktok-clone/share';
+import { Like, Tweet, TagTweet, Comment, Tag } from '@simple-tiktok/share';
 import { TweetService } from 'src/tweet/tweet.service';
 import { CommentService } from 'src/tweet/comment.service';
 import { UserService } from 'src/user/user.service';
@@ -11,6 +10,8 @@ import { TagService } from 'src/tag/tag.service';
 import { LikableType } from './consts';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { getConnection } from 'typeorm';
+import { mockProvideForRepository, mockProviderForAllRepositories } from '@test/utils';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('LikeServiceTest', () => {
     let likeService: LikeService;
@@ -20,11 +21,8 @@ describe('LikeServiceTest', () => {
 
     beforeEach(async () => {
         const moduleRef = await Test.createTestingModule({
-            imports: [
-                TypeOrmModule.forRoot(),
-                TypeOrmModule.forFeature([Like, Tweet, TagTweet, Comment, User, Tag]),
-            ],
             providers: [
+                ...mockProviderForAllRepositories,
                 LikeService,
                 TweetService,
                 CommentService,
@@ -36,11 +34,6 @@ describe('LikeServiceTest', () => {
         userService = moduleRef.get<UserService>(UserService);
         commentService = moduleRef.get<CommentService>(CommentService);
         tweetService = moduleRef.get<TweetService>(TweetService);
-    });
-
-    afterEach(() => {
-        const conn = getConnection();
-        return conn.close();
     });
 
     it('i should throw error if type is not supported', async () => {

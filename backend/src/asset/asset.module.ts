@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Asset } from '@tiktok-clone/share/entities';
+import { Asset } from '@simple-tiktok/share/entities';
 import { AssetService } from './asset.service';
 
 @Module({

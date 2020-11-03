@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, getRepository } from "typeorm";
-import { Asset } from "@tiktok-clone/share/entities";
+import { Asset } from "@simple-tiktok/share/entities";
 
 const songs = [1, 2, 3].map(num => ({
     id: num,
